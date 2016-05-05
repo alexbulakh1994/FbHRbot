@@ -23,7 +23,7 @@ app.listen(app.get('port'), function() {
 });
 
 app.get('/webhook', function (req, res) {
-  if (req.query['hub.verify_token'] === 'EAAD6bH65BkQBAB31xadyoObHEonJbyHaDlm4ZBZCcx8BLEhNphIDfHD7gVbPzZAVmZBxKQSG2RtJ0PbIMYNy5OmoICHtZAvJSYTnx9Cu2NnwnkPwhLBvUo76tLDqHTiWpcXJfititJmeZBLeKzi7oO9QrkMUqMm17FTC2jAKotEwZDZD') {
+  if (req.query['hub.verify_token'] === '049928052b074bdd31bc0d47d178c827') {
     res.send(req.query['hub.challenge']);
   } else {
     res.send('Error, wrong validation token');    
