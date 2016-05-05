@@ -60,16 +60,22 @@ function sendTextMessage(sender, text) {
 
 
 // receive message
+var allSenders = {};
+
 app.post('/webhook/', function (req, res) {
   messaging_events = req.body.entry[0].messaging;
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i];
-    sender = event.sender.id;
+    var senderId = event.sender.id;
+    allSenders[senderId] = true;
     if (event.message && event.message.text) {
       text = event.message.text;
       // Handle a text message from this sender
       console.log(text);
-      sendTextMessage(sender, "Text received, echo: "+ text.substring(0, 200));
+      console.log(Object.keys(allSenders));
+      Object.keys(allSenders).forEach(function(senderId){
+      	sendTextMessage(senderId, "Text received, echo: "+ text.substring(0, 200));
+    })
     }
   }
   res.sendStatus(200);
