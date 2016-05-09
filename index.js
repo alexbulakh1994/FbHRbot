@@ -73,7 +73,7 @@ function sendStructuredMessage(sender){
     			{
     				type: "postback",
     				title: "Start chatting",
-    				payload: "USER_DEFINED_PAYLOAD"
+    				payload: function(){console.log('we click to the button');}
     			}]
     		}
     	}
