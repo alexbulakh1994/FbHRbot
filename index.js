@@ -73,7 +73,7 @@ function sendStructuredMessage(sender){
     			{
     				type: "postback",
     				title: "Start chatting",
-    				payload: function(){console.log('we click to the button');}
+    				payload: "https://agile-lowlands-25107.herokuapp.com/webhook/"
     			}]
     		}
     	}
