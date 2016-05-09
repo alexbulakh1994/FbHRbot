@@ -92,8 +92,8 @@ function sendStructuredMessage(sender){
     } else if (response.body.error) {
       console.log('Error: ', response.body.error);
     }
+ });
 }
-
 
 // receive message
 var allSenders = {};
