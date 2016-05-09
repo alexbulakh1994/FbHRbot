@@ -65,7 +65,7 @@ function sendStructuredMessage(sender){
     		payload: {
     			template_type: "button",
     			text: "What do you want to do next?",
-    			buttons: {
+    			buttons: [{
     				type: "web_url",
     				url: "https://petersapparel.parseapp.com",
     				title: "show website"
@@ -74,7 +74,7 @@ function sendStructuredMessage(sender){
     				type: "postback",
     				title: "Start chatting",
     				payload: "USER_DEFINED_PAYLOAD"
-    			}
+    			}]
     		}
     	}
   }
