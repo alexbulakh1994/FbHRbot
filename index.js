@@ -58,6 +58,42 @@ function sendTextMessage(sender, text) {
   });
 }
 
+function sendStructuredMessage(sender){
+	messageData = {
+    	attachment: {
+    		type: "template",
+    		payload: {
+    			template_type: "button",
+    			text: "What do you want to do next?",
+    			buttons: {
+    				type: "web_url",
+    				url: "https://petersapparel.parseapp.com",
+    				title: "show website"
+    			},
+    			{
+    				type: "postback",
+    				title: "Start chatting",
+    				payload: "USER_DEFINED_PAYLOAD"
+    			}
+    		}
+    	}
+  }
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: {access_token:token},
+    method: 'POST',
+    json: {
+      recipient: {id:sender},
+      message: messageData,
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log('Error sending message: ', error);
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error);
+    }
+}
+
 
 // receive message
 var allSenders = {};
@@ -75,6 +111,7 @@ app.post('/webhook/', function (req, res) {
       console.log(Object.keys(allSenders));
       //Object.keys(allSenders).forEach(function(senderId){
       	sendTextMessage(senderId, "Text received, echo: "+ text.substring(0, 200));
+      	sendStructuredMessage(senderId);
     //})
     }
   }
