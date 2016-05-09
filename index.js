@@ -73,9 +73,9 @@ app.post('/webhook/', function (req, res) {
       // Handle a text message from this sender
       console.log(text);
       console.log(Object.keys(allSenders));
-      Object.keys(allSenders).forEach(function(senderId){
+      //Object.keys(allSenders).forEach(function(senderId){
       	sendTextMessage(senderId, "Text received, echo: "+ text.substring(0, 200));
-    })
+    //})
     }
   }
   res.sendStatus(200);
