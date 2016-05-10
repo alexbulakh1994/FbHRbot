@@ -104,9 +104,7 @@ app.post('/webhook/', function (req, res) {
     event = req.body.entry[0].messaging[i];
 
     console.log(req.json);
-    console.log(req.json.message);
-    console.log(req.json.message.attachment);
-
+    
     var senderId = event.sender.id;
     allSenders[senderId] = true;
     // if(event.message.payload === 'send_test'){
