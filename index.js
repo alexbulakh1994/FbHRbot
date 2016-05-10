@@ -105,9 +105,7 @@ app.post('/webhook/', function (req, res) {
     
     var senderId = event.sender.id;
     allSenders[senderId] = true;
-    if(req.body.entry[0].messaging[0].message.payload === 'send_test'){
-    	console.log("Connect structured messages!");
-    }
+
     if (event.message && event.message.text) {
       text = event.message.text;
       // Handle a text message from this sender
@@ -119,5 +117,11 @@ app.post('/webhook/', function (req, res) {
     //})
     }
   }
+
+     if(req.body.entry[0].messaging[0].message.payload === 'undefined'){
+     	console.log('Error no structured message');
+     }else if(req.body.entry[0].messaging[0].message.payload === 'send_test'){
+    	console.log("Connect structured messages!");
+    }
   res.sendStatus(200);
 });
