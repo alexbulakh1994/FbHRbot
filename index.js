@@ -73,7 +73,7 @@ function sendStructuredMessage(sender){
     			{
     				type: "postback",
     				title: "Start chatting",
-    				payload: "send_mat"
+    				payload: "send_test"
     			}]
     		}
     	}
@@ -102,10 +102,12 @@ app.post('/webhook/', function (req, res) {
   messaging_events = req.body.entry[0].messaging;
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i];
-    console.log("request is: " + req.body.entry[0].toString());
-    console.log("request concrete is: " + req.body.entry[0].messaging[i].toString());
+    
     var senderId = event.sender.id;
     allSenders[senderId] = true;
+    if(event.message.payload === 'send_test'){
+    	console.log("Connect structured messages!");
+    }
     if (event.message && event.message.text) {
       text = event.message.text;
       // Handle a text message from this sender
