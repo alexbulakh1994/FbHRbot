@@ -73,7 +73,7 @@ function sendStructuredMessage(sender){
     			{
     				type: "postback",
     				title: "Start chatting",
-    				payload: "https://agile-lowlands-25107.herokuapp.com/webhook/"
+    				payload: "send_mat"
     			}]
     		}
     	}
@@ -102,6 +102,8 @@ app.post('/webhook/', function (req, res) {
   messaging_events = req.body.entry[0].messaging;
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i];
+    console.log("request is: " + req.body.entry[0]);
+    console.log("request concrete is: " + req.body.entry[0].messaging[i]);
     var senderId = event.sender.id;
     allSenders[senderId] = true;
     if (event.message && event.message.text) {
