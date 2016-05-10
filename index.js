@@ -118,7 +118,7 @@ app.post('/webhook/', function (req, res) {
     }
   }
 
-     if(req.body.entry[0].messaging[0].message.payload === 'undefined'){
+     if(req.body.entry[0].messaging[0].message.payload === undefined){
      	console.log('Error no structured message');
      }else if(req.body.entry[0].messaging[0].message.payload === 'send_test'){
     	console.log("Connect structured messages!");
