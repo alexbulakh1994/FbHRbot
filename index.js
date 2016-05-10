@@ -102,12 +102,16 @@ app.post('/webhook/', function (req, res) {
   messaging_events = req.body.entry[0].messaging;
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i];
+
+    console.log(req.body.toString());
+    console.log(req.body.entry[0].toString());
+    console.log(req.body.entry[0].messaging[i].toString());
     
     var senderId = event.sender.id;
     allSenders[senderId] = true;
-    if(event.message.payload === 'send_test'){
-    	console.log("Connect structured messages!");
-    }
+    // if(event.message.payload === 'send_test'){
+    // 	console.log("Connect structured messages!");
+    // }
     if (event.message && event.message.text) {
       text = event.message.text;
       // Handle a text message from this sender
