@@ -117,8 +117,12 @@ app.post('/webhook/', function (req, res) {
     //})
     }
     else {
+
     	console.log("Connect structured messages!");
     	sendTextMessage(senderId, "Hi Alex !!!");
+    	if(event.postback && event.postback.payload === 'send_test'){
+    		sendTextMessage(senderId, "Postback calling");
+    	}
     }
   }
 
