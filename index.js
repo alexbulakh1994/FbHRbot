@@ -107,9 +107,9 @@ app.post('/webhook/', function (req, res) {
     
     var senderId = event.sender.id;
     allSenders[senderId] = true;
-    // if(event.message.payload === 'send_test'){
-    // 	console.log("Connect structured messages!");
-    // }
+    if(payload === 'send_test'){
+    	console.log("Connect structured messages!");
+    }
     if (event.message && event.message.text) {
       text = event.message.text;
       // Handle a text message from this sender
