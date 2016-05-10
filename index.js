@@ -116,9 +116,10 @@ app.post('/webhook/', function (req, res) {
       	sendStructuredMessage(senderId);
     //})
     }
-    // else if(req.body.entry[0].messaging[0].message.payload === 'send_test'){
-    // 	console.log("Connect structured messages!");
-    // }
+    else {
+    	console.log("Connect structured messages!");
+    	sendTextMessage(senderId, "Hi Alex !!!");
+    }
   }
 
      
