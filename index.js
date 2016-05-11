@@ -131,14 +131,14 @@ app.post('/webhook/', function (req, res) {
     else {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		sendTextMessage(senderId, "Hi frontEnd developer");
-    		sendSpecializationMessage(senderId, FrontEndPayload);
+    		sendStructuredMessage(senderId);
     	}
     	if(event.postback && event.postback.payload === 'science'){
     		sendTextMessage(senderId, "Hi Science Reseacher");
     	}
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		sendTextMessage(senderId, "Hi backEnd_dev");
-    		sendSpecializationMessage(senderId, backEndPayload);
+    		sendSpecializationMessage(senderId);
     	}
     	}
 
@@ -147,7 +147,7 @@ app.post('/webhook/', function (req, res) {
   res.sendStatus(200);
 });
 
-function sendSpecializationMessage (sender, payloadSpec){
+function sendSpecializationMessage (sender){
 
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -155,7 +155,31 @@ function sendSpecializationMessage (sender, payloadSpec){
     method: 'POST',
     json: {
       recipient: {id:sender},
-      message: payloadSpec,
+      message: { 
+        attachment: 
+            {
+                type: "template",
+                payload: {
+                template_type: "Specialization Backend",
+                text: "С какой технологией вы б хотели работать в бекенд разработке",
+                buttons: [{
+                    type: "postback",
+                    title: "Node JS",
+                    payload: "nodeJS"
+                },
+                {
+                    type: "postback",
+                    title: "Ruby",
+                    payload: "ruby"
+                },
+                {
+                    type: "postback",
+                    title: "Python",
+                    payload: "python"
+                }]
+            }
+        }
+    }
     }
   }, function(error, response, body) {
     if (error) {
