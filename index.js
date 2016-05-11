@@ -147,39 +147,38 @@ app.post('/webhook/', function (req, res) {
   res.sendStatus(200);
 });
 
-function sendSpecializationMessage (sender){
-
+function sendSpecializationMessage(sender){
+	messageData = {
+    	attachment: {
+    		type: "template",
+    		payload: {
+    			template_type: "button",
+    			text: "Choose specialization",
+    			buttons: [{
+    				type: "postback",
+    				title: "Ruby",
+    				payload: "ruby_dev"
+    			},
+    			{
+    				type: "postback",
+    				title: "python",
+    				payload: "python_dev"
+    			},
+    			{
+    				type: "postback",
+    				title: "nodeJS",
+    				payload: "node_dev"
+    			}]
+    		}
+    	}
+  }
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {access_token:token},
     method: 'POST',
     json: {
       recipient: {id:sender},
-      message: { 
-        attachment: 
-            {
-                type: "template",
-                payload: {
-                template_type: "Specialization Backend",
-                text: "С какой технологией вы б хотели работать в бекенд разработке",
-                buttons: [{
-                    type: "postback",
-                    title: "Node JS",
-                    payload: "nodeJS"
-                },
-                {
-                    type: "postback",
-                    title: "Ruby",
-                    payload: "ruby"
-                },
-                {
-                    type: "postback",
-                    title: "Python",
-                    payload: "python"
-                }]
-            }
-        }
-    }
+      message: messageData,
     }
   }, function(error, response, body) {
     if (error) {
@@ -189,55 +188,3 @@ function sendSpecializationMessage (sender){
     }
  });
 }
-
-var backEndPayload = { 
-        attachment: 
-            {
-                type: "template",
-                payload: {
-                template_type: "Specialization Backend",
-                text: "С какой технологией вы б хотели работать в бекенд разработке",
-                buttons: [{
-                    type: "postback",
-                    title: "Node JS",
-                    payload: "nodeJS"
-                },
-                {
-                    type: "postback",
-                    title: "Ruby",
-                    payload: "ruby"
-                },
-                {
-                    type: "postback",
-                    title: "Python",
-                    payload: "python"
-                }]
-            }
-        }
-    };
-
-var FrontEndPayload = {
-        attachment: 
-            {
-                type: "template",
-                payload: {
-                template_type: "Specialization Backend",
-                text: "С какой технологией вы б хотели работать в фронтенд разработке",
-                buttons: [{
-                    type: "postback",
-                    title: "Html, CSS",
-                    payload: "Html"
-                },
-                {
-                    type: "postback",
-                    title: "JS",
-                    payload: "js"
-                },
-                {
-                    type: "postback",
-                    title: "Angular JS",
-                    payload: "angular"
-                }]
-            }
-        }
-    };
