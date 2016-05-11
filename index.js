@@ -109,9 +109,8 @@ app.post('/webhook/', function (req, res) {
     event = req.body.entry[0].messaging[i];
     
     var senderId = event.sender.id;
-    allSenders[senderId] = {connected: true, state: 0};
 
-    if (event.message && event.message.text && allSenders[senderId].state == 0) {
+    if (event.message && event.message.text ) {
       text = event.message.text;
       // Handle a text message from this sender
       console.log(text);
@@ -119,7 +118,7 @@ app.post('/webhook/', function (req, res) {
       
 
       sendTextMessage(senderId, 'Привіт. Заповніть шаблон Прізвище Імя Побатькові. Приклад заповнення шаблону Імя: Олексій Прізвище: Булах Побатькові: Романович');
-      allSenders[senderId].state++;
+      allSenders[senderId] = true;
      //
     
     }else
@@ -129,15 +128,12 @@ app.post('/webhook/', function (req, res) {
     else {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		sendTextMessage(senderId, "Hi frontEnd developer");
-    		allSenders[senderId].state++;
     	}
     	if(event.postback && event.postback.payload === 'science'){
     		sendTextMessage(senderId, "Hi Science Reseacher");
-    		allSenders[senderId].state++;
     	}
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		sendTextMessage(senderId, "Hi backEnd_dev");
-    		allSenders[senderId].state++;	
     	}
 
     }
