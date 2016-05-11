@@ -110,7 +110,7 @@ app.post('/webhook/', function (req, res) {
     
     var senderId = event.sender.id;
 
-    if (event.message && event.message.text ) {
+    if (event.message && event.message.text && allSenders[senderId]) {
       text = event.message.text;
       // Handle a text message from this sender
       console.log(text);
@@ -122,7 +122,7 @@ app.post('/webhook/', function (req, res) {
      //
     
     }else
-    if(event.message && event.message.text && allSenders[senderId].state > 0){
+    if(event.message && event.message.text ){
     	 sendStructuredMessage(senderId);
     }
     else {
