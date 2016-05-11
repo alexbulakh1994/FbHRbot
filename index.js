@@ -143,7 +143,7 @@ app.post('/webhook/', function (req, res) {
     		sendSpecializationMessage(senderId, messageDataBack);
     	}
 
-    	if(event.postback && global_payloads.contains(event.postback.payload) ){
+    	if(event.postback && global_payloads.indexOf(event.postback.payload) ){
     		sendTextMessage(senderId, "Чи у вас є досвід роботи ? Якщо так, вкажіть період роботи та місце роботи ?");
     	}
 
