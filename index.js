@@ -133,17 +133,16 @@ app.post('/webhook/', function (req, res) {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		sendTextMessage(senderId, "Hi frontEnd developer");
     		sendSpecializationMessage(senderId, messageFrontDataBack);
-    	}
+    	}else
     	if(event.postback && event.postback.payload === 'science'){
     		sendTextMessage(senderId, "Hi Science Reseacher");
     		sendSpecializationMessage(senderId, messageScienceResearch);
-    	}
+    	}else
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		sendTextMessage(senderId, "Hi backEnd_dev");
     		sendSpecializationMessage(senderId, messageDataBack);
-    	}
-
-    	if(event.postback && global_payloads.indexOf(event.postback.payload) ){
+    	}else
+    	if(event.postback && global_payloads.indexOf(event.postback.payload) !== -1 ){
     		sendTextMessage(senderId, "Чи у вас є досвід роботи ? Якщо так, вкажіть період роботи та місце роботи ?");
     	}
 
