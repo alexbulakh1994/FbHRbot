@@ -118,12 +118,13 @@ app.post('/webhook/', function (req, res) {
       
 
       sendTextMessage(senderId, 'Привіт. Заповніть шаблон Прізвище Імя Побатькові. Приклад заповнення шаблону Імя: Олексій Прізвище: Булах Побатькові: Романович');
-      allSenders[senderId] = true;
+      allSenders[senderId] = 1;
      //
     
     }else
-    if(event.message && event.message.text && allSenders[senderId]){
+    if(event.message && event.message.text && allSenders[senderId] === 1){
     	 sendStructuredMessage(senderId);
+    	 allSenders[senderId]++;
     }
     else {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
