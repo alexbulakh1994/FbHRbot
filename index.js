@@ -147,7 +147,7 @@ app.post('/webhook/', function (req, res) {
   res.sendStatus(200);
 });
 
-sendSpecializationMessage: function (sender, payloadSpec){
+function sendSpecializationMessage (sender, payloadSpec){
 
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
