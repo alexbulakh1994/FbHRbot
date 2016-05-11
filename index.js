@@ -2,7 +2,7 @@ var cool = require('cool-ascii-faces');
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
-var structuredMessage = require('./structed-messages');
+//var structuredMessage = require('./structed-messages');
 
 var app = express();
 
@@ -119,7 +119,7 @@ app.post('/webhook/', function (req, res) {
       console.log(Object.keys(allSenders));
       
 
-      sendTextMessage(senderId, 'Привіт. Заповніть шаблон Прізвище Імя Побатькові. Приклад заповнення шаблону Імя: Олексій Прізвище: Булах Побатькові: Романович');
+      sendTextMessage(senderId, 'Привіт. Заповніть шаблон Прізвище Імя Побатькові.');
       allSenders[senderId] = 1;
      //
     
@@ -131,14 +131,14 @@ app.post('/webhook/', function (req, res) {
     else {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		sendTextMessage(senderId, "Hi frontEnd developer");
-    		structuredMessage.sendSpecializationMessage(req, token, senderId, structuredMessage.FrontEndPayload);
+    		sendSpecializationMessage(senderId, FrontEndPayload);
     	}
     	if(event.postback && event.postback.payload === 'science'){
     		sendTextMessage(senderId, "Hi Science Reseacher");
     	}
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		sendTextMessage(senderId, "Hi backEnd_dev");
-    		structuredMessage.sendSpecializationMessage(req, token, senderId, structuredMessage.backEndPayload);
+    		sendSpecializationMessage(senderId, backEndPayload);
     	}
     	}
 
@@ -146,3 +146,74 @@ app.post('/webhook/', function (req, res) {
 
   res.sendStatus(200);
 });
+
+sendSpecializationMessage: function (sender, payloadSpec){
+
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: {access_token:token},
+    method: 'POST',
+    json: {
+      recipient: {id:sender},
+      message: payloadSpec,
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log('Error sending message: ', error);
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error);
+    }
+ });
+}
+
+var backEndPayload = { 
+        attachment: 
+            {
+                type: "template",
+                payload: {
+                template_type: "Specialization Backend",
+                text: "С какой технологией вы б хотели работать в бекенд разработке",
+                buttons: [{
+                    type: "postback",
+                    title: "Node JS",
+                    payload: "nodeJS"
+                },
+                {
+                    type: "postback",
+                    title: "Ruby",
+                    payload: "ruby"
+                },
+                {
+                    type: "postback",
+                    title: "Python",
+                    payload: "python"
+                }]
+            }
+        }
+    };
+
+var FrontEndPayload = {
+        attachment: 
+            {
+                type: "template",
+                payload: {
+                template_type: "Specialization Backend",
+                text: "С какой технологией вы б хотели работать в фронтенд разработке",
+                buttons: [{
+                    type: "postback",
+                    title: "Html, CSS",
+                    payload: "Html"
+                },
+                {
+                    type: "postback",
+                    title: "JS",
+                    payload: "js"
+                },
+                {
+                    type: "postback",
+                    title: "Angular JS",
+                    payload: "angular"
+                }]
+            }
+        }
+    };
