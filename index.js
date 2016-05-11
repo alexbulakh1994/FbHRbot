@@ -131,14 +131,14 @@ app.post('/webhook/', function (req, res) {
     else {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		sendTextMessage(senderId, "Hi frontEnd developer");
-    		structuredMessage.sendSpecializationMessage(request, senderId, structuredMessage.FrontEndPayload);
+    		structuredMessage.sendSpecializationMessage(request, token, senderId, structuredMessage.FrontEndPayload);
     	}
     	if(event.postback && event.postback.payload === 'science'){
     		sendTextMessage(senderId, "Hi Science Reseacher");
     	}
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		sendTextMessage(senderId, "Hi backEnd_dev");
-    		structuredMessage.sendSpecializationMessage(request, senderId, structuredMessage.backEndPayload);
+    		structuredMessage.sendSpecializationMessage(request, token, senderId, structuredMessage.backEndPayload);
     	}
     	}
 

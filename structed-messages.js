@@ -1,6 +1,6 @@
 module.exports = {
 
-sendSpecializationMessage: function (request, resender, payloadSpec){
+sendSpecializationMessage: function (request, token, sender, payloadSpec){
 
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
