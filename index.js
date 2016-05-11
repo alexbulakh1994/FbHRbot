@@ -131,10 +131,11 @@ app.post('/webhook/', function (req, res) {
     else {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		sendTextMessage(senderId, "Hi frontEnd developer");
-    		sendStructuredMessage(senderId);
+    		sendSpecializationMessage(senderId, messageFrontDataBack);
     	}
     	if(event.postback && event.postback.payload === 'science'){
     		sendTextMessage(senderId, "Hi Science Reseacher");
+    		sendSpecializationMessage(senderId, messageScienceResearch);
     	}
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		sendTextMessage(senderId, "Hi backEnd_dev");
@@ -186,6 +187,51 @@ var messageDataBack = {
     				type: "postback",
     				title: "nodeJS",
     				payload: "node_dev"
+    			}]
+    		}
+    	}
+  }
+
+var messageFrontDataBack = {
+    	attachment: {
+    		type: "template",
+    		payload: {
+    			template_type: "button",
+    			text: "Choose specialization",
+    			buttons: [{
+    				type: "postback",
+    				title: "Html, css",
+    				payload: "html_dev"
+    			},
+    			{
+    				type: "postback",
+    				title: "JavaScipt",
+    				payload: "javaScript_dev"
+    			},
+    			{
+    				type: "postback",
+    				title: "AngularJS",
+    				payload: "angular"
+    			}]
+    		}
+    	}
+  }
+
+var messageScienceResearch = {
+    	attachment: {
+    		type: "template",
+    		payload: {
+    			template_type: "button",
+    			text: "Choose specialization",
+    			buttons: [{
+    				type: "postback",
+    				title: "Python Network",
+    				payload: "python_net"
+    			},
+    			{
+    				type: "postback",
+    				title: "Apache Spark",
+    				payload: "apache"
     			}]
     		}
     	}
