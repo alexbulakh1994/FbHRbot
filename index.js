@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 //var structuredMessage = require('./structed-messages');
+var global_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache'];
 
 var app = express();
 
@@ -141,6 +142,9 @@ app.post('/webhook/', function (req, res) {
     		sendTextMessage(senderId, "Hi backEnd_dev");
     		sendSpecializationMessage(senderId, messageDataBack);
     	}
+
+    	if(event.postback && global_payloads.contains(event.postback.payload){
+    		sendTextMessage(senderId, "Чи у вас є досвід роботи ? Якщо так, вкажіть період роботи та місце роботи ?");
     	}
 
     }
