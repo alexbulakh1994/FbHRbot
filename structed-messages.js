@@ -1,19 +1,14 @@
 module.exports = {
 
 sendSpecializationMessage: function (sender, payloadSpec){
-	messageData = {
-    	attachment: {
-    		type: "template",
-    		payload = payloadSpec
-    	}
-  }
+    
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {access_token:token},
     method: 'POST',
     json: {
       recipient: {id:sender},
-      message: messageData,
+      message: payloadSpec,
     }
   }, function(error, response, body) {
     if (error) {
@@ -24,7 +19,11 @@ sendSpecializationMessage: function (sender, payloadSpec){
  });
 },
 
-backEndPayload: {
+backEndPayload: { 
+        attachment: 
+            {
+                type: "template",
+                payload: {
                 template_type: "Specialization Backend",
                 text: "С какой технологией вы б хотели работать в бекенд разработке",
                 buttons: [{
@@ -42,9 +41,15 @@ backEndPayload: {
                     title: "Python",
                     payload: "python"
                 }]
-            },
+            }
+        }
+    },
 
 FrontEndPayload: {
+        attachment: 
+            {
+                type: "template",
+                payload: {
                 template_type: "Specialization Backend",
                 text: "С какой технологией вы б хотели работать в фронтенд разработке",
                 buttons: [{
@@ -63,6 +68,8 @@ FrontEndPayload: {
                     payload: "angular"
                 }]
             }
+        }
+    },
 
 };
 
