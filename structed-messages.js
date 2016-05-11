@@ -1,5 +1,6 @@
 module.exports = {
-function sendSpecializationMessage(sender, payloadSpec){
+
+sendSpecializationMessage: function (sender, payloadSpec){
 	messageData = {
     	attachment: {
     		type: "template",
@@ -21,9 +22,9 @@ function sendSpecializationMessage(sender, payloadSpec){
       console.log('Error: ', response.body.error);
     }
  });
-}
+},
 
-backEndPayload = {
+backEndPayload: {
                 template_type: "Specialization Backend",
                 text: "С какой технологией вы б хотели работать в бекенд разработке",
                 buttons: [{
@@ -41,9 +42,9 @@ backEndPayload = {
                     title: "Python",
                     payload: "python"
                 }]
-            };
+            },
 
-FrontEndPayload = {
+FrontEndPayload: {
                 template_type: "Specialization Backend",
                 text: "С какой технологией вы б хотели работать в фронтенд разработке",
                 buttons: [{
@@ -61,7 +62,7 @@ FrontEndPayload = {
                     title: "Angular JS",
                     payload: "angular"
                 }]
-            };
+            }
 
 };
 
