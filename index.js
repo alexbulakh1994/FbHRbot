@@ -66,14 +66,19 @@ function sendStructuredMessage(sender){
     			template_type: "button",
     			text: "What do you want to do next?",
     			buttons: [{
-    				type: "web_url",
-    				url: "https://petersapparel.parseapp.com",
-    				title: "show website"
+    				type: "postback",
+    				title: "Back-End Developer",
+    				payload: "backEnd_dev"
     			},
     			{
     				type: "postback",
-    				title: "Start chatting",
-    				payload: "send_test"
+    				title: "Science Reseacher",
+    				payload: "science"
+    			},
+    			{
+    				type: "postback",
+    				title: "Front-End Developer",
+    				payload: "frontEnd_dev"
     			}]
     		}
     	}
@@ -104,22 +109,37 @@ app.post('/webhook/', function (req, res) {
     event = req.body.entry[0].messaging[i];
     
     var senderId = event.sender.id;
-    allSenders[senderId] = true;
+    allSenders[senderId] = {connected: true, state: 0};
 
-    if (event.message && event.message.text) {
+    if (event.message && event.message.text && allSenders[senderId].state == 0) {
       text = event.message.text;
       // Handle a text message from this sender
       console.log(text);
       console.log(Object.keys(allSenders));
-      //Object.keys(allSenders).forEach(function(senderId){
-      	sendTextMessage(senderId, "Text received, echo: "+ text.substring(0, 200));
-      	sendStructuredMessage(senderId);
-    //})
+      
+
+      sendTextMessage(senderId, 'Привіт. Заповніть шаблон Прізвище Імя Побатькові. Приклад заповнення шаблону Імя: Олексій Прізвище: Булах Побатькові: Романович');
+      allSenders[senderId].state++;
+     //
+    
+    }else
+    if(event.message && event.message.text && allSenders[senderId].state > 0){
+    	 sendStructuredMessage(senderId);
     }
     else {
-    	if(event.postback && event.postback.payload === 'send_test'){
-    		sendTextMessage(senderId, "Postback calling");
+    	if(event.postback && event.postback.payload === 'frontEnd_dev'){
+    		sendTextMessage(senderId, "Hi frontEnd developer");
+    		allSenders[senderId].state++;
     	}
+    	if(event.postback && event.postback.payload === 'science'){
+    		sendTextMessage(senderId, "Hi Science Reseacher");
+    		allSenders[senderId].state++;
+    	}
+    	if(event.postback && event.postback.payload === 'backEnd_dev'){
+    		sendTextMessage(senderId, "Hi backEnd_dev");
+    		allSenders[senderId].state++;	
+    	}
+
     }
   }
 
