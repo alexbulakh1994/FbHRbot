@@ -2,6 +2,7 @@ var cool = require('cool-ascii-faces');
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
+var structuredMessage = require('./structed-messages');
 
 var app = express();
 
@@ -100,6 +101,7 @@ function sendStructuredMessage(sender){
  });
 }
 
+
 // receive message
 var allSenders = {};
 
@@ -129,12 +131,15 @@ app.post('/webhook/', function (req, res) {
     else {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		sendTextMessage(senderId, "Hi frontEnd developer");
+    		structuredMessage.sendSpecializationMessage(senderId, structuredMessage.FrontEndPayload);
     	}
     	if(event.postback && event.postback.payload === 'science'){
     		sendTextMessage(senderId, "Hi Science Reseacher");
     	}
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		sendTextMessage(senderId, "Hi backEnd_dev");
+    		structuredMessage.sendSpecializationMessage(senderId, structuredMessage.backEndPayload);
+    	}
     	}
 
     }
