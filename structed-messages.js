@@ -1,5 +1,5 @@
 module.exports = {
-
+var request = require('request');
 sendSpecializationMessage: function (sender, payloadSpec){
     
   request({
