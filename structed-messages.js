@@ -1,75 +1,74 @@
 module.exports = {
 
-sendSpecializationMessage: function (request, token, sender, payloadSpec){
-
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
-    method: 'POST',
-    json: {
-      recipient: {id:sender},
-      message: payloadSpec,
-    }
-  }, function(error, response, body) {
-    if (error) {
-      console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-      console.log('Error: ', response.body.error);
-    }
- });
-},
-
-backEndPayload: { 
-        attachment: 
-            {
-                type: "template",
-                payload: {
-                template_type: "Specialization Backend",
-                text: "С какой технологией вы б хотели работать в бекенд разработке",
+    var messageDataBack = {
+        attachment: {
+            type: "template",
+            payload: {
+                template_type: "button",
+                text: "Choose specialization",
                 buttons: [{
                     type: "postback",
-                    title: "Node JS",
-                    payload: "nodeJS"
-                },
-                {
-                    type: "postback",
                     title: "Ruby",
-                    payload: "ruby"
+                    payload: "ruby_dev"
                 },
                 {
                     type: "postback",
-                    title: "Python",
-                    payload: "python"
+                    title: "python",
+                    payload: "python_dev"
+                },
+                {
+                    type: "postback",
+                    title: "nodeJS",
+                    payload: "node_dev"
                 }]
             }
         }
-    },
+  }
 
-FrontEndPayload: {
-        attachment: 
-            {
-                type: "template",
-                payload: {
-                template_type: "Specialization Backend",
-                text: "С какой технологией вы б хотели работать в фронтенд разработке",
+var messageFrontDataBack = {
+        attachment: {
+            type: "template",
+            payload: {
+                template_type: "button",
+                text: "Choose specialization",
                 buttons: [{
                     type: "postback",
-                    title: "Html, CSS",
-                    payload: "Html"
+                    title: "Html, css",
+                    payload: "html_dev"
                 },
                 {
                     type: "postback",
-                    title: "JS",
-                    payload: "js"
+                    title: "JavaScipt",
+                    payload: "javaScript_dev"
                 },
                 {
                     type: "postback",
-                    title: "Angular JS",
+                    title: "AngularJS",
                     payload: "angular"
                 }]
             }
         }
-    }
+  }
+
+var messageScienceResearch = {
+        attachment: {
+            type: "template",
+            payload: {
+                template_type: "button",
+                text: "Choose specialization",
+                buttons: [{
+                    type: "postback",
+                    title: "Python Network",
+                    payload: "python_net"
+                },
+                {
+                    type: "postback",
+                    title: "Apache Spark",
+                    payload: "apache"
+                }]
+            }
+        }
+  }
 
 };
 
