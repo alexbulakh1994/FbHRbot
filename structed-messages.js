@@ -1,5 +1,30 @@
 module.exports = {
 
+    chooose_spec: {
+        attachment: {
+            type: "template",
+            payload: {
+                template_type: "button",
+                text: "What do you want to do next?",
+                buttons: [{
+                    type: "postback",
+                    title: "Back-End Developer",
+                    payload: "backEnd_dev"
+                },
+                {
+                    type: "postback",
+                    title: "Science Reseacher",
+                    payload: "science"
+                },
+                {
+                    type: "postback",
+                    title: "Front-End Developer",
+                    payload: "frontEnd_dev"
+                }]
+            }
+        }
+  },
+
      messageDataBack : {
         attachment: {
             type: "template",

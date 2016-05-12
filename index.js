@@ -56,48 +56,6 @@ function sendTextMessage(sender, text) {
   });
 }
 
-function sendStructuredMessage(sender){
-	messageData = {
-    	attachment: {
-    		type: "template",
-    		payload: {
-    			template_type: "button",
-    			text: "What do you want to do next?",
-    			buttons: [{
-    				type: "postback",
-    				title: "Back-End Developer",
-    				payload: "backEnd_dev"
-    			},
-    			{
-    				type: "postback",
-    				title: "Science Reseacher",
-    				payload: "science"
-    			},
-    			{
-    				type: "postback",
-    				title: "Front-End Developer",
-    				payload: "frontEnd_dev"
-    			}]
-    		}
-    	}
-  }
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
-    method: 'POST',
-    json: {
-      recipient: {id:sender},
-      message: messageData,
-    }
-  }, function(error, response, body) {
-    if (error) {
-      console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-      console.log('Error: ', response.body.error);
-    }
- });
-}
-
 
 // receive message
 var allSenders = {};
@@ -119,21 +77,21 @@ app.post('/webhook/', function (req, res) {
   
     }else
     if(event.message && event.message.text && allSenders[senderId] === 1){
-    	 sendStructuredMessage(senderId);
+    	 sendStructuredMessage(senderId, structuredMessage.choose_spec);
     	 allSenders[senderId]++;
     }
     else {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		sendTextMessage(senderId, "Hi frontEnd developer");
-    		sendSpecializationMessage(senderId, structuredMessage.messageFrontDataBack);
+    		sendStructuredMessage(senderId, structuredMessage.messageFrontDataBack);
     	}else
     	if(event.postback && event.postback.payload === 'science'){
     		sendTextMessage(senderId, "Hi Science Reseacher");
-    		sendSpecializationMessage(senderId, structuredMessage.messageScienceResearch);
+    		sendStructuredMessage(senderId, structuredMessage.messageScienceResearch);
     	}else
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		sendTextMessage(senderId, "Hi backEnd_dev");
-    		sendSpecializationMessage(senderId, structuredMessage.messageDataBack);
+    		sendStructuredMessage(senderId, structuredMessage.messageDataBack);
     	}else
     	if(event.postback && global_payloads.indexOf(event.postback.payload) !== -1 ){
     		sendTextMessage(senderId, "Чи у вас є досвід роботи ? Якщо так, вкажіть період роботи та місце роботи ?");
@@ -145,7 +103,7 @@ app.post('/webhook/', function (req, res) {
   res.sendStatus(200);
 });
 
-function sendSpecializationMessage(sender, message){
+function sendStructuredMessage(sender, message){
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {access_token:token},
