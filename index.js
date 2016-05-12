@@ -2,14 +2,15 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var structuredMessage = require('./structed-messages');
+var mongoose = require('mongoose');
 
 var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XICUrjqo99sdWjqbXL9ytycJLjDTPIOb50vXhZCoFnvbW45ZAl1opG3ny2OdhXo5RxAoaqwNcoMu7pzHY9WrEQtSjC7XMZBhuxzUpyZBmzGQuwZDZD";
 var global_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache'];
 
 var app = express();
+mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
 
 app.set('port', (process.env.PORT || 5000));
-
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 // views is directory for all template files
@@ -79,6 +80,13 @@ function sendStructuredMessage(sender, message){
 // receive message
 var allSenders = {};
 
+var Schema = new mongoose.Schema({
+	surname : String,
+	name: String,
+	patronymic: String
+});
+var client = mongoose.model('clients', Schema, 'clients');
+
 app.post('/webhook/', function (req, res) {
   messaging_events = req.body.entry[0].messaging;
   for (i = 0; i < messaging_events.length; i++) {
@@ -98,6 +106,7 @@ app.post('/webhook/', function (req, res) {
     if(event.message && event.message.text && allSenders[senderId] === 1){
     	 sendStructuredMessage(senderId, structuredMessage.chooose_spec);
     	 allSenders[senderId]++;
+    	 insertData(event.message.text.split(' '));
     }
     else {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
@@ -121,6 +130,18 @@ app.post('/webhook/', function (req, res) {
 
   res.sendStatus(200);
 });
+
+function insertData(fio){
+	new client(
+			{
+				surname: fio[0],
+				name : fio[1],
+				patronymic: fio[2]
+			}
+		).save(function(err, doc){
+			if(err) res.json(err);
+		});
+}
 
 
 
