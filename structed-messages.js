@@ -1,6 +1,6 @@
 module.exports = {
 
-    var messageDataBack = {
+     messageDataBack : {
         attachment: {
             type: "template",
             payload: {
@@ -23,9 +23,9 @@ module.exports = {
                 }]
             }
         }
-  }
+  },
 
-var messageFrontDataBack = {
+ messageFrontDataBack : {
         attachment: {
             type: "template",
             payload: {
@@ -48,9 +48,9 @@ var messageFrontDataBack = {
                 }]
             }
         }
-  }
+  },
 
-var messageScienceResearch = {
+ messageScienceResearch : {
         attachment: {
             type: "template",
             payload: {
