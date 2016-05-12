@@ -57,6 +57,25 @@ function sendTextMessage(sender, text) {
 }
 
 
+function sendStructuredMessage(sender, message){
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: {access_token:token},
+    method: 'POST',
+    json: {
+      recipient: {id:sender},
+      message: message,
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log('Error sending message: ', error);
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error);
+    }
+ });
+}
+
+
 // receive message
 var allSenders = {};
 
@@ -77,7 +96,7 @@ app.post('/webhook/', function (req, res) {
   
     }else
     if(event.message && event.message.text && allSenders[senderId] === 1){
-    	 sendStructuredMessage(senderId, structuredMessage.choose_spec);
+    	 sendStructuredMessage(senderId, structuredMessage.chooose_spec);
     	 allSenders[senderId]++;
     }
     else {
@@ -103,22 +122,5 @@ app.post('/webhook/', function (req, res) {
   res.sendStatus(200);
 });
 
-function sendStructuredMessage(sender, message){
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
-    method: 'POST',
-    json: {
-      recipient: {id:sender},
-      message: message,
-    }
-  }, function(error, response, body) {
-    if (error) {
-      console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-      console.log('Error: ', response.body.error);
-    }
- });
-}
 
 
