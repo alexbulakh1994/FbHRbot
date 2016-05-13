@@ -96,21 +96,16 @@ app.post('/webhook/', function (req, res) {
     var senderId = event.sender.id;
 
     if (event.message && event.message.text && !allSenders[senderId]) {
-      allSenders[senderId] = new client({	
-      										surname: '',
-      										name:'',
-      										patronymic: '',
-      										specialization: '',
-      										states: 1});
-      sendTextMessage(senderId, 'Hi. Write Surname Name and Patronymic.');
+       allSenders[senderId] = new client({states: 1});
+       sendTextMessage(senderId, 'Hi. Write Surname Name and Patronymic.');
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
     	 sendStructuredMessage(senderId, structedRequest([{title: "Backend Developer", payload: "backEnd_dev"}, 
     	 												  {title: "Science Reseacher", payload: "science"}, 
     	 												  {title: "FrontEnd Developer", payload: "frontEnd_dev"}]));
     	 allSenders[senderId].states++;
-    	 allSenders[senderId].name = 'Alex';
-    	 allSenders[senderId].surname = 'Bulakh';
+    	 allSenders[senderId].name = 'Ivan';
+    	 allSenders[senderId].surname = 'Didur';
     	 allSenders[senderId].surname = 'Romanovich';
     	// insertData(event.message.text.split(' '));
     }
