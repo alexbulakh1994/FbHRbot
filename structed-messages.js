@@ -8,17 +8,17 @@ var request = function(objArray){
                 text: "What do you want to do next?",
                 buttons: [{
                     type: "postback",
-                    title: objArray[0].tittle,//"Back-End Developer",
+                    title: objArray[0].title,//"Back-End Developer",
                     payload: objArray[0].payload//"backEnd_dev"
                 },
                 {
                     type: "postback",
-                    title: objArray[1].tittle,//"Science Reseacher",
+                    title: objArray[1].title,//"Science Reseacher",
                     payload: objArray[0].payload//"science"
                 },
                 {
                     type: "postback",
-                    title: objArray[2].tittle,//"Front-End Developer",
+                    title: objArray[2].title,//"Front-End Developer",
                     payload: objArray[0].payload//"frontEnd_dev"
                 }]
             }
