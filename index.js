@@ -36,10 +36,10 @@ app.get('/webhook', function (req, res) {
 
 
 //send message
-function sendTextMessage(sender, text) {
-  messageData = {
-    text:text
-  }
+function sendMessage(sender, messageData) {
+  // messageData = {
+  //   text:text
+  // }
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {access_token:token},
@@ -58,23 +58,23 @@ function sendTextMessage(sender, text) {
 }
 
 
-function sendStructuredMessage(sender, message){
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
-    method: 'POST',
-    json: {
-      recipient: {id:sender},
-      message: message,
-    }
-  }, function(error, response, body) {
-    if (error) {
-      console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-      console.log('Error: ', response.body.error);
-    }
- });
-}
+// function sendStructuredMessage(sender, message){
+//   request({
+//     url: 'https://graph.facebook.com/v2.6/me/messages',
+//     qs: {access_token:token},
+//     method: 'POST',
+//     json: {
+//       recipient: {id:sender},
+//       message: message,
+//     }
+//   }, function(error, response, body) {
+//     if (error) {
+//       console.log('Error sending message: ', error);
+//     } else if (response.body.error) {
+//       console.log('Error: ', response.body.error);
+//     }
+//  });
+// }
 
 
 // receive message
@@ -96,41 +96,43 @@ app.post('/webhook/', function (req, res) {
     var senderId = event.sender.id;
 
     if (event.message && event.message.text && !allSenders[senderId]) {
+
        allSenders[senderId] = new client({states: 1});
-       sendTextMessage(senderId, 'Hi. Write Surname Name and Patronymic.');
+       sendMessage(senderId, {text: 'Hi. Write Surname Name and Patronymic.'});
+
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
-    	 sendStructuredMessage(senderId, structedRequest([{title: "Backend Developer", payload: "backEnd_dev"}, 
+    	 sendMessage(senderId, structedRequest([{title: "Backend Developer", payload: "backEnd_dev"}, 
     	 												  {title: "Science Reseacher", payload: "science"}, 
     	 												  {title: "FrontEnd Developer", payload: "frontEnd_dev"}]));
     	 allSenders[senderId].states++;
     	 allSenders[senderId].name = 'Ivan';
     	 allSenders[senderId].surname = 'Didur';
-    	 allSenders[senderId].surname = 'Romanovich';
+    	 allSenders[senderId].patronymic = 'Romanovich';
     	// insertData(event.message.text.split(' '));
     }
     else if(allSenders[senderId].states === 2) {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
-    		sendTextMessage(senderId, "Hi frontEnd developer");
+    		sendMessage(senderId, {text: "Hi frontEnd developer"});
     		allSenders[senderId].specialization = 'frontEndDev';
     		insertData(allSenders[senderId]);
-    		sendStructuredMessage(senderId, structedRequest([{title: "HTML, CSS", payload: "html_dev"}, 
+    		sendMessage(senderId, structedRequest([{title: "HTML, CSS", payload: "html_dev"}, 
     	 												  {title: "JavaScript", payload: "javaScript_dev"}, 
     	 												  {title: "Angular JS", payload: "angular"}]));
     	}else
     	if(event.postback && event.postback.payload === 'science'){
-    		sendTextMessage(senderId, "Hi Science Reseacher");
-    		sendStructuredMessage(senderId, structedRequest([{title: "Python Network", payload: "python_net"}, 
+    		sendMessage(senderId, {text: "Hi Science Reseacher"});
+    		sendMessage(senderId, structedRequest([{title: "Python Network", payload: "python_net"}, 
     	 												  {title: "Apache Spark", payload: "apache"}]));
     	}else
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
-    		sendTextMessage(senderId, "Hi backEnd_dev");
-    		sendStructuredMessage(senderId, structedRequest([{title: "Ruby", payload: "ruby_dev"}, 
+    		sendMessage(senderId, {text: "Hi backEnd_dev"});
+    		sendMessage(senderId, structedRequest([{title: "Ruby", payload: "ruby_dev"}, 
     	 												  {title: "Python", payload: "python_dev"}, 
     	 												  {title: "Node JS", payload: "node_dev"}]));
     	}else
     	if(event.postback && global_payloads.indexOf(event.postback.payload) !== -1 ){
-    		sendTextMessage(senderId, "Чи у вас є досвід роботи ? Якщо так, вкажіть період роботи та місце роботи ?");
+    		sendMessage(senderId, {text:"What is last place of your work"});
     	}
 
     }
