@@ -83,7 +83,9 @@ var allSenders = {};
 var Schema = new mongoose.Schema({
 	surname : String,
 	name: String,
-	patronymic: String
+	patronymic: String,
+	specialization: String,
+	states: Integer
 });
 var client = mongoose.model('clients', Schema, 'clients');
 
@@ -94,25 +96,29 @@ app.post('/webhook/', function (req, res) {
     var senderId = event.sender.id;
 
     if (event.message && event.message.text && !allSenders[senderId]) {
-      text = event.message.text;
-   
-      console.log(text);
-      console.log(Object.keys(allSenders));
-      
+      allSenders[senderId] = new client({	
+      										surname: '',
+      										name:'',
+      										patronymic: '',
+      										specialization: '',
+      										states: 1});
       sendTextMessage(senderId, 'Hi. Write Surname Name and Patronymic.');
-      allSenders[senderId] = 1;
-  
-    }else
-    if(event.message && event.message.text && allSenders[senderId] === 1){
+    }
+    else if(event.message && event.message.text && allSenders[senderId] === 1){
     	 sendStructuredMessage(senderId, structedRequest([{title: "Backend Developer", payload: "backEnd_dev"}, 
     	 												  {title: "Science Reseacher", payload: "science"}, 
     	 												  {title: "FrontEnd Developer", payload: "frontEnd_dev"}]));
-    	 allSenders[senderId]++;
+    	 allSenders[senderId].states++;
+    	 allSenders[senderId].name = 'Alex';
+    	 allSenders[senderId].surname = 'Bulakh';
+    	 allSenders[senderId].surname = 'Romanovich';
     	// insertData(event.message.text.split(' '));
     }
-    else if(allSenders[senderId] === 2) {
+    else if(allSenders[senderId].states === 2) {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		sendTextMessage(senderId, "Hi frontEnd developer");
+    		allSenders[senderId].specialization = 'frontEndDev';
+    		insertData(allSenders[senderId]);
     		sendStructuredMessage(senderId, structedRequest([{title: "HTML, CSS", payload: "html_dev"}, 
     	 												  {title: "JavaScript", payload: "javaScript_dev"}, 
     	 												  {title: "Angular JS", payload: "angular"}]));
@@ -138,14 +144,8 @@ app.post('/webhook/', function (req, res) {
   res.sendStatus(200);
 });
 
-function insertData(fio){
-	new client(
-			{
-				surname: fio[0],
-				name : fio[1],
-				patronymic: fio[2]
-			}
-		).save(function(err, doc){
+function insertData(obj){
+		obj.save(function(err, doc){
 			if(err) res.json(err);
 		});
 }
