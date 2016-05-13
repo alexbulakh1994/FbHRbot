@@ -104,7 +104,7 @@ app.post('/webhook/', function (req, res) {
       										states: 1});
       sendTextMessage(senderId, 'Hi. Write Surname Name and Patronymic.');
     }
-    else if(event.message && event.message.text && allSenders[senderId] === 1){
+    else if(event.message && event.message.text && allSenders[senderId].states === 1){
     	 sendStructuredMessage(senderId, structedRequest([{title: "Backend Developer", payload: "backEnd_dev"}, 
     	 												  {title: "Science Reseacher", payload: "science"}, 
     	 												  {title: "FrontEnd Developer", payload: "frontEnd_dev"}]));
