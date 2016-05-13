@@ -14,12 +14,12 @@ var request = function(objArray){
                 {
                     type: "postback",
                     title: objArray[1].title,//"Science Reseacher",
-                    payload: objArray[0].payload//"science"
+                    payload: objArray[1].payload//"science"
                 },
                 {
                     type: "postback",
                     title: objArray[2].title,//"Front-End Developer",
-                    payload: objArray[0].payload//"frontEnd_dev"
+                    payload: objArray[2].payload//"frontEnd_dev"
                 }]
             }
         }
