@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
-var structuredMessage = require('./structed-messages');
+var structedRequest = require('./structed-messages');
 var mongoose = require('mongoose');
 
 var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XICUrjqo99sdWjqbXL9ytycJLjDTPIOb50vXhZCoFnvbW45ZAl1opG3ny2OdhXo5RxAoaqwNcoMu7pzHY9WrEQtSjC7XMZBhuxzUpyZBmzGQuwZDZD";
@@ -99,27 +99,34 @@ app.post('/webhook/', function (req, res) {
       console.log(text);
       console.log(Object.keys(allSenders));
       
-      sendTextMessage(senderId, 'Привіт. Заповніть шаблон Прізвище Імя Побатькові.');
+      sendTextMessage(senderId, 'Hi. Write Surname Name and Patronymic.');
       allSenders[senderId] = 1;
   
     }else
     if(event.message && event.message.text && allSenders[senderId] === 1){
-    	 sendStructuredMessage(senderId, structuredMessage.chooose_spec);
+    	 sendStructuredMessage(senderId, structedRequest([{title: "Backend Developer", payload: "backEnd_dev"}, 
+    	 												  {title: "Science Reseacher", payload: "science"}, 
+    	 												  {title: "FrontEnd Developer", payload: "frontEnd_dev"}]));
     	 allSenders[senderId]++;
-    	 insertData(event.message.text.split(' '));
+    	// insertData(event.message.text.split(' '));
     }
-    else {
+    else if(allSenders[senderId] === 2) {
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		sendTextMessage(senderId, "Hi frontEnd developer");
-    		sendStructuredMessage(senderId, structuredMessage.messageFrontDataBack);
+    		sendStructuredMessage(senderId, structedRequest([{title: "HTML, CSS", payload: "html_dev"}, 
+    	 												  {title: "JavaScript", payload: "javaScript_dev"}, 
+    	 												  {title: "Angular JS", payload: "angular"}]));
     	}else
     	if(event.postback && event.postback.payload === 'science'){
     		sendTextMessage(senderId, "Hi Science Reseacher");
-    		sendStructuredMessage(senderId, structuredMessage.messageScienceResearch);
+    		sendStructuredMessage(senderId, structedRequest([{title: "Python Network", payload: "python_net"}, 
+    	 												  {title: "Apache Spark", payload: "apache"}]));
     	}else
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		sendTextMessage(senderId, "Hi backEnd_dev");
-    		sendStructuredMessage(senderId, structuredMessage.messageDataBack);
+    		sendStructuredMessage(senderId, structedRequest([{title: "Ruby", payload: "ruby_dev"}, 
+    	 												  {title: "Python", payload: "python_dev"}, 
+    	 												  {title: "Node JS", payload: "node_dev"}]));
     	}else
     	if(event.postback && global_payloads.indexOf(event.postback.payload) !== -1 ){
     		sendTextMessage(senderId, "Чи у вас є досвід роботи ? Якщо так, вкажіть період роботи та місце роботи ?");
