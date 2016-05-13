@@ -146,7 +146,7 @@ app.post('/webhook/', function (req, res) {
 
 function insertData(obj){
 		obj.save(function(err, doc){
-			if(err) res.json(err);
+			if(err) console.log(err);
 		});
 }
 
