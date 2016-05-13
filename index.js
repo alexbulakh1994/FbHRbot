@@ -85,7 +85,7 @@ var Schema = new mongoose.Schema({
 	name: String,
 	patronymic: String,
 	specialization: String,
-	states: Integer
+	states: Number
 });
 var client = mongoose.model('clients', Schema, 'clients');
 
