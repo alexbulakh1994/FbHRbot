@@ -110,31 +110,36 @@ app.post('/webhook/', function (req, res) {
     	console.log(event.postback.payload);
     	switch(event.postback.payload){
     		case 'python_dev': 
-    				sendMessage(senderId, structedRequest(filter(postbacks.backEnd, 'python_dev'))); 
+    				postbacks.backEnd = filter(postbacks.backEnd, 'python_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEnd )); 
     				break;
     		case 'ruby_dev': 
-    				sendMessage(senderId, structedRequest(filter(postbacks.backEnd, 'ruby_dev'))); 
+    				postbacks.backEnd = filter(postbacks.backEnd, 'ruby_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEnd)); 
     				break;
     		case 'node_dev': 
-    				sendMessage(senderId, structedRequest(filter(postbacks.backEnd, 'node_dev'))); 
+    				postbacks.backEnd = filter(postbacks.backEnd, 'node_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEnd)); 
     				break;
     		case 'python_net': 
-    				
-    				sendMessage(senderId, structedRequest(filter(postbacks.science, 'python_net'))); 
+    				postbacks.science = filter(postbacks.backEnd, 'python_net');
+    				sendMessage(senderId, structedRequest(postbacks.science)); 
     				break;
     		case 'apache': 
-    				sendMessage(senderId, structedRequest(filter(postbacks.science, 'apache'))); 
+    				postbacks.science = filter(postbacks.backEnd, 'apache');
+    				sendMessage(senderId, structedRequest(postbacks.science)); 
     				break;
     		case 'html_dev': 
-    				
-    				sendMessage(senderId, structedRequest(filter(postbacks.frontEnd, 'html_dev'))); 
+    				postbacks.frontEnd = filter(postbacks.backEnd, 'html_dev');
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd)); 
     				break;
     		case 'javaScript_dev': 
-    				filter(postbacks.frontEnd, 'javaScript_dev'); 
-    				sendMessage(senderId, structedRequest(filter(postbacks.frontEnd, 'javaScript_dev'))); 
+    				postbacks.frontEnd = filter(postbacks.backEnd, 'javaScript_dev'); 
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd)); 
     				break;
     		case 'angular': 
-    				sendMessage(senderId, structedRequest(filter(postbacks.frontEnd, 'angular')));  
+    				postbacks.frontEnd = filter(postbacks.backEnd, 'angular');
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd));  
     				break; 
     		case 'finish': 
     				allSenders[senderId].states++;
