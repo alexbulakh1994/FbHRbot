@@ -171,7 +171,7 @@ function insertData(obj){
 function filter(arr, payloadDel){
 	var result = arr.filter(function (el) {
                       return el.payload !== payloadDel;
-                 }
+                 });
     return result;             
 }
 
