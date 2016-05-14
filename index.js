@@ -95,15 +95,15 @@ app.post('/webhook/', function (req, res) {
     	
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		allSenders[senderId].specialization = 'frontEndDev';
-    		sendMessage(senderId, structedRequest(postbacks.frontEndPostbacks));
+    		sendMessage(senderId, structedRequest(postbacks.frontEnd));
     	}else
     	if(event.postback && event.postback.payload === 'science'){
     		allSenders[senderId].specialization = 'Science Reseacher';
-    		sendMessage(senderId, structedRequest(postbacks.scienceReseachPostbacks));
+    		sendMessage(senderId, structedRequest(postbacks.science));
     	}else
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		allSenders[senderId].specialization = 'Back End developer';
-    		sendMessage(senderId, structedRequest(postbacks.backEndPostbacks));
+    		sendMessage(senderId, structedRequest(postbacks.backEnd));
     	}
     	
     }else if((allSenders[senderId].states === 2) && (technick_payloads.indexOf(event.postback.payload)!== -1)){
