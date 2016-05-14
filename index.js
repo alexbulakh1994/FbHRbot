@@ -91,7 +91,8 @@ app.post('/webhook/', function (req, res) {
     	 // allSenders[senderId].surname = 'Didur';
     	 // allSenders[senderId].patronymic = 'Romanovich';
     }
-    else if(allSenders[senderId].states === 2 ){
+    else if((allSenders[senderId].states === 2) && (event.postback.payload ==== 'frontEnd_dev' ||
+    												event.postback.payload ==== 'science'|| event.postback.payload ==== 'backEnd_dev')){
     	
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		allSenders[senderId].specialization = 'frontEndDev';
