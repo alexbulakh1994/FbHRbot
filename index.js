@@ -91,7 +91,7 @@ app.post('/webhook/', function (req, res) {
     	 // allSenders[senderId].surname = 'Didur';
     	 // allSenders[senderId].patronymic = 'Romanovich';
     }
-    else if(allSenders[senderId].states === 2 && spec_payloads.indexOf(event.postback.payload)!== -1){
+    else if(event.postback && allSenders[senderId].states === 2 ){
     	console.log(event.postback.payload);
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		allSenders[senderId].specialization = 'frontEndDev';
@@ -101,14 +101,12 @@ app.post('/webhook/', function (req, res) {
     		allSenders[senderId].specialization = 'Science Reseacher';
     		sendMessage(senderId, structedRequest(postbacks.science));
     	}else
-    	if(event.postback && event.postback.payload === 'backEnd_dev'){
+    		if(event.postback && event.postback.payload === 'backEnd_dev'){
     		allSenders[senderId].specialization = 'Back End developer';
     		sendMessage(senderId, structedRequest(postbacks.backEnd));
-    	}
-    	
-    }else if(allSenders[senderId].states === 2 && technick_payloads.indexOf(event.postback.payload)!== -1){
-    	console.log(postbacks.science.length);
-    	if(postbacks.frontEnd.length === 2 || postbacks.backEnd.length === 2 || postbacks.science.length === 2){
+  
+    	}else 
+    		if(postbacks.frontEnd.length === 2 || postbacks.backEnd.length === 2 || postbacks.science.length === 2){
     			allSenders[senderId].states = 3;
     			sendMessage(senderId, {text:"What is last place of your work"});
     	}else{
@@ -148,13 +146,13 @@ app.post('/webhook/', function (req, res) {
     		case 'finish': 
     				allSenders[senderId].states++;
     				break;		   										
-    	}
+    	}	
     }
-    	
-    }else if(event.message && event.message.text && allSenders[senderId].states === 3){
+  }else 
+  	if(event.message && event.message.text && allSenders[senderId].states === 3){
     	sendMessage(senderId, {text:"What is your time exrerience ?"});
     	//insertData(allSenders[senderId]);
-    } 
+  } 
 }
 
   res.sendStatus(200);
