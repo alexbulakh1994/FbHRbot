@@ -122,23 +122,23 @@ app.post('/webhook/', function (req, res) {
     				sendMessage(senderId, structedRequest(postbacks.backEnd)); 
     				break;
     		case 'python_net': 
-    				postbacks.science = filter(postbacks.backEnd, 'python_net');
+    				postbacks.science = filter(postbacks.science, 'python_net');
     				sendMessage(senderId, structedRequest(postbacks.science)); 
     				break;
     		case 'apache': 
-    				postbacks.science = filter(postbacks.backEnd, 'apache');
+    				postbacks.science = filter(postbacks.science 'apache');
     				sendMessage(senderId, structedRequest(postbacks.science)); 
     				break;
     		case 'html_dev': 
-    				postbacks.frontEnd = filter(postbacks.backEnd, 'html_dev');
+    				postbacks.frontEnd = filter(postbacks.frontEnd, 'html_dev');
     				sendMessage(senderId, structedRequest(postbacks.frontEnd)); 
     				break;
     		case 'javaScript_dev': 
-    				postbacks.frontEnd = filter(postbacks.backEnd, 'javaScript_dev'); 
+    				postbacks.frontEnd = filter(postbacks.frontEnd, 'javaScript_dev'); 
     				sendMessage(senderId, structedRequest(postbacks.frontEnd)); 
     				break;
     		case 'angular': 
-    				postbacks.frontEnd = filter(postbacks.backEnd, 'angular');
+    				postbacks.frontEnd = filter(postbacks.frontEnd, 'angular');
     				sendMessage(senderId, structedRequest(postbacks.frontEnd));  
     				break; 
     		case 'finish': 
