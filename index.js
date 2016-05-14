@@ -107,7 +107,7 @@ app.post('/webhook/', function (req, res) {
     	}
     	
     }else if(allSenders[senderId].states === 2 && technick_payloads.indexOf(event.postback.payload)!== -1){
-    	console.log(postbacks.science);
+    	console.log(postbacks.science.length);
     	if(postbacks.frontEnd.length === 2 || postbacks.backEnd.length === 2 || postbacks.science === 2){
     			allSenders[senderId].states = 3;
     	}else{
