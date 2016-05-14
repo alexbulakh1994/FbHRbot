@@ -109,7 +109,7 @@ app.post('/webhook/', function (req, res) {
     }else if(allSenders[senderId].states === 2 && technick_payloads.indexOf(event.postback.payload)!== -1){
     	console.log(postbacks.science.length);
     	if(postbacks.frontEnd.length === 2 || postbacks.backEnd.length === 2 || postbacks.science.length === 2){
-    			allSenders[senderId].states++;
+    			allSenders[senderId].states = 3;
     			sendMessage(senderId, {text:"What is last place of your work"});
     	}else{
     	switch(event.postback.payload){
@@ -151,7 +151,7 @@ app.post('/webhook/', function (req, res) {
     	}
     }
     	
-    }else if(allSenders[senderId].states === 3){
+    }else if(event.message && event.message.text && allSenders[senderId].states === 3){
     	sendMessage(senderId, {text:"What is your time exrerience ?"});
     	//insertData(allSenders[senderId]);
     } 
