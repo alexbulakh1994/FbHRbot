@@ -126,7 +126,7 @@ app.post('/webhook/', function (req, res) {
     				sendMessage(senderId, structedRequest(postbacks.science)); 
     				break;
     		case 'apache': 
-    				postbacks.science = filter(postbacks.science 'apache');
+    				postbacks.science = filter(postbacks.science, 'apache');
     				sendMessage(senderId, structedRequest(postbacks.science)); 
     				break;
     		case 'html_dev': 
