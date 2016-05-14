@@ -91,9 +91,8 @@ app.post('/webhook/', function (req, res) {
     	 // allSenders[senderId].surname = 'Didur';
     	 // allSenders[senderId].patronymic = 'Romanovich';
     }
-    else if((allSenders[senderId].states === 2) && (event.postback.payload ==== 'frontEnd_dev' ||
-    												event.postback.payload ==== 'science'|| event.postback.payload ==== 'backEnd_dev')){
-    	
+    else if((allSenders[senderId].states === 2) && (spec_payloads.indexOf(event.postback.payload) !== -1) ){
+    	console.log(event.postback.payload);
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		allSenders[senderId].specialization = 'frontEndDev';
     		sendMessage(senderId, structedRequest(postbacks.frontEnd));
@@ -108,6 +107,7 @@ app.post('/webhook/', function (req, res) {
     	}
     	
     }else if((allSenders[senderId].states === 2) && (technick_payloads.indexOf(event.postback.payload)!== -1)){
+    	console.log(event.postback.payload);
     	switch(event.postback.payload){
     		case 'python_dev': 
     				filter(postbacks.backEndPostbacks, 'python_dev');
