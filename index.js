@@ -92,7 +92,7 @@ app.post('/webhook/', function (req, res) {
     	 allSenders[senderId].patronymic = 'Romanovich';
     }
     else if(allSenders[senderId].states === 2 ){
-    	sendMessage(senderId, {text: 'Choose all technic witch you know'});
+    	
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		allSenders[senderId].specialization = 'frontEndDev';
     		sendMessage(senderId, structedRequest(postbacks.frontEndPostbacks));
@@ -106,7 +106,7 @@ app.post('/webhook/', function (req, res) {
     		sendMessage(senderId, structedRequest(postbacks.backEndPostbacks));
     	}
     	
-    }else if(allSenders[senderId].states === 2 && technick_payloads.indexOf(event.postback.payload)!== -1){
+    }else if((allSenders[senderId].states === 2) && (technick_payloads.indexOf(event.postback.payload)!== -1)){
     	switch(event.postback.payload){
     		case 'python_dev': 
     				filter(postbacks.backEndPostbacks, 'python_dev');
