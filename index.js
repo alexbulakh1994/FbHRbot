@@ -7,8 +7,7 @@ var postbacks = require('./postbacks');
 var app = express();
 
 var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XICUrjqo99sdWjqbXL9ytycJLjDTPIOb50vXhZCoFnvbW45ZAl1opG3ny2OdhXo5RxAoaqwNcoMu7pzHY9WrEQtSjC7XMZBhuxzUpyZBmzGQuwZDZD";
-var technick_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache'];
-var spec_payloads = ['frontEndDev', 'science', 'backEnd_dev', 'finish'];
+var global_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache'];
 
 //--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
@@ -91,7 +90,7 @@ app.post('/webhook/', function (req, res) {
     	 allSenders[senderId].surname = 'Didur';
     	 allSenders[senderId].patronymic = 'Romanovich';
     }
-    else if(allSenders[senderId].states === 2 && spec_payloads.indexOf(event.postback.payload)!== -1) {
+    else if(allSenders[senderId].states === 2) {
     	sendMessage(senderId, {text: 'Choose all technic witch you know'});
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		allSenders[senderId].specialization = 'frontEndDev';
@@ -99,14 +98,14 @@ app.post('/webhook/', function (req, res) {
     	}else
     	if(event.postback && event.postback.payload === 'science'){
     		allSenders[senderId].specialization = 'Science Reseacher';
+    		sendMessage(senderId, {text: "Hi Science Reseacher"});
     		sendMessage(senderId, structedRequest(postback.scienceReseachPostbacks));
     	}else
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		allSenders[senderId].specialization = 'Back End developer';
     		sendMessage(senderId, structedRequest(postbacks.backEndPostbacks));
-    	}else{
-    		allSenders[senderId].states++;
     	}
+    	allSenders[senderId].states++;
     }else if(allSenders[senderId].states === 3){
     		sendMessage(senderId, {text:"What is last place of your work"});
     		insertData(allSenders[senderId]);
