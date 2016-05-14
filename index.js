@@ -99,7 +99,7 @@ app.post('/webhook/', function (req, res) {
     	}else
     	if(event.postback && event.postback.payload === 'science'){
     		allSenders[senderId].specialization = 'Science Reseacher';
-    		sendMessage(senderId, structedRequest(postback.scienceReseachPostbacks));
+    		sendMessage(senderId, structedRequest(postbacks.scienceReseachPostbacks));
     	}else
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		allSenders[senderId].specialization = 'Back End developer';
