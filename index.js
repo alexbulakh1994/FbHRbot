@@ -145,7 +145,7 @@ app.post('/webhook/', function (req, res) {
     				allSenders[senderId].states++;
     				break;		   										
     	}
-    	if(postbacks.frontEndPostbacks.length === 1 || postbacks.backEndPostbacks.length === 1 || postbacks.scienceReseachPostbacks === 1){
+    	if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science === 1){
     		if(allSenders[senderId].states === 2)
     			allSenders[senderId].states++;
     	}
