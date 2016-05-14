@@ -152,8 +152,8 @@ app.post('/webhook/', function (req, res) {
     }
     	
     }else if(allSenders[senderId].states === 3){
-    	sendMessage(senderId, {text:"What is your tome exrerience ?"});
-    	insertData(allSenders[senderId]);
+    	sendMessage(senderId, {text:"What is your time exrerience ?"});
+    	//insertData(allSenders[senderId]);
     } 
 }
 
