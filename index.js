@@ -1,21 +1,23 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
-var structedRequest = require('./structed-messages');
 var mongoose = require('mongoose');
+var structedRequest = require('./structed-messages');
+var postbacks = require('./postbacks');
+var app = express();
 
 var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XICUrjqo99sdWjqbXL9ytycJLjDTPIOb50vXhZCoFnvbW45ZAl1opG3ny2OdhXo5RxAoaqwNcoMu7pzHY9WrEQtSjC7XMZBhuxzUpyZBmzGQuwZDZD";
-var global_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache'];
+var technick_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache', 'finish'];
+var spec_payloads = ['frontEndDev', 'science', 'backEnd_dev'];
 
-var app = express();
-mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
-
+//--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 // views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+//-------------------------------------------------------------------
 
 app.get('/', function(request, response) {
   response.render('pages/index')
@@ -37,9 +39,7 @@ app.get('/webhook', function (req, res) {
 
 //send message
 function sendMessage(sender, messageData) {
-  // messageData = {
-  //   text:text
-  // }
+
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {access_token:token},
@@ -57,38 +57,21 @@ function sendMessage(sender, messageData) {
   });
 }
 
-
-// function sendStructuredMessage(sender, message){
-//   request({
-//     url: 'https://graph.facebook.com/v2.6/me/messages',
-//     qs: {access_token:token},
-//     method: 'POST',
-//     json: {
-//       recipient: {id:sender},
-//       message: message,
-//     }
-//   }, function(error, response, body) {
-//     if (error) {
-//       console.log('Error sending message: ', error);
-//     } else if (response.body.error) {
-//       console.log('Error: ', response.body.error);
-//     }
-//  });
-// }
-
-
-// receive message
-var allSenders = {};
-
+// ------------------------------
 var Schema = new mongoose.Schema({
 	surname : String,
 	name: String,
 	patronymic: String,
 	specialization: String,
+	skills: [String],
 	states: Number
 });
+mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
 var client = mongoose.model('clients', Schema, 'clients');
+//----------------------------------------
 
+
+var allSenders = {};
 app.post('/webhook/', function (req, res) {
   messaging_events = req.body.entry[0].messaging;
   for (i = 0; i < messaging_events.length; i++) {
@@ -102,40 +85,78 @@ app.post('/webhook/', function (req, res) {
 
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
-    	 sendMessage(senderId, structedRequest([{title: "Backend Developer", payload: "backEnd_dev"}, 
-    	 												  {title: "Science Reseacher", payload: "science"}, 
-    	 												  {title: "FrontEnd Developer", payload: "frontEnd_dev"}]));
+    	 sendMessage(senderId, structedRequest(postbacks.specialization));
     	 allSenders[senderId].states++;
     	 allSenders[senderId].name = 'Ivan';
     	 allSenders[senderId].surname = 'Didur';
     	 allSenders[senderId].patronymic = 'Romanovich';
-    	// insertData(event.message.text.split(' '));
     }
-    else if(allSenders[senderId].states === 2) {
+    else if(allSenders[senderId].states === 2 && spec_payloads.indexOf(event.postback.payload)!== -1) {
+    	sendMessage(senderId, {text: 'Choose all technic witch you know'});
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
-    		sendMessage(senderId, {text: "Hi frontEnd developer"});
     		allSenders[senderId].specialization = 'frontEndDev';
-    		insertData(allSenders[senderId]);
-    		sendMessage(senderId, structedRequest([{title: "HTML, CSS", payload: "html_dev"}, 
-    	 												  {title: "JavaScript", payload: "javaScript_dev"}, 
-    	 												  {title: "Angular JS", payload: "angular"}]));
+    		sendMessage(senderId, structedRequest(postbacks.frontEndPostbacks));
     	}else
     	if(event.postback && event.postback.payload === 'science'){
-    		sendMessage(senderId, {text: "Hi Science Reseacher"});
-    		sendMessage(senderId, structedRequest([{title: "Python Network", payload: "python_net"}, 
-    	 												  {title: "Apache Spark", payload: "apache"}]));
+    		allSenders[senderId].specialization = 'Science Reseacher';
+    		sendMessage(senderId, structedRequest(postback.scienceReseachPostbacks));
     	}else
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
-    		sendMessage(senderId, {text: "Hi backEnd_dev"});
-    		sendMessage(senderId, structedRequest([{title: "Ruby", payload: "ruby_dev"}, 
-    	 												  {title: "Python", payload: "python_dev"}, 
-    	 												  {title: "Node JS", payload: "node_dev"}]));
-    	}else
-    	if(event.postback && global_payloads.indexOf(event.postback.payload) !== -1 ){
-    		sendMessage(senderId, {text:"What is last place of your work"});
+    		allSenders[senderId].specialization = 'Back End developer';
+    		sendMessage(senderId, structedRequest(postbacks.backEndPostbacks));
     	}
-
-    }
+    	// else{
+    	// 	allSenders[senderId].states++;
+    	// }
+    // }else if(allSenders[senderId].states === 3){
+    // 		sendMessage(senderId, {text:"What is last place of your work"});
+    // 		insertData(allSenders[senderId]);
+    }else if(allSenders[senderId].states === 2 && global_payloads.indexOf(event.postback.payload)!== -1){
+    	switch(event.postback.payload){
+    		case 'python_dev': 
+    				filter(postbacks.backEndPostbacks, 'python_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEndPostbacks)); 
+    				break;
+    		case 'ruby_dev': 
+    				filter(postbacks.backEndPostbacks, 'ruby_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEndPostbacks)); 
+    				break;
+    		case 'node_dev': 
+    				filter(postbacks.backEndPostbacks, 'node_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEndPostbacks)); 
+    				break;
+    		case 'python_net': 
+    				filter(postbacks.scienceReseachPostbacks, 'python_net');
+    				sendMessage(senderId, structedRequest(postbacks.scienceReseachPostbacks)); 
+    				break;
+    		case 'apache': 
+    				filter(postbacks.scienceReseachPostbacks, 'apache'); 
+    				sendMessage(senderId, structedRequest(postbacks.scienceReseachPostbacks)); 
+    				break;
+    		case 'html_dev': 
+    				filter(postbacks.frontEndPostbacks, 'html_dev'); 
+    				sendMessage(senderId, structedRequest(postbacks.frontEndPostbacks)); 
+    				break;
+    		case 'javaScript_dev': 
+    				filter(postbacks.frontEndPostbacks, 'javaScript_dev'); 
+    				sendMessage(senderId, structedRequest(postbacks.frontEndPostbacks)); 
+    				break;
+    		case 'angular': 
+    				filter(postbacks.frontEndPostbacks, 'angular');
+    				sendMessage(senderId, structedRequest(postbacks.frontEndPostbacks));  
+    				break; 
+    		case 'finish': 
+    				allSenders[senderId].states++;
+    				break;		   										
+    	}
+    	if(postbacks.frontEndPostbacks.length === 1 || postbacks.backEndPostbacks.length === 1 || postbacks.scienceReseachPostbacks === 1){
+    		if(allSenders[senderId].states === 2)
+    			allSenders[senderId].states++;
+    	}
+    }else if(allSenders[senderId].states === 3){
+    	sendMessage(senderId, {text:"What is last place of your work"});
+    	insertData(allSenders[senderId]);
+    } 
 }
 
   res.sendStatus(200);
@@ -147,5 +168,10 @@ function insertData(obj){
 		});
 }
 
-
+function filter(arr, payloadDel){
+	var result = .filter(function (el) {
+                      return el.payload !== payloadDel;
+                 }
+    return result;             
+}
 
