@@ -106,7 +106,7 @@ app.post('/webhook/', function (req, res) {
     		sendMessage(senderId, structedRequest(postbacks.backEndPostbacks));
     	}
     	
-    }else if(allSenders[senderId].states === 2 && global_payloads.indexOf(event.postback.payload)!== -1){
+    }else if(allSenders[senderId].states === 2 && technick_payloads.indexOf(event.postback.payload)!== -1){
     	switch(event.postback.payload){
     		case 'python_dev': 
     				filter(postbacks.backEndPostbacks, 'python_dev');
