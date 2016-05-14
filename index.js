@@ -7,7 +7,8 @@ var postbacks = require('./postbacks');
 var app = express();
 
 var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XICUrjqo99sdWjqbXL9ytycJLjDTPIOb50vXhZCoFnvbW45ZAl1opG3ny2OdhXo5RxAoaqwNcoMu7pzHY9WrEQtSjC7XMZBhuxzUpyZBmzGQuwZDZD";
-var global_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache'];
+var technick_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache', 'finish'];
+var spec_payloads = ['frontEndDev', 'science', 'backEnd_dev'];
 
 //--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
@@ -90,7 +91,7 @@ app.post('/webhook/', function (req, res) {
     	 allSenders[senderId].surname = 'Didur';
     	 allSenders[senderId].patronymic = 'Romanovich';
     }
-    else if(allSenders[senderId].states === 2) {
+    else if(allSenders[senderId].states === 2 && spec_payloads.indexOf(event.postback.payload)!== -1) {
     	sendMessage(senderId, {text: 'Choose all technic witch you know'});
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		allSenders[senderId].specialization = 'frontEndDev';
@@ -98,17 +99,58 @@ app.post('/webhook/', function (req, res) {
     	}else
     	if(event.postback && event.postback.payload === 'science'){
     		allSenders[senderId].specialization = 'Science Reseacher';
-    		sendMessage(senderId, {text: "Hi Science Reseacher"});
     		sendMessage(senderId, structedRequest(postback.scienceReseachPostbacks));
     	}else
     	if(event.postback && event.postback.payload === 'backEnd_dev'){
     		allSenders[senderId].specialization = 'Back End developer';
     		sendMessage(senderId, structedRequest(postbacks.backEndPostbacks));
     	}
-    	allSenders[senderId].states++;
+    	
+    }else if(allSenders[senderId].states === 2 && global_payloads.indexOf(event.postback.payload)!== -1){
+    	switch(event.postback.payload){
+    		case 'python_dev': 
+    				filter(postbacks.backEndPostbacks, 'python_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEndPostbacks)); 
+    				break;
+    		case 'ruby_dev': 
+    				filter(postbacks.backEndPostbacks, 'ruby_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEndPostbacks)); 
+    				break;
+    		case 'node_dev': 
+    				filter(postbacks.backEndPostbacks, 'node_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEndPostbacks)); 
+    				break;
+    		case 'python_net': 
+    				filter(postbacks.scienceReseachPostbacks, 'python_net');
+    				sendMessage(senderId, structedRequest(postbacks.scienceReseachPostbacks)); 
+    				break;
+    		case 'apache': 
+    				filter(postbacks.scienceReseachPostbacks, 'apache'); 
+    				sendMessage(senderId, structedRequest(postbacks.scienceReseachPostbacks)); 
+    				break;
+    		case 'html_dev': 
+    				filter(postbacks.frontEndPostbacks, 'html_dev'); 
+    				sendMessage(senderId, structedRequest(postbacks.frontEndPostbacks)); 
+    				break;
+    		case 'javaScript_dev': 
+    				filter(postbacks.frontEndPostbacks, 'javaScript_dev'); 
+    				sendMessage(senderId, structedRequest(postbacks.frontEndPostbacks)); 
+    				break;
+    		case 'angular': 
+    				filter(postbacks.frontEndPostbacks, 'angular');
+    				sendMessage(senderId, structedRequest(postbacks.frontEndPostbacks));  
+    				break; 
+    		case 'finish': 
+    				allSenders[senderId].states++;
+    				break;		   										
+    	}
+    	if(postbacks.frontEndPostbacks.length === 1 || postbacks.backEndPostbacks.length === 1 || postbacks.scienceReseachPostbacks === 1){
+    		if(allSenders[senderId].states === 2)
+    			allSenders[senderId].states++;
+    	}
     }else if(allSenders[senderId].states === 3){
-    		sendMessage(senderId, {text:"What is last place of your work"});
-    		insertData(allSenders[senderId]);
+    	sendMessage(senderId, {text:"What is last place of your work"});
+    	insertData(allSenders[senderId]);
     } 
 }
 
@@ -121,5 +163,10 @@ function insertData(obj){
 		});
 }
 
-
+function filter(arr, payloadDel){
+	var result = arr.filter(function (el) {
+                      return el.payload !== payloadDel;
+                 });
+    return result;             
+}
 
