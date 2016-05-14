@@ -109,8 +109,8 @@ app.post('/webhook/', function (req, res) {
     }else if(allSenders[senderId].states === 2 && technick_payloads.indexOf(event.postback.payload)!== -1){
     	console.log(postbacks.science.length);
     	if(postbacks.frontEnd.length === 2 || postbacks.backEnd.length === 2 || postbacks.science.length === 2){
+    			allSenders[senderId].states++;
     			sendMessage(senderId, {text:"What is last place of your work"});
-    			allSenders[senderId].states = 3;
     	}else{
     	switch(event.postback.payload){
     		case 'python_dev': 
