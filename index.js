@@ -8,7 +8,7 @@ var app = express();
 
 var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XICUrjqo99sdWjqbXL9ytycJLjDTPIOb50vXhZCoFnvbW45ZAl1opG3ny2OdhXo5RxAoaqwNcoMu7pzHY9WrEQtSjC7XMZBhuxzUpyZBmzGQuwZDZD";
 var technick_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache', 'finish'];
-var spec_payloads = ['frontEndDev', 'science', 'backEnd_dev'];
+var spec_payloads = ['frontEnd_dev', 'science', 'backEnd_dev'];
 
 //--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
@@ -91,7 +91,7 @@ app.post('/webhook/', function (req, res) {
     	 // allSenders[senderId].surname = 'Didur';
     	 // allSenders[senderId].patronymic = 'Romanovich';
     }
-    else if(allSenders[senderId].states === 2 ){
+    else if(allSenders[senderId].states === 2 && spec_payloads.indexOf(event.postback.payload)!== -1){
     	console.log(event.postback.payload);
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		allSenders[senderId].specialization = 'frontEndDev';
