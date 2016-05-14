@@ -87,11 +87,11 @@ app.post('/webhook/', function (req, res) {
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
     	 sendMessage(senderId, structedRequest(postbacks.specialization));
     	 allSenders[senderId].states++;
-    	 allSenders[senderId].name = 'Ivan';
-    	 allSenders[senderId].surname = 'Didur';
-    	 allSenders[senderId].patronymic = 'Romanovich';
+    	 // allSenders[senderId].name = 'Ivan';
+    	 // allSenders[senderId].surname = 'Didur';
+    	 // allSenders[senderId].patronymic = 'Romanovich';
     }
-    else if((allSenders[senderId].states === 2) && (spec_payloads.indexOf(event.postback.payload)!== -1) ){
+    else if(allSenders[senderId].states === 2 ){
     	
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		allSenders[senderId].specialization = 'frontEndDev';
