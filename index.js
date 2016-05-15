@@ -162,7 +162,9 @@ app.post('/webhook/', function (req, res) {
     	}	
   }else if(event.message && event.message.text && allSenders[senderId].states === 4){
   		console.log('Object is:');
-  		console.log(util.inspect(req.body.entry[0].messaging[i], false, null));
+  		console.log(util.inspect(req.body.entry[0], false, null));
+  		console.log('Object 2 is:');
+  		console.log(util.inspect(req.body, false, null));
   		//sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
   } 
 }
