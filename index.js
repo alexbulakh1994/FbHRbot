@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var mongoose = require('mongoose');
+var util = require('util');
 var structedRequest = require('./structed-messages');
 var postbacks = require('./postbacks');
 var app = express();
@@ -155,11 +156,13 @@ app.post('/webhook/', function (req, res) {
   
   		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1])){	
     		allSenders[senderId].states++;
+    		sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
     	}else{
     		sendMessage(senderId, {text:"What is your exrerience ? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
     	}	
   }else if(event.message && event.message.text && allSenders[senderId].states === 4){
-  		sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
+  		console.log(util.inspect(req, false, null));
+  		//sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
   } 
 }
 
