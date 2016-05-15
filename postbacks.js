@@ -4,12 +4,10 @@ var specialization = [{type: "postback", title: "Backend Developer", payload: "b
 
  var backEndPostbacks = [{type: "postback", title: "Ruby", payload: "ruby_dev"}, 
     	 												  {type: "postback", title: "Python", payload: "python_dev"}, 
-    	 												  {type: "postback", title: "Node JS", payload: "node_dev"},
-    	 												  {type: "postback", title: "All skills was choosen", payload: "finish"}];
+    	 												  {type: "postback", title: "Node JS", payload: "node_dev"}];
 
  var scienceReseachPostbacks = [{type: "postback", title: "Python Network", payload: "python_net"}, 
-    	 												  {type: "postback", title: "Apache Spark", payload: "apache"},
-    	 												  {type: "postback", title: "All skills was choosen", payload: "finish"}];
+    	 												  {type: "postback", title: "Apache Spark", payload: "apache"}];
 
 var frontEndPostbacks = [{type: "postback", title: "HTML, CSS", payload: "html_dev"}, 
     	 												  {type: "postback", title: "JavaScript", payload: "javaScript_dev"}, 

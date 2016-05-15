@@ -5,7 +5,7 @@ var request = function(objArray){
             type: "template",
             payload: {
                 template_type: "button",
-                text: "What do you want to do next?",
+                text: "Choose all skills ? If you want finish print finish.",
                 buttons: objArray
             }
         }

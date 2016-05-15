@@ -154,12 +154,13 @@ app.post('/webhook/', function (req, res) {
     				postbacks.frontEnd = filter(postbacks.frontEnd, 'angular');
     				allSenders[senderId].skills.push('angular');
     				sendMessage(senderId, structedRequest(postbacks.frontEnd));  
-    				break; 
-    		case 'finish': 
-    				allSenders[senderId].states++;
-    				break;		   										
+    				break; 		   										
     	}	
     }
+  }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 2 ){
+  			
+  			allSenders[senderId].states++;
+  		
   }else if(event.message && event.message.text && allSenders[senderId].states === 3){
   		
   		var dateTimes = event.message.text.split(' ');
