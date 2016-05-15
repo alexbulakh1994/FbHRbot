@@ -66,6 +66,7 @@ var Schema = new mongoose.Schema({
 	patronymic: String,
 	specialization: String,
 	skills: [String],
+	cv_url: String,
 	states: Number
 });
 mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
@@ -89,9 +90,10 @@ app.post('/webhook/', function (req, res) {
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
     	 sendMessage(senderId, structedRequest(postbacks.specialization));
     	 allSenders[senderId].states++;
-    	 // allSenders[senderId].name = 'Ivan';
-    	 // allSenders[senderId].surname = 'Didur';
-    	 // allSenders[senderId].patronymic = 'Romanovich';
+    	 var FIO = event.message.text.split(' ');
+    	 allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
+    	 allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
+    	 allSenders[senderId].patronymic = FIO[2] !== undefined ? FIO[2] : 'anonymous';
     }
     else if(event.postback && allSenders[senderId].states === 2 ){
     	console.log(event.postback.payload);
@@ -109,40 +111,48 @@ app.post('/webhook/', function (req, res) {
   
     	}else 
     		if(postbacks.frontEnd.length === 2 || postbacks.backEnd.length === 2 || postbacks.science.length === 2){
-    			allSenders[senderId].states = 3;
+    			allSenders[senderId].states++;
     			sendMessage(senderId, {text:"What is last place of your work"});
     	}else{
     	switch(event.postback.payload){
     		case 'python_dev': 
     				postbacks.backEnd = filter(postbacks.backEnd, 'python_dev');
+    				allSenders[senderId].skills.push('python_dev');
     				sendMessage(senderId, structedRequest(postbacks.backEnd )); 
     				break;
     		case 'ruby_dev': 
     				postbacks.backEnd = filter(postbacks.backEnd, 'ruby_dev');
+    				allSenders[senderId].skills.push('ruby_dev');
     				sendMessage(senderId, structedRequest(postbacks.backEnd)); 
     				break;
     		case 'node_dev': 
     				postbacks.backEnd = filter(postbacks.backEnd, 'node_dev');
+    				allSenders[senderId].skills.push('node_dev');
     				sendMessage(senderId, structedRequest(postbacks.backEnd)); 
     				break;
     		case 'python_net': 
     				postbacks.science = filter(postbacks.science, 'python_net');
+    				allSenders[senderId].skills.push('python_net');
     				sendMessage(senderId, structedRequest(postbacks.science)); 
     				break;
     		case 'apache': 
     				postbacks.science = filter(postbacks.science, 'apache');
+    				allSenders[senderId].skills.push('apache');
     				sendMessage(senderId, structedRequest(postbacks.science)); 
     				break;
     		case 'html_dev': 
     				postbacks.frontEnd = filter(postbacks.frontEnd, 'html_dev');
+    				allSenders[senderId].skills.push('html_dev');
     				sendMessage(senderId, structedRequest(postbacks.frontEnd)); 
     				break;
     		case 'javaScript_dev': 
-    				postbacks.frontEnd = filter(postbacks.frontEnd, 'javaScript_dev'); 
+    				postbacks.frontEnd = filter(postbacks.frontEnd, 'javaScript_dev');
+    				allSenders[senderId].skills.push('javaScript_dev'); 
     				sendMessage(senderId, structedRequest(postbacks.frontEnd)); 
     				break;
     		case 'angular': 
     				postbacks.frontEnd = filter(postbacks.frontEnd, 'angular');
+    				allSenders[senderId].skills.push('angular');
     				sendMessage(senderId, structedRequest(postbacks.frontEnd));  
     				break; 
     		case 'finish': 
@@ -156,17 +166,16 @@ app.post('/webhook/', function (req, res) {
   
   		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1])){	
   			console.log('states is' + allSenders[senderId].states);
-    		allSenders[senderId].states = 4;
+    		allSenders[senderId].states++;
     		sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
     	}else{
-    		sendMessage(senderId, {text:"What is your exrerience ? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
+    		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
     	}	
   }else if(allSenders[senderId].states === 4){
   		console.log('Object 2 is:');
   		console.log(util.inspect(req.body, false, null));
-  		console.log('URL is :');
-  		console.log(req.body.entry[0].messaging[1].message.attachments[0].payload.url);
-  		//sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
+  		allSenders[senderId].cv_url = req.body.entry[0].messaging[1].message.attachments[0].payload.url;
+  		insertData(allSenders[senderId]);
   } 
 }
 
