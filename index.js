@@ -110,7 +110,7 @@ app.post('/webhook/', function (req, res) {
     		sendMessage(senderId, structedRequest(postbacks.backEnd));
   
     	}else 
-    		if(postbacks.frontEnd.length === 2 || postbacks.backEnd.length === 2 || postbacks.science.length === 2){
+    		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science.length === 1){
     			allSenders[senderId].states++;
     			sendMessage(senderId, {text:"What is last place of your work"});
     	}else{
