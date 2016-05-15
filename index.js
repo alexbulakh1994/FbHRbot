@@ -153,7 +153,7 @@ app.post('/webhook/', function (req, res) {
   		
   		var dateTimes = event.message.text.split(' ');
   
-  		if(regExp.text(dateTimes[0]) && regExp.text(dateTimes[1]);){	
+  		if(regExp.text(dateTimes[0]) && regExp.text(dateTimes[1])){	
     		allSenders[senderId].states++;
     	}else{
     		sendMessage(senderId, {text:"What is your time exrerience ? Input correct data in format DAY/MM/YEAR-DAY/MM/YEAR."});
