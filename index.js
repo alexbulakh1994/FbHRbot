@@ -7,8 +7,9 @@ var postbacks = require('./postbacks');
 var app = express();
 
 var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XICUrjqo99sdWjqbXL9ytycJLjDTPIOb50vXhZCoFnvbW45ZAl1opG3ny2OdhXo5RxAoaqwNcoMu7pzHY9WrEQtSjC7XMZBhuxzUpyZBmzGQuwZDZD";
-var technick_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache', 'finish'];
-var spec_payloads = ['frontEnd_dev', 'science', 'backEnd_dev'];
+// var technick_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache', 'finish'];
+// var spec_payloads = ['frontEnd_dev', 'science', 'backEnd_dev'];
+var regExp = new RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/);
 
 //--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
@@ -148,10 +149,17 @@ app.post('/webhook/', function (req, res) {
     				break;		   										
     	}	
     }
-  }else 
-  	if(event.message && event.message.text && allSenders[senderId].states === 3){
-    	sendMessage(senderId, {text:"What is your time exrerience ?"});
-    	//insertData(allSenders[senderId]);
+  }else if(event.message && event.message.text && allSenders[senderId].states === 3){
+  		
+  		var dateTimes = event.message.text.split(' ');
+  
+  		if(regExp.text(dateTimes[0]) && regExp.text(dateTimes[1]);){	
+    		allSenders[senderId].states++;
+    	}else{
+    		sendMessage(senderId, {text:"What is your time exrerience ? Input correct data in format DAY/MM/YEAR-DAY/MM/YEAR."});
+    	}	
+  }else if(event.message && event.message.text && allSenders[senderId].states === 3){
+  		sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
   } 
 }
 
