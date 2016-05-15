@@ -161,7 +161,8 @@ app.post('/webhook/', function (req, res) {
     		sendMessage(senderId, {text:"What is your exrerience ? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
     	}	
   }else if(event.message && event.message.text && allSenders[senderId].states === 4){
-  		console.log(util.inspect(req, false, null));
+  		console.log('Object is:');
+  		console.log(util.inspect(req.body, false, null));
   		//sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
   } 
 }
