@@ -13,8 +13,7 @@ var specialization = [{type: "postback", title: "Backend Developer", payload: "b
 
 var frontEndPostbacks = [{type: "postback", title: "HTML, CSS", payload: "html_dev"}, 
     	 												  {type: "postback", title: "JavaScript", payload: "javaScript_dev"}, 
-    	 												  {type: "postback", title: "Angular JS", payload: "angular"},
-    	 												  {type: "postback", title: "All skills was choosen", payload: "finish"}];
+    	 												  {type: "postback", title: "Angular JS", payload: "angular"}];
 
  module.exports.frontEnd = frontEndPostbacks;   
  module.exports.backEnd = backEndPostbacks;
