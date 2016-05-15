@@ -155,18 +155,15 @@ app.post('/webhook/', function (req, res) {
   		var dateTimes = event.message.text.split(' ');
   
   		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1])){	
-    		allSenders[senderId].states++;
+  			console.log('states is' + allSenders[senderId].states);
+    		allSenders[senderId].states = 4;
     		sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
     	}else{
     		sendMessage(senderId, {text:"What is your exrerience ? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
     	}	
   }else if(event.message && event.message.text && allSenders[senderId].states === 4){
-  		console.log('Object is:');
-  		console.log(util.inspect(req.body.entry[0], false, null));
   		console.log('Object 2 is:');
-  		console.log(util.inspect(req.body, false, null));
-  		console.log('Object 1.1 is:');
-  		console.log(util.inspect(res, false, null));
+  		console.log(util.inspect(req.body.entry[0].messaging[i].message.attachments[0].type, false, null));
   		//sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
   } 
 }
