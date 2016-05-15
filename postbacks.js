@@ -13,7 +13,11 @@ var frontEndPostbacks = [{type: "postback", title: "HTML, CSS", payload: "html_d
     	 												  {type: "postback", title: "JavaScript", payload: "javaScript_dev"}, 
     	 												  {type: "postback", title: "Angular JS", payload: "angular"}];
 
+var savePostback =  [{type: "postback", title: "YES", payload: "yes_save"}, 
+    	 												  {type: "postback", title: "NO", payload: "no_save"}];   	 												  
+
  module.exports.frontEnd = frontEndPostbacks;   
  module.exports.backEnd = backEndPostbacks;
  module.exports.science = scienceReseachPostbacks;
- module.exports.specialization = specialization;	 												     	 												     	 												  
+ module.exports.specialization = specialization;
+ module.exports.save = savePostback;	 												     	 												     	 												  

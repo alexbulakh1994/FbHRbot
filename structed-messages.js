@@ -1,11 +1,11 @@
 
-var request = function(objArray){
+var request = function(objArray, text){
     return {
         attachment: {
             type: "template",
             payload: {
                 template_type: "button",
-                text: "Choose all skills ? If you want finish print finish.",
+                text: text, 
                 buttons: objArray
             }
         }

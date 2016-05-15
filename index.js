@@ -11,6 +11,8 @@ var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XIC
 // var technick_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache', 'finish'];
 // var spec_payloads = ['frontEnd_dev', 'science', 'backEnd_dev'];
 var regExp = new RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/);
+var specText = "Choose all skills ? If you choose all skills print finish.";
+var saveText = "Do you want save information about you ?";
 
 //--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
@@ -88,7 +90,7 @@ app.post('/webhook/', function (req, res) {
 
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
-    	 sendMessage(senderId, structedRequest(postbacks.specialization));
+    	 sendMessage(senderId, structedRequest(postbacks.specialization, specText));
     	 allSenders[senderId].states++;
     	 var FIO = event.message.text.split(' ');
     	 allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
@@ -99,15 +101,15 @@ app.post('/webhook/', function (req, res) {
     	console.log(event.postback.payload);
     	if(event.postback && event.postback.payload === 'frontEnd_dev'){
     		allSenders[senderId].specialization = 'frontEndDev';
-    		sendMessage(senderId, structedRequest(postbacks.frontEnd));
+    		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));
     	}else
     	if(event.postback && event.postback.payload === 'science'){
     		allSenders[senderId].specialization = 'Science Reseacher';
-    		sendMessage(senderId, structedRequest(postbacks.science));
+    		sendMessage(senderId, structedRequest(postbacks.science, specText));
     	}else
     		if(event.postback && event.postback.payload === 'backEnd_dev'){
     		allSenders[senderId].specialization = 'Back End developer';
-    		sendMessage(senderId, structedRequest(postbacks.backEnd));
+    		sendMessage(senderId, structedRequest(postbacks.backEnd, specText));
   
     	}else 
     		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science.length === 1){
@@ -118,42 +120,42 @@ app.post('/webhook/', function (req, res) {
     		case 'python_dev': 
     				postbacks.backEnd = filter(postbacks.backEnd, 'python_dev');
     				allSenders[senderId].skills.push('python_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd )); 
+    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
     				break;
     		case 'ruby_dev': 
     				postbacks.backEnd = filter(postbacks.backEnd, 'ruby_dev');
     				allSenders[senderId].skills.push('ruby_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd)); 
+    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
     				break;
     		case 'node_dev': 
     				postbacks.backEnd = filter(postbacks.backEnd, 'node_dev');
     				allSenders[senderId].skills.push('node_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd)); 
+    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
     				break;
     		case 'python_net': 
     				postbacks.science = filter(postbacks.science, 'python_net');
     				allSenders[senderId].skills.push('python_net');
-    				sendMessage(senderId, structedRequest(postbacks.science)); 
+    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
     				break;
     		case 'apache': 
     				postbacks.science = filter(postbacks.science, 'apache');
     				allSenders[senderId].skills.push('apache');
-    				sendMessage(senderId, structedRequest(postbacks.science)); 
+    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
     				break;
     		case 'html_dev': 
     				postbacks.frontEnd = filter(postbacks.frontEnd, 'html_dev');
     				allSenders[senderId].skills.push('html_dev');
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd)); 
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
     				break;
     		case 'javaScript_dev': 
     				postbacks.frontEnd = filter(postbacks.frontEnd, 'javaScript_dev');
     				allSenders[senderId].skills.push('javaScript_dev'); 
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd)); 
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
     				break;
     		case 'angular': 
     				postbacks.frontEnd = filter(postbacks.frontEnd, 'angular');
     				allSenders[senderId].skills.push('angular');
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd));  
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));  
     				break; 		   										
     	}	
     }
@@ -175,7 +177,15 @@ app.post('/webhook/', function (req, res) {
   		console.log('Object 2 is:');
   		console.log(util.inspect(req.body, false, null));
   		allSenders[senderId].cv_url = req.body.entry[0].messaging[1].message.attachments[0].payload.url;
-  		insertData(allSenders[senderId]);
+  		allSenders[senderId].states++;
+  		sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
+  }else if(event.postback && allSenders[senderId].states === 5){
+  		if(event.postback.payload === 'yes_save'){
+  			insertData(allSenders[senderId]);
+  			sendMessage(senderId, {text:"All information about you was saved."});
+  		}else{
+  			sendMessage(senderId, {text:"Good by? we dont savev information about you."});
+  		}
   } 
 }
 
