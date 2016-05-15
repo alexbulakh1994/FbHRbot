@@ -156,9 +156,9 @@ app.post('/webhook/', function (req, res) {
   		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1])){	
     		allSenders[senderId].states++;
     	}else{
-    		sendMessage(senderId, {text:"What is your time exrerience ? Input correct data in format DAY/MM/YEAR-DAY/MM/YEAR."});
+    		sendMessage(senderId, {text:"What is your exrerience ? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
     	}	
-  }else if(event.message && event.message.text && allSenders[senderId].states === 3){
+  }else if(event.message && event.message.text && allSenders[senderId].states === 4){
   		sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
   } 
 }
