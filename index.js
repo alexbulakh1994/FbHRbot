@@ -165,6 +165,8 @@ app.post('/webhook/', function (req, res) {
   		console.log(util.inspect(req.body.entry[0], false, null));
   		console.log('Object 2 is:');
   		console.log(util.inspect(req.body, false, null));
+  		console.log('Object 1.1 is:');
+  		console.log(util.inspect(res, false, null));
   		//sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
   } 
 }
