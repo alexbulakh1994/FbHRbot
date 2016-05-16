@@ -8,8 +8,6 @@ var postbacks = require('./postbacks');
 var app = express();
 
 var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XICUrjqo99sdWjqbXL9ytycJLjDTPIOb50vXhZCoFnvbW45ZAl1opG3ny2OdhXo5RxAoaqwNcoMu7pzHY9WrEQtSjC7XMZBhuxzUpyZBmzGQuwZDZD";
-// var technick_payloads = ['ruby_dev', 'python_dev', 'node_dev', 'html_dev', 'javaScript_dev', 'angular', 'python_net', 'apache', 'finish'];
-// var spec_payloads = ['frontEnd_dev', 'science', 'backEnd_dev'];
 var regExp = new RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/);
 var specText = "Choose all skills ? If you choose all skills print finish.";
 var saveText = "Do you want save information about you ?";
@@ -81,6 +79,7 @@ app.post('/webhook/', function (req, res) {
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i]; 
     var senderId = event.sender.id;
+    var attachedObj = findAttachObject(req.body.entry[0].messaging);
 
     if (event.message && event.message.text && !allSenders[senderId]) {
 
@@ -178,14 +177,9 @@ app.post('/webhook/', function (req, res) {
     	}else{
     		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
     	}	
-  }else if(messageObj(req.body.entry[0].messaging) && allSenders[senderId].states === 4){
-  		console.log(util.inspect(req.body, {showHidden: false, depth: null}));
-  		console.log('Obj attach is:');
-  		console.log(util.inspect(attachObj(req.body.entry[0].messaging), {showHidden: false, depth: null}));
-  		console.log('Obj type attach is:');
-  		console.log(util.inspect(attachObj(req.body.entry[0].messaging).type, {showHidden: false, depth: null}));
-  			if(attachObj(req.body.entry[0].messaging).type === 'file'){
-  				allSenders[senderId].cv_url = attachObj(req.body.entry[0].messaging).payload.url;
+  }else if(attachedObj && allSenders[senderId].states === 4){
+  			if(attachedObj.type === 'file'){
+  				allSenders[senderId].cv_url = attachedObj.payload.url;
   				allSenders[senderId].states++;
   				sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
   			}else{
@@ -217,20 +211,17 @@ function filter(arr, payloadDel){
     return result;             
 }
 
-var attachObj = function(messageArray){
+function findAttachObject(messageArray){
 	for(var i = 0; i < messageArray.length; i++){
-		if(messageArray[i].hasOwnProperty('message'))
+		if(messageArray[i].hasOwnProperty('message')){
+			if(type === 'message'){
+				return messageArray[i].message;
+			}else
 			if(messageArray[i].message.hasOwnProperty('attachments'))
 				return messageArray[i].message.attachments[0];
+		}
 			
 	}
 }
 
-var messageObj = function(messageArray){
-	for(var i = 0; i < messageArray.length; i++){
-		if(messageArray[i].hasOwnProperty('message'))
-				return messageArray[i].message;
-			
-	}
-}
 
