@@ -184,13 +184,13 @@ app.post('/webhook/', function (req, res) {
   		console.log(util.inspect(attachObj(req.body.entry[0].messaging), {showHidden: false, depth: null}));
   		console.log('Obj type attach is:');
   		console.log(util.inspect(attachObj(req.body.entry[0].messaging).type, {showHidden: false, depth: null}));
-  			// if(attachObj(req.body.entry[0].messaging).type === 'file'){
-  			// 	allSenders[senderId].cv_url = attachObj(req.body.entry[0].messaging).payload.url;
-  			// 	allSenders[senderId].states++;
-  			// 	sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
-  			// }else{
-  			// 	sendMessage(senderId, {text:"Please send CV in doc or pdf format"}); 
-  			// }
+  			if(attachObj(req.body.entry[0].messaging).type === 'file'){
+  				allSenders[senderId].cv_url = attachObj(req.body.entry[0].messaging).payload.url;
+  				allSenders[senderId].states++;
+  				sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
+  			}else{
+  				sendMessage(senderId, {text:"Please send CV in doc or pdf format"}); 
+  			}
   }else if(event.postback && allSenders[senderId].states === 5){
   		if(event.postback.payload === 'yes_save'){
   			insertData(allSenders[senderId]);
