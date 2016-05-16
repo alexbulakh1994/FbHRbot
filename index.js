@@ -164,9 +164,11 @@ app.post('/webhook/', function (req, res) {
   }else if(event.message && event.message.text && allSenders[senderId].states === 3){
   		
   		var dateTimes = event.message.text.split(' ');
+  		var startWorking = new Date(dateTimes[0]);
+  		var finishWorking = new Date(dateTimes[1]);
   
   		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1]) ){
-  			if(dateTimes[0] < dateTimes[1]){	
+  			if(startWorking < finishWorking){	
   				console.log('states is' + allSenders[senderId].states);
     			allSenders[senderId].states++;
     			sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
