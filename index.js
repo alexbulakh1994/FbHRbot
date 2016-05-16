@@ -160,7 +160,7 @@ app.post('/webhook/', function (req, res) {
     }
   }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 2 ){
   			allSenders[senderId].states++;
-  			sendMessage(senderId, {text:"What is your exrerience? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
+  			sendMessage(senderId, {text:"What is last place of your work"});
   }else if(event.message && event.message.text && allSenders[senderId].states === 3){
   		
   		var dateTimes = event.message.text.split(' ');
