@@ -213,7 +213,7 @@ function filter(arr, payloadDel){
     return result;             
 }
 
-var attachObj = function findAttachmentObj(messageArray){
+var attachObj = function(messageArray){
 	for(var i = 0; i < messageArray.length; i++){
 		if(messageArray[i].hasOwnProperty('message')){
 			if(messageArray[i].message.hasOwnProperty('attachments'){
@@ -222,4 +222,4 @@ var attachObj = function findAttachmentObj(messageArray){
 		}
 	}
 	return null;
-}
+};
