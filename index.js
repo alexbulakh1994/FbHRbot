@@ -90,20 +90,28 @@ app.post('/webhook/', function (req, res) {
     	
     	introducePerson(event, senderId);
     }
-    else if(event.postback && allSenders[senderId].states === 2 ){
+    else if(event.message && event.message.text && allSenders[senderId].states === 2){
+      
+      emailValidation(event, senderId);
+    }
+    else if(event.message && event.message.text && allSenders[senderId].states === 3){
+      
+      telephoneValidation(event, senderId);
+    }
+    else if(event.postback && allSenders[senderId].states === 4 ){
     	
     	specialization(event, senderId);
-    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 2 ){
+    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 4 ){
   		
   		allSenders[senderId].states++;
   		sendMessage(senderId, {text:"What is last place of your work ?"});
-    }else if(event.message && event.message.text && allSenders[senderId].states === 3){
+    }else if(event.message && event.message.text && allSenders[senderId].states === 5){
   		
   		personExperience(event, senderId);
-    }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 4){
+    }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 6){
   		
   		attachedFile(senderId, attachedObj);
-  }else if(event.postback && allSenders[senderId].states === 5){
+  }else if(event.postback && allSenders[senderId].states === 7){
   		saveInformation(event, senderId);	
   } 
 }
@@ -124,11 +132,22 @@ function greeting(senderId){
 }
 
 function introducePerson(event, senderId){
-	sendMessage(senderId, structedRequest(postbacks.specialization, specText));
    	allSenders[senderId].states++;
     var FIO = event.message.text.split(' ');
     allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
+    //sendMessage(senderId, structedRequest(postbacks.specialization, specText));
+    sendMessage(senderId, {text: 'Please enter your email.'});
+}
+
+function emailValidation(event, senderId){
+    allSenders[senderId].states++;
+    sendMessage(senderId, {text: 'Please enter your telephone number.'});
+}
+
+function telephoneValidation(event, senderId){
+    allSenders[senderId].states++;
+    sendMessage(senderId, structedRequest(postbacks.specialization, specText));
 }
 
 function specialization(event, senderId){
