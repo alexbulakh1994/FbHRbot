@@ -178,13 +178,13 @@ app.post('/webhook/', function (req, res) {
     	}else{
     		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
     	}	
-  }else if(req.body.entry[0].messaging[1].message!== undefined && allSenders[senderId].states === 4){
+  }else if(allSenders[senderId].states === 4){
   		console.log(util.inspect(req.body, {showHidden: false, depth: null}));
   			if(req.body.entry[0].messaging[1].message.attachments[0].type === 'file'){
   				allSenders[senderId].cv_url = req.body.entry[0].messaging[1].message.attachments[0].payload.url;
   				allSenders[senderId].states++;
   				sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
-  			}else{
+  			}else if(req.body.entry[0].messaging[1].message.attachments[0].type !== undefined){
   				sendMessage(senderId, {text:"Please send CV in doc or pdf format"}); 
   			}
   }else if(event.postback && allSenders[senderId].states === 5){
