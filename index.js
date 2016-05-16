@@ -178,7 +178,7 @@ app.post('/webhook/', function (req, res) {
     	}else{
     		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
     	}	
-  }else if(allSenders[senderId].states === 4){
+  }else if(messageObj(req.body.entry[0].messaging) && allSenders[senderId].states === 4){
   		console.log(util.inspect(req.body, {showHidden: false, depth: null}));
   		console.log('Obj attach is:');
   		console.log(util.inspect(attachObj(req.body.entry[0].messaging), {showHidden: false, depth: null}));
@@ -225,3 +225,12 @@ var attachObj = function(messageArray){
 			
 	}
 }
+
+var messageObj = function(messageArray){
+	for(var i = 0; i < messageArray.length; i++){
+		if(messageArray[i].hasOwnProperty('message'))
+				return messageArray[i].message;
+			
+	}
+}
+
