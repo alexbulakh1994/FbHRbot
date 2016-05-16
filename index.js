@@ -12,6 +12,8 @@ var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XIC
 var regExp = new RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/);
 var specText = "Choose all skills ? If you choose all skills print finish.";
 var saveText = "Do you want save information about you ?";
+var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+var phoneExp = new RegExp(/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
 
 //--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
@@ -66,6 +68,8 @@ var Schema = new mongoose.Schema({
 	name: String,
 	specialization: String,
 	skills: [String],
+  email: String,
+  phone: String,
 	cv_url: String,
 	states: Number
 });
@@ -119,12 +123,6 @@ app.post('/webhook/', function (req, res) {
   res.sendStatus(200);
 });
 
-function insertData(obj){
-		obj.save(function(err, doc){
-			if(err) console.log(err);
-		});
-}
-
 
 function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
@@ -141,13 +139,23 @@ function introducePerson(event, senderId){
 }
 
 function emailValidation(event, senderId){
-    allSenders[senderId].states++;
-    sendMessage(senderId, {text: 'Please enter your telephone number.'});
+    if(emailExp.test(event.message.text)){
+      allSenders[senderId].states++;
+      allSenders[senderId].email = event.message.text;
+      sendMessage(senderId, {text: 'Please enter your email.'});
+    }else{
+      sendMessage(senderId, {text: 'Check input information, your email have incorrect format.'});
+    }
 }
 
 function telephoneValidation(event, senderId){
-    allSenders[senderId].states++;
-    sendMessage(senderId, structedRequest(postbacks.specialization, specText));
+    if(phoneExp.test(event.message.text)){  
+      allSenders[senderId].states++;
+      allSenders[senderId].phone = event.message.text;
+      sendMessage(senderId, structedRequest(postbacks.specialization, specText));
+    }else{
+      sendMessage(senderId, {text: 'Your phone mustmatch those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
+    }
 }
 
 function specialization(event, senderId){
@@ -252,4 +260,10 @@ function saveInformation(event, senderId){
   		}else{
   			sendMessage(senderId, {text:"Good by? we dont savev information about you."});
   		}
+}
+
+function insertData(obj){
+    obj.save(function(err, doc){
+      if(err) console.log(err);
+    });
 }
