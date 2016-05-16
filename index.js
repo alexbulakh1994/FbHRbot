@@ -142,7 +142,7 @@ function emailValidation(event, senderId){
     if(emailExp.test(event.message.text)){
       allSenders[senderId].states++;
       allSenders[senderId].email = event.message.text;
-      sendMessage(senderId, {text: 'Please enter your email.'});
+      sendMessage(senderId, {text: 'Please enter your mobile phone.'});
     }else{
       sendMessage(senderId, {text: 'Check input information, your email have incorrect format.'});
     }
@@ -173,8 +173,12 @@ function specialization(event, senderId){
     		sendMessage(senderId, structedRequest(postbacks.backEnd, specText));
   
     	}else 
-    		if(postbacks.frontEnd.length === 0 || postbacks.backEnd.length === 0 || postbacks.science.length === 0){
-    			allSenders[senderId].states++;
+    		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science.length === 1){
+    			if(postbacks.frontEnd.length === 1) allSenders[senderId].skills.push(postbacks.frontEnd[0]);
+          if(postbacks.backEnd.length === 1) allSenders[senderId].skills.push(postbacks.backEnd[0]);
+          if(postbacks.science.length === 1) allSenders[senderId].skills.push(postback.science[0]);
+
+          allSenders[senderId].states++;
     			sendMessage(senderId, {text:"What is last place of your work"});
     	}else{
   			chooseSkills(event, senderId);
