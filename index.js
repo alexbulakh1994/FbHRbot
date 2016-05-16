@@ -82,67 +82,34 @@ app.post('/webhook/', function (req, res) {
     var attachedObj = findAttachObject(req.body.entry[0].messaging);
 
     if (event.message && event.message.text && !allSenders[senderId]) {
+    	
     	greeting(senderId);
+
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
+    	
     	introducePerson(event, senderId);
+
     }
     else if(event.postback && allSenders[senderId].states === 2 ){
-    	console.log(event.postback.payload);
-    	if(event.postback && event.postback.payload === 'frontEnd_dev'){
-    		allSenders[senderId].specialization = 'frontEndDev';
-    		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));
-    	}else
-    	if(event.postback && event.postback.payload === 'science'){
-    		allSenders[senderId].specialization = 'Science Reseacher';
-    		sendMessage(senderId, structedRequest(postbacks.science, specText));
-    	}else
-    		if(event.postback && event.postback.payload === 'backEnd_dev'){
-    		allSenders[senderId].specialization = 'Back End developer';
-    		sendMessage(senderId, structedRequest(postbacks.backEnd, specText));
-  
-    	}else 
-    		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science.length === 1){
-    			allSenders[senderId].states++;
-    			sendMessage(senderId, {text:"What is last place of your work"});
-    	}else{
-  			chooseSkills(event, senderId);
-    	}
-  }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 2 ){
-  			allSenders[senderId].states++;
-  			sendMessage(senderId, {text:"What is last place of your work"});
-  }else if(event.message && event.message.text && allSenders[senderId].states === 3){
+    	
+    	specialization(event, senderId);
+
+    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 2 ){
   		
-  		var dateTimes = event.message.text.split(' ');
-  		var startWorking = new Date(dateTimes[0]);
-  		var finishWorking = new Date(dateTimes[1]);
-  
-  		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1]) ){
-  			if(startWorking < finishWorking){	
-  				console.log('states is' + allSenders[senderId].states);
-    			allSenders[senderId].states++;
-    			sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
-    		}else{
-    			sendMessage(senderId, {text:"What is your exrerience? First date must be smaller than second."});
-    		}
-    	}else{
-    		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
-    	}	
-  }else if(messageFind(req.body.entry[0].messaging) && allSenders[senderId].states === 4){
-  			if(attachedObj.type === 'file'){
-  				allSenders[senderId].cv_url = attachedObj.payload.url;
-  				allSenders[senderId].states++;
-  				sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
-  			}else{
-  				sendMessage(senderId, {text:"Please send CV in doc or pdf format"}); 
-  			}
+  		allSenders[senderId].states++;
+  		sendMessage(senderId, {text:"What is last place of your work"});
+
+    }else if(event.message && event.message.text && allSenders[senderId].states === 3){
+  		
+  		personExperience(event, senderId);
+
+    }else if(messageFind(req.body.entry[0].messaging) && allSenders[senderId].states === 4){
+  		
+  		attachedFile(senderId, attachedObj);
+
   }else if(event.postback && allSenders[senderId].states === 5){
-  		if(event.postback.payload === 'yes_save'){
-  			insertData(allSenders[senderId]);
-  			sendMessage(senderId, {text:"All information about you was saved."});
-  		}else{
-  			sendMessage(senderId, {text:"Good by? we dont savev information about you."});
-  		}
+  		saveInformation(event, senderId);	
   } 
 }
 
@@ -236,4 +203,63 @@ function chooseSkills(event, senderId){
     				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));  
     				break; 		   										
     	}	
+}
+
+function specialization(event, senderId){
+	console.log(event.postback.payload);
+    	if(event.postback && event.postback.payload === 'frontEnd_dev'){
+    		allSenders[senderId].specialization = 'frontEndDev';
+    		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));
+    	}else
+    	if(event.postback && event.postback.payload === 'science'){
+    		allSenders[senderId].specialization = 'Science Reseacher';
+    		sendMessage(senderId, structedRequest(postbacks.science, specText));
+    	}else
+    		if(event.postback && event.postback.payload === 'backEnd_dev'){
+    		allSenders[senderId].specialization = 'Back End developer';
+    		sendMessage(senderId, structedRequest(postbacks.backEnd, specText));
+  
+    	}else 
+    		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science.length === 1){
+    			allSenders[senderId].states++;
+    			sendMessage(senderId, {text:"What is last place of your work"});
+    	}else{
+  			chooseSkills(event, senderId);
+    	}
+}
+
+function personExperience(event, senderId){
+	var dateTimes = event.message.text.split(' ');
+  		var startWorking = new Date(dateTimes[0]);
+  		var finishWorking = new Date(dateTimes[1]);
+  
+  		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1]) ){
+  			if(startWorking < finishWorking){	
+    			allSenders[senderId].states++;
+    			sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
+    		}else{
+    			sendMessage(senderId, {text:"What is your exrerience? First date must be smaller than second."});
+    		}
+    	}else{
+    		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
+    	}	
+}
+
+function attachedFile(senderId, attachedObj){
+	if(attachedObj.type === 'file'){
+  				allSenders[senderId].cv_url = attachedObj.payload.url;
+  				allSenders[senderId].states++;
+  				sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
+  			}else{
+  				sendMessage(senderId, {text:"Please send CV in doc or pdf format"}); 
+  			}
+}
+
+function saveInformation(event, senderId){
+	if(event.postback.payload === 'yes_save'){
+  			insertData(allSenders[senderId]);
+  			sendMessage(senderId, {text:"All information about you was saved."});
+  		}else{
+  			sendMessage(senderId, {text:"Good by? we dont savev information about you."});
+  		}
 }
