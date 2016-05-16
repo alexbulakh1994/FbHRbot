@@ -173,7 +173,7 @@ function specialization(event, senderId){
     		sendMessage(senderId, structedRequest(postbacks.backEnd, specText));
   
     	}else 
-    		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science.length === 1){
+    		if(postbacks.frontEnd.length === 0 || postbacks.backEnd.length === 0 || postbacks.science.length === 0){
     			allSenders[senderId].states++;
     			sendMessage(senderId, {text:"What is last place of your work"});
     	}else{
