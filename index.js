@@ -4,6 +4,7 @@ var request = require('request');
 var mongoose = require('mongoose');
 var util = require('util');
 var structedRequest = require('./structed-messages');
+var find = require('./find');
 var postbacks = require('./postbacks');
 var app = express();
 
@@ -79,35 +80,29 @@ app.post('/webhook/', function (req, res) {
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i]; 
     var senderId = event.sender.id;
-    var attachedObj = findAttachObject(req.body.entry[0].messaging);
+    var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
 
     if (event.message && event.message.text && !allSenders[senderId]) {
     	
     	greeting(senderId);
-
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
     	
     	introducePerson(event, senderId);
-
     }
     else if(event.postback && allSenders[senderId].states === 2 ){
     	
     	specialization(event, senderId);
-
     }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 2 ){
   		
   		allSenders[senderId].states++;
-  		sendMessage(senderId, {text:"What is last place of your work"});
-
+  		sendMessage(senderId, {text:"What is last place of your work ?"});
     }else if(event.message && event.message.text && allSenders[senderId].states === 3){
   		
   		personExperience(event, senderId);
-
-    }else if(messageFind(req.body.entry[0].messaging) && allSenders[senderId].states === 4){
+    }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 4){
   		
   		attachedFile(senderId, attachedObj);
-
   }else if(event.postback && allSenders[senderId].states === 5){
   		saveInformation(event, senderId);	
   } 
@@ -122,34 +117,10 @@ function insertData(obj){
 		});
 }
 
-function filter(arr, payloadDel){
-	var result = arr.filter(function (el) {
-                      return el.payload !== payloadDel;
-                 });
-    return result;             
-}
-
-function findAttachObject(messageArray){
-	for(var i = 0; i < messageArray.length; i++){
-		if(messageArray[i].hasOwnProperty('message')){
-			if(messageArray[i].message.hasOwnProperty('attachments'))
-				return messageArray[i].message.attachments[0];
-		}
-			
-	}
-}
-
-var messageFind = function(messageArray){
-	for(var i = 0; i < messageArray.length; i++){
-		if(messageArray[i].hasOwnProperty('message')){
-				return messageArray[i].message;
-		}			
-	}
-}
 
 function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
-     sendMessage(senderId, {text: 'Hi. Write Surname and Name'});
+   sendMessage(senderId, {text: 'Hi. Write Surname and Name'});
 }
 
 function introducePerson(event, senderId){
@@ -158,51 +129,6 @@ function introducePerson(event, senderId){
     var FIO = event.message.text.split(' ');
     allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
-}
-
-function chooseSkills(event, senderId){
-	switch(event.postback.payload){
-    		case 'python_dev': 
-    				postbacks.backEnd = filter(postbacks.backEnd, 'python_dev');
-    				allSenders[senderId].skills.push('python_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
-    				break;
-    		case 'ruby_dev': 
-    				postbacks.backEnd = filter(postbacks.backEnd, 'ruby_dev');
-    				allSenders[senderId].skills.push('ruby_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
-    				break;
-    		case 'node_dev': 
-    				postbacks.backEnd = filter(postbacks.backEnd, 'node_dev');
-    				allSenders[senderId].skills.push('node_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
-    				break;
-    		case 'python_net': 
-    				postbacks.science = filter(postbacks.science, 'python_net');
-    				allSenders[senderId].skills.push('python_net');
-    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
-    				break;
-    		case 'apache': 
-    				postbacks.science = filter(postbacks.science, 'apache');
-    				allSenders[senderId].skills.push('apache');
-    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
-    				break;
-    		case 'html_dev': 
-    				postbacks.frontEnd = filter(postbacks.frontEnd, 'html_dev');
-    				allSenders[senderId].skills.push('html_dev');
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
-    				break;
-    		case 'javaScript_dev': 
-    				postbacks.frontEnd = filter(postbacks.frontEnd, 'javaScript_dev');
-    				allSenders[senderId].skills.push('javaScript_dev'); 
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
-    				break;
-    		case 'angular': 
-    				postbacks.frontEnd = filter(postbacks.frontEnd, 'angular');
-    				allSenders[senderId].skills.push('angular');
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));  
-    				break; 		   										
-    	}	
 }
 
 function specialization(event, senderId){
@@ -226,6 +152,51 @@ function specialization(event, senderId){
     	}else{
   			chooseSkills(event, senderId);
     	}
+}
+
+function chooseSkills(event, senderId){
+	switch(event.postback.payload){
+    		case 'python_dev': 
+    				postbacks.backEnd = find.filter(postbacks.backEnd, 'python_dev');
+    				allSenders[senderId].skills.push('python_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
+    				break;
+    		case 'ruby_dev': 
+    				postbacks.backEnd = find.filter(postbacks.backEnd, 'ruby_dev');
+    				allSenders[senderId].skills.push('ruby_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
+    				break;
+    		case 'node_dev': 
+    				postbacks.backEnd = find.filter(postbacks.backEnd, 'node_dev');
+    				allSenders[senderId].skills.push('node_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
+    				break;
+    		case 'python_net': 
+    				postbacks.science = find.filter(postbacks.science, 'python_net');
+    				allSenders[senderId].skills.push('python_net');
+    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
+    				break;
+    		case 'apache': 
+    				postbacks.science = find.filter(postbacks.science, 'apache');
+    				allSenders[senderId].skills.push('apache');
+    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
+    				break;
+    		case 'html_dev': 
+    				postbacks.frontEnd = find.filter(postbacks.frontEnd, 'html_dev');
+    				allSenders[senderId].skills.push('html_dev');
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
+    				break;
+    		case 'javaScript_dev': 
+    				postbacks.frontEnd = find.filter(postbacks.frontEnd, 'javaScript_dev');
+    				allSenders[senderId].skills.push('javaScript_dev'); 
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
+    				break;
+    		case 'angular': 
+    				postbacks.frontEnd = find.filter(postbacks.frontEnd, 'angular');
+    				allSenders[senderId].skills.push('angular');
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));  
+    				break; 		   										
+    	}	
 }
 
 function personExperience(event, senderId){
