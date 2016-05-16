@@ -82,18 +82,10 @@ app.post('/webhook/', function (req, res) {
     var attachedObj = findAttachObject(req.body.entry[0].messaging);
 
     if (event.message && event.message.text && !allSenders[senderId]) {
-
-       allSenders[senderId] = new client({states: 1});
-       sendMessage(senderId, {text: 'Hi. Write Surname and Name'});
-
+    	greeting(senderId);
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
-    	 sendMessage(senderId, structedRequest(postbacks.specialization, specText));
-    	 allSenders[senderId].states++;
-    	 var FIO = event.message.text.split(' ');
-    	 allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
-    	 allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
-    	
+    	introducePerson(event, senderId);
     }
     else if(event.postback && allSenders[senderId].states === 2 ){
     	console.log(event.postback.payload);
@@ -114,49 +106,8 @@ app.post('/webhook/', function (req, res) {
     			allSenders[senderId].states++;
     			sendMessage(senderId, {text:"What is last place of your work"});
     	}else{
-    	switch(event.postback.payload){
-    		case 'python_dev': 
-    				postbacks.backEnd = filter(postbacks.backEnd, 'python_dev');
-    				allSenders[senderId].skills.push('python_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
-    				break;
-    		case 'ruby_dev': 
-    				postbacks.backEnd = filter(postbacks.backEnd, 'ruby_dev');
-    				allSenders[senderId].skills.push('ruby_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
-    				break;
-    		case 'node_dev': 
-    				postbacks.backEnd = filter(postbacks.backEnd, 'node_dev');
-    				allSenders[senderId].skills.push('node_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
-    				break;
-    		case 'python_net': 
-    				postbacks.science = filter(postbacks.science, 'python_net');
-    				allSenders[senderId].skills.push('python_net');
-    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
-    				break;
-    		case 'apache': 
-    				postbacks.science = filter(postbacks.science, 'apache');
-    				allSenders[senderId].skills.push('apache');
-    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
-    				break;
-    		case 'html_dev': 
-    				postbacks.frontEnd = filter(postbacks.frontEnd, 'html_dev');
-    				allSenders[senderId].skills.push('html_dev');
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
-    				break;
-    		case 'javaScript_dev': 
-    				postbacks.frontEnd = filter(postbacks.frontEnd, 'javaScript_dev');
-    				allSenders[senderId].skills.push('javaScript_dev'); 
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
-    				break;
-    		case 'angular': 
-    				postbacks.frontEnd = filter(postbacks.frontEnd, 'angular');
-    				allSenders[senderId].skills.push('angular');
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));  
-    				break; 		   										
-    	}	
-    }
+  			chooseSkills(event, senderId);
+    	}
   }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 2 ){
   			allSenders[senderId].states++;
   			sendMessage(senderId, {text:"What is last place of your work"});
@@ -221,11 +172,68 @@ function findAttachObject(messageArray){
 	}
 }
 
-var messageFind = function findAttachObject(messageArray){
+var messageFind = function(messageArray){
 	for(var i = 0; i < messageArray.length; i++){
 		if(messageArray[i].hasOwnProperty('message')){
 				return messageArray[i].message;
-		}
-			
+		}			
 	}
+}
+
+function greeting(senderId){
+	 allSenders[senderId] = new client({states: 1});
+     sendMessage(senderId, {text: 'Hi. Write Surname and Name'});
+}
+
+function introducePerson(event, senderId){
+	sendMessage(senderId, structedRequest(postbacks.specialization, specText));
+   	allSenders[senderId].states++;
+    var FIO = event.message.text.split(' ');
+    allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
+    allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
+}
+
+function chooseSkills(event, senderId){
+	switch(event.postback.payload){
+    		case 'python_dev': 
+    				postbacks.backEnd = filter(postbacks.backEnd, 'python_dev');
+    				allSenders[senderId].skills.push('python_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
+    				break;
+    		case 'ruby_dev': 
+    				postbacks.backEnd = filter(postbacks.backEnd, 'ruby_dev');
+    				allSenders[senderId].skills.push('ruby_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
+    				break;
+    		case 'node_dev': 
+    				postbacks.backEnd = filter(postbacks.backEnd, 'node_dev');
+    				allSenders[senderId].skills.push('node_dev');
+    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
+    				break;
+    		case 'python_net': 
+    				postbacks.science = filter(postbacks.science, 'python_net');
+    				allSenders[senderId].skills.push('python_net');
+    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
+    				break;
+    		case 'apache': 
+    				postbacks.science = filter(postbacks.science, 'apache');
+    				allSenders[senderId].skills.push('apache');
+    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
+    				break;
+    		case 'html_dev': 
+    				postbacks.frontEnd = filter(postbacks.frontEnd, 'html_dev');
+    				allSenders[senderId].skills.push('html_dev');
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
+    				break;
+    		case 'javaScript_dev': 
+    				postbacks.frontEnd = filter(postbacks.frontEnd, 'javaScript_dev');
+    				allSenders[senderId].skills.push('javaScript_dev'); 
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
+    				break;
+    		case 'angular': 
+    				postbacks.frontEnd = filter(postbacks.frontEnd, 'angular');
+    				allSenders[senderId].skills.push('angular');
+    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));  
+    				break; 		   										
+    	}	
 }
