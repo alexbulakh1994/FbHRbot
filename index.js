@@ -180,7 +180,7 @@ app.post('/webhook/', function (req, res) {
     	}	
   }else if(allSenders[senderId].states === 4){
   		console.log(util.inspect(req.body, {showHidden: false, depth: null}));
-  		var attachments = req.body.entry[0].messaging[0].message.attachments[0];
+  		var attachments = req.body.entry[0].messaging[1].message.attachments[0];
   		if(attachments.type === 'file'){
   			allSenders[senderId].cv_url = attachments.payload.url;
   			allSenders[senderId].states++;
