@@ -180,11 +180,11 @@ app.post('/webhook/', function (req, res) {
     	}	
   }else if(allSenders[senderId].states === 4){
   		console.log(util.inspect(req.body, {showHidden: false, depth: null}));
-  			if(event.message.attachments[0].type === 'file'){
+  			if(attachObj(req.body.entry[0].messaging).type === 'file'){
   				allSenders[senderId].cv_url = event.message.attachments[0].payload.url;
   				allSenders[senderId].states++;
   				sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
-  			}else if(event.attachments[0].type !== undefined){
+  			}else{
   				sendMessage(senderId, {text:"Please send CV in doc or pdf format"}); 
   			}
   }else if(event.postback && allSenders[senderId].states === 5){
@@ -213,3 +213,13 @@ function filter(arr, payloadDel){
     return result;             
 }
 
+var attachObj = function findAttachmentObj(messageArray){
+	for(int i = 0; i < messageArray.length; i++){
+		if(messageArray[i].hasOwnProperty('message')){
+			if(messageArray[i].message.hasOwnProperty('attachments'){
+				return messageArray[i].message.attachments[0];
+			}
+		}
+	}
+	return null;
+}
