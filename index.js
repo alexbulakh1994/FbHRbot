@@ -182,6 +182,8 @@ app.post('/webhook/', function (req, res) {
   		console.log(util.inspect(req.body, {showHidden: false, depth: null}));
   		console.log('Obj attach is:');
   		console.log(util.inspect(attachObj(req.body.entry[0].messaging), {showHidden: false, depth: null}));
+  		console.log('Obj type attach is:');
+  		console.log(util.inspect(attachObj(req.body.entry[0].messaging).type, {showHidden: false, depth: null}));
   			// if(attachObj(req.body.entry[0].messaging).type === 'file'){
   			// 	allSenders[senderId].cv_url = attachObj(req.body.entry[0].messaging).payload.url;
   			// 	allSenders[senderId].states++;
