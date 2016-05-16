@@ -214,7 +214,7 @@ function filter(arr, payloadDel){
 }
 
 var attachObj = function findAttachmentObj(messageArray){
-	for(int i = 0; i < messageArray.length; i++){
+	for(var i = 0; i < messageArray.length; i++){
 		if(messageArray[i].hasOwnProperty('message')){
 			if(messageArray[i].message.hasOwnProperty('attachments'){
 				return messageArray[i].message.attachments[0];
