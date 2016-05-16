@@ -177,7 +177,7 @@ app.post('/webhook/', function (req, res) {
     	}else{
     		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
     	}	
-  }else if(attachedObj && allSenders[senderId].states === 4){
+  }else if(messageFind(req.body.entry[0].messaging) && allSenders[senderId].states === 4){
   			if(attachedObj.type === 'file'){
   				allSenders[senderId].cv_url = attachedObj.payload.url;
   				allSenders[senderId].states++;
@@ -214,9 +214,6 @@ function filter(arr, payloadDel){
 function findAttachObject(messageArray){
 	for(var i = 0; i < messageArray.length; i++){
 		if(messageArray[i].hasOwnProperty('message')){
-			if(type === 'message'){
-				return messageArray[i].message;
-			}else
 			if(messageArray[i].message.hasOwnProperty('attachments'))
 				return messageArray[i].message.attachments[0];
 		}
@@ -224,4 +221,11 @@ function findAttachObject(messageArray){
 	}
 }
 
-
+var messageFind = function findAttachObject(messageArray){
+	for(var i = 0; i < messageArray.length; i++){
+		if(messageArray[i].hasOwnProperty('message')){
+				return messageArray[i].message;
+		}
+			
+	}
+}
