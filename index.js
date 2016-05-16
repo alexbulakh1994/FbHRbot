@@ -178,7 +178,7 @@ app.post('/webhook/', function (req, res) {
     	}else{
     		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
     	}	
-  }else if(allSenders[senderId].states === 4){
+  }else if(event.postback && allSenders[senderId].states === 4){
   		console.log(util.inspect(req.body, {showHidden: false, depth: null}));
   			if(req.body.entry[0].messaging[1].message.attachments[0].type === 'file'){
   				allSenders[senderId].cv_url = req.body.entry[0].messaging[1].message.attachments[0].payload.url;
