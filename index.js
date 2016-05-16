@@ -65,7 +65,6 @@ function sendMessage(sender, messageData) {
 var Schema = new mongoose.Schema({
 	surname : String,
 	name: String,
-	patronymic: String,
 	specialization: String,
 	skills: [String],
 	cv_url: String,
@@ -86,7 +85,7 @@ app.post('/webhook/', function (req, res) {
     if (event.message && event.message.text && !allSenders[senderId]) {
 
        allSenders[senderId] = new client({states: 1});
-       sendMessage(senderId, {text: 'Hi. Write Surname Name and Patronymic.'});
+       sendMessage(senderId, {text: 'Hi. Write Surname and Name'});
 
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
@@ -95,7 +94,7 @@ app.post('/webhook/', function (req, res) {
     	 var FIO = event.message.text.split(' ');
     	 allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     	 allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
-    	 allSenders[senderId].patronymic = FIO[2] !== undefined ? FIO[2] : 'anonymous';
+    	
     }
     else if(event.postback && allSenders[senderId].states === 2 ){
     	console.log(event.postback.payload);
@@ -166,19 +165,26 @@ app.post('/webhook/', function (req, res) {
   		
   		var dateTimes = event.message.text.split(' ');
   
-  		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1])){	
-  			console.log('states is' + allSenders[senderId].states);
-    		allSenders[senderId].states++;
-    		sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
+  		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1]) ){
+  			if(dateTimes[0] < dateTimes[1]){	
+  				console.log('states is' + allSenders[senderId].states);
+    			allSenders[senderId].states++;
+    			sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
+    		}else{
+    			sendMessage(senderId, {text:"What is your exrerience? First date must be smaller than second."});
+    		}
     	}else{
     		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
     	}	
   }else if(allSenders[senderId].states === 4){
-  		console.log('Object 2 is:');
-  		console.log(util.inspect(req.body, false, null));
-  		allSenders[senderId].cv_url = req.body.entry[0].messaging[1].message.attachments[0].payload.url;
-  		allSenders[senderId].states++;
-  		sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
+  		var attachments = req.body.entry[0].messaging[1].message.attachments[0];
+  		if(attachments.type === file){
+  			allSenders[senderId].cv_url = attachments.payload.url;
+  			allSenders[senderId].states++;
+  			sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
+  		}else{
+  			sendMessage(senderId, {text:"Please send file in doc or pdf format"}); 
+  		}
   }else if(event.postback && allSenders[senderId].states === 5){
   		if(event.postback.payload === 'yes_save'){
   			insertData(allSenders[senderId]);
