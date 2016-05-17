@@ -176,7 +176,7 @@ function specialization(event, senderId){
     		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science.length === 1){
     			if(postbacks.frontEnd.length === 1) allSenders[senderId].skills.push(postbacks.frontEnd[0].title);
           if(postbacks.backEnd.length === 1) allSenders[senderId].skills.push(postbacks.backEnd[0].title);
-          if(postbacks.science.length === 1) allSenders[senderId].skills.push(postback.science[0].title);
+          if(postbacks.science.length === 1) allSenders[senderId].skills.push(postbacks.science[0].title);
 
           allSenders[senderId].states++;
     			sendMessage(senderId, {text:"What is last place of your work"});
