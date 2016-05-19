@@ -246,7 +246,7 @@ function personExperience(event, senderId){
     			sendMessage(senderId, {text:"What is your exrerience? First date must be smaller than second."});
     		}
     	}else{
-    		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format DAY/MM/YEAR DAY/MM/YEAR."});
+    		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format YEAR/MM/DAY YEAR/MM/DAY."});
     	}	
 }
 
