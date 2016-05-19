@@ -235,6 +235,7 @@ function personExperience(event, senderId){
   		var startWorking = new Date(dateTimes[0]);
   		var finishWorking = new Date(dateTimes[1]);
 
+      console.log(dateTimes);
       console.log('timeFirst : ' + startWorking + 'finishWorking : ' + finishWorking);
   
   		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1]) ){
