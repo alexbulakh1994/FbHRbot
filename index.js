@@ -96,7 +96,7 @@ app.post('/webhook/', function (req, res) {
     	
     	introducePerson(event, senderId);
     }else if(event.postback && allSenders[senderId].states === 2){
-      
+
         personLocation(event, senderId);
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 3){
@@ -140,7 +140,7 @@ function introducePerson(event, senderId){
     allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
     //sendMessage(senderId, structedRequest(postbacks.specialization, specText));
-    sendMessage(senderId, structedRequest(postbacks.specialization, chooseLocation));
+    sendMessage(senderId, structedRequest(postbacks.locations, chooseLocation));
 }
 
 function personLocation(event, senderId){
