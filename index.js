@@ -110,7 +110,7 @@ app.post('/webhook/', function (req, res) {
     else if(event.postback && allSenders[senderId].states === 5 ){
     	
     	specialization(event, senderId);
-    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 6 ){
+    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 5 ){
   		
   		allSenders[senderId].states++;
   		sendMessage(senderId, {text:"What is last place of your work ?"});
