@@ -14,10 +14,16 @@ var frontEndPostbacks = [{type: "postback", title: "HTML, CSS", payload: "html_d
     	 												  {type: "postback", title: "Angular JS", payload: "angular"}];
 
 var savePostback =  [{type: "postback", title: "YES", payload: "yes_save"}, 
-    	 												  {type: "postback", title: "NO", payload: "no_save"}];   	 												  
+    	 												  {type: "postback", title: "NO", payload: "no_save"}];
+
+var locations =  [{type: "postback", title: "Kiev", payload: "kiev_loc"}, 
+    	 												  {type: "postback", title: "Kharkiv", payload: "kharkiv_loc"}, 
+    	 												  {type: "postback", title: "Lviv", payload: "lviv_loc"}];
+
 
  module.exports.frontEnd = frontEndPostbacks;   
  module.exports.backEnd = backEndPostbacks;
  module.exports.science = scienceReseachPostbacks;
  module.exports.specialization = specialization;
- module.exports.save = savePostback;	 												     	 												     	 												  
+ module.exports.save = savePostback;
+ module.exports.locations = locations;	 												     	 												     	 												  

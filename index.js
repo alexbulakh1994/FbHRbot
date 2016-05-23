@@ -13,9 +13,9 @@ var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XIC
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 var specText = "Choose all skills ? If you choose all skills print finish.";
 var saveText = "Do you want save information about you ?";
+var chooseLocation = "Choose city where do you live ?";
 var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-var phoneExp = new RegExp(/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
-
+var phoneExp = new RegExp(/^(\+38|38|8){0,1}[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
 //--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
@@ -72,6 +72,7 @@ var Schema = new mongoose.Schema({
   email: String,
   phone: String,
 	cv_url: String,
+  city: String,
 	states: Number
 });
 mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
@@ -94,29 +95,32 @@ app.post('/webhook/', function (req, res) {
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
     	
     	introducePerson(event, senderId);
-    }
-    else if(event.message && event.message.text && allSenders[senderId].states === 2){
+    }else if(event.postback && allSenders[senderId].states === 2){
       
-      emailValidation(event, senderId);
+        personLocation(event, senderId);
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 3){
       
+      emailValidation(event, senderId);
+    }
+    else if(event.message && event.message.text && allSenders[senderId].states === 4){
+      
       telephoneValidation(event, senderId);
     }
-    else if(event.postback && allSenders[senderId].states === 4 ){
+    else if(event.postback && allSenders[senderId].states === 5 ){
     	
     	specialization(event, senderId);
-    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 4 ){
+    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 6 ){
   		
   		allSenders[senderId].states++;
   		sendMessage(senderId, {text:"What is last place of your work ?"});
-    }else if(event.message && event.message.text && allSenders[senderId].states === 5){
+    }else if(event.message && event.message.text && allSenders[senderId].states === 6){
   		
   		personExperience(event, senderId);
-    }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 6){
+    }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 7){
   		
   		attachedFile(senderId, attachedObj);
-  }else if(event.postback && allSenders[senderId].states === 7){
+  }else if(event.postback && allSenders[senderId].states === 8){
   		saveInformation(event, senderId);	
   } 
 }
@@ -136,6 +140,23 @@ function introducePerson(event, senderId){
     allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
     //sendMessage(senderId, structedRequest(postbacks.specialization, specText));
+    sendMessage(senderId, structedRequest(postbacks.specialization, chooseLocation));
+}
+
+function personLocation(event, senderId){
+    switch(event.postback.payload){
+        case 'kiev_loc': 
+            allSenders[senderId].city = "Kiev";
+            break;
+        case 'kharkiv_loc': 
+             allSenders[senderId].city = "Kharkiv";
+            break;
+        case 'lviv_loc': 
+              allSenders[senderId].city = "Lviv";
+            break;
+    }
+
+    allSenders[senderId].states++;
     sendMessage(senderId, {text: 'Please enter your email.'});
 }
 
@@ -155,7 +176,7 @@ function telephoneValidation(event, senderId){
       allSenders[senderId].phone = event.message.text;
       sendMessage(senderId, structedRequest(postbacks.specialization, specText));
     }else{
-      sendMessage(senderId, {text: 'Your phone mustmatch those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
+      sendMessage(senderId, {text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
     }
 }
 
