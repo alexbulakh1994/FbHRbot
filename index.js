@@ -187,7 +187,7 @@ function telephoneValidation(event, senderId){
 }
 
 function  professionChosing(event, senderId){
-
+    console.log('code running here !!');
     if(event.postback && event.postback.payload === 'developer'){
         allSenders[senderId].states++;
         sendMessage(senderId, structedRequest(postbacks.specialization, specText));
