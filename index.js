@@ -181,9 +181,8 @@ function telephoneValidation(event, senderId){
       allSenders[senderId].states++;
       console.log('current state  is ' + allSenders[senderId].states);
       allSenders[senderId].phone = event.message.text;
-      console.log('step 1');
+      console.log(buttonsConstructor(postbacks.specialistType));
       sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.specialistType), specText, currentListPosition));
-      console.log('step 2');
     }else{
       sendMessage(senderId, {text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
     }
