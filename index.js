@@ -146,7 +146,7 @@ function introducePerson(event, senderId){
     allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
     //sendMessage(senderId, structedRequest(postbacks.specialization, specText));
-    sendMessage(senderId, structedRequest(postbacks.locations, chooseLocation));
+    sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.locations), chooseLocation));
 }
 
 function personLocation(event, senderId){
@@ -181,7 +181,7 @@ function telephoneValidation(event, senderId){
       allSenders[senderId].states++;
       console.log('current state  is ' + allSenders[senderId].states);
       allSenders[senderId].phone = event.message.text;
-      sendMessage(senderId, structedRequest(postbacks.specialistType, specText, currentListPosition));
+      sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.specialistType), specText, currentListPosition));
     }else{
       sendMessage(senderId, {text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
     }
@@ -189,37 +189,37 @@ function telephoneValidation(event, senderId){
 
 function  professionChosing(event, senderId){
     console.log('code running here !!');
-    if(event.postback && event.postback.payload === 'developer'){
+    if(event.postback && event.postback.payload === 'developer_postback'){
         allSenders[senderId].states++;
-        sendMessage(senderId, structedRequest(postbacks.specialization, specText));
-    }else if(event.postback && event.postback.payload === 'tester'){
+        sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.specialization), specText));
+    }else if(event.postback && event.postback.payload === 'tester_postback'){
         allSenders[senderId].states++;
-        sendMessage(senderId, structedRequest(postbacks.testerSpecialization, specText));
-    }else if(event.postback && event.postback.payload === 'projManager'){
+        sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.testerSpecialization), specText));
+    }else if(event.postback && event.postback.payload === 'project_postback'){
         allSenders[senderId].states++;
-        sendMessage(senderId, structedRequest(postbacks.projectSpecialization, specText));
-    }else if(event.postback && event.postback.payload === 'analitic'){
+        sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.projectSpecialization), specText));
+    }else if(event.postback && event.postback.payload === 'analyst_postback'){
 
-    }else if(event.postback && event.postback.payload === 'next'){
-        sendMessage(senderId, structedRequest(postbacks.specialistType, specText, ++currentListPosition));
-    }else if(event.postback && event.postback.payload === 'prev'){
-        sendMessage(senderId, structedRequest(postbacks.specialistType, specText, --currentListPosition));
+    }else if(event.postback && event.postback.payload === 'next_postback'){
+        sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.specialistType), specText, ++currentListPosition));
+    }else if(event.postback && event.postback.payload === 'prev_postback'){
+        sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.specialistType), specText, --currentListPosition));
     }
 }
 
 function specialization(event, senderId){
 	console.log(event.postback.payload);
-    	if(event.postback && event.postback.payload === 'frontEnd_dev'){
+    	if(event.postback && event.postback.payload === 'frontend_postback'){
     		allSenders[senderId].specialization = 'frontEndDev';
-    		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));
+    		sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.frontEnd), specText));
     	}else
-    	if(event.postback && event.postback.payload === 'science'){
+    	if(event.postback && event.postback.payload === 'science_postback'){
     		allSenders[senderId].specialization = 'Science Reseacher';
-    		sendMessage(senderId, structedRequest(postbacks.science, specText));
+    		sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.science), specText));
     	}else
-    		if(event.postback && event.postback.payload === 'backEnd_dev'){
-    		allSenders[senderId].specialization = 'Back End developer';
-    		sendMessage(senderId, structedRequest(postbacks.backEnd, specText));
+    		if(event.postback && event.postback.payload === 'backend_postback'){
+    		allSenders[senderId].specialization = 'BackEnd developer';
+    		sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.backEnd), specText));
   
     	}else 
     		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science.length === 1){
@@ -236,45 +236,45 @@ function specialization(event, senderId){
 
 function chooseSkills(event, senderId){
 	switch(event.postback.payload){
-    		case 'python_dev': 
-    				postbacks.backEnd = find.filter(postbacks.backEnd, 'python_dev');
+    		case 'python_postback': 
+    				postbacks.backEnd = find.filter(postbacks.backEnd, event.postback.payload);
     				allSenders[senderId].skills.push('python_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
+    				sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.backEnd), specText)); 
     				break;
-    		case 'ruby_dev': 
-    				postbacks.backEnd = find.filter(postbacks.backEnd, 'ruby_dev');
+    		case 'ruby_postback': 
+    				postbacks.backEnd = find.filter(postbacks.backEnd, event.postback.payload);
     				allSenders[senderId].skills.push('ruby_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
+    				sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.backEnd), specText)); 
     				break;
-    		case 'node_dev': 
-    				postbacks.backEnd = find.filter(postbacks.backEnd, 'node_dev');
+    		case 'node_postback': 
+    				postbacks.backEnd = find.filter(postbacks.backEnd, event.postback.payload);
     				allSenders[senderId].skills.push('node_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
+    				sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.backEnd), specText)); 
     				break;
-    		case 'python_net': 
-    				postbacks.science = find.filter(postbacks.science, 'python_net');
+    		case 'pythonscience_postback': 
+    				postbacks.science = find.filter(postbacks.science, event.postback.payload);
     				allSenders[senderId].skills.push('python_net');
-    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
+    				sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.science), specText)); 
     				break;
-    		case 'apache': 
-    				postbacks.science = find.filter(postbacks.science, 'apache');
+    		case 'apache_postback': 
+    				postbacks.science = find.filter(postbacks.science, event.postback.payload);
     				allSenders[senderId].skills.push('apache');
-    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
+    				sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.science), specText)); 
     				break;
-    		case 'html_dev': 
-    				postbacks.frontEnd = find.filter(postbacks.frontEnd, 'html_dev');
+    		case 'html_postback': 
+    				postbacks.frontEnd = find.filter(postbacks.frontEnd, event.postback.payload);
     				allSenders[senderId].skills.push('html_dev');
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
+    				sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.frontEnd), specText)); 
     				break;
-    		case 'javaScript_dev': 
-    				postbacks.frontEnd = find.filter(postbacks.frontEnd, 'javaScript_dev');
+    		case 'javascript_postback': 
+    				postbacks.frontEnd = find.filter(postbacks.frontEnd, event.postback.payload);
     				allSenders[senderId].skills.push('javaScript_dev'); 
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
+    				sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.frontEnd), specText)); 
     				break;
-    		case 'angular': 
-    				postbacks.frontEnd = find.filter(postbacks.frontEnd, 'angular');
+    		case 'angular_postback': 
+    				postbacks.frontEnd = find.filter(postbacks.frontEnd, event.postback.payload);
     				allSenders[senderId].skills.push('angular');
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));  
+    				sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.frontEnd), specText));  
     				break; 		   										
     	}	
 }
@@ -303,7 +303,7 @@ function attachedFile(senderId, attachedObj){
 	if(attachedObj.type === 'file'){
   				allSenders[senderId].cv_url = attachedObj.payload.url;
   				allSenders[senderId].states++;
-  				sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
+  				sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.save), saveText)); 
   			}else{
   				sendMessage(senderId, {text:"Please send CV in doc or pdf format"}); 
   			}
@@ -323,3 +323,10 @@ function insertData(obj){
       if(err) console.log(err);
     });
 }
+
+var buttonsConstructor = function(elements){
+  buttons = [];
+  elements.forEach(function(obj){
+    buttons.push({type: 'postback', title: obj, payload: obj.split(' ')[0].toLowerCase().concat('_postback')});
+  });
+} 
