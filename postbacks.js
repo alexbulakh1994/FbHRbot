@@ -1,5 +1,5 @@
 var specialistType = ['Developer', 'QA', 'Project Manager', 'Analyst'];
-var navigation = ['Previous', 'Next'];
+var previousNextButton = ['Previous', 'Next'];
 var testerSpecialization = ['Manual', 'Automate'];
 var projectSpecialist = ['Junior', 'Middle', 'Senior'];
 var specialization = ['Backend Developer', 'FrontEnd Developer', 'Science Reseacher'];
