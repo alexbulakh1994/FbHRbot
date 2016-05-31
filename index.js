@@ -189,10 +189,13 @@ function telephoneValidation(event, senderId){
 function  professionChosing(event, senderId){
 
     if(event.postback && event.postback.payload === 'developer'){
+        allSenders[senderId].states++;
         sendMessage(senderId, structedRequest(postbacks.specialization, specText));
     }else if(event.postback && event.postback.payload === 'tester'){
+        allSenders[senderId].states++;
         sendMessage(senderId, structedRequest(postbacks.testerSpecialization, specText));
     }else if(event.postback && event.postback.payload === 'projManager'){
+        allSenders[senderId].states++;
         sendMessage(senderId, structedRequest(postbacks.projectSpecialization, specText));
     }else if(event.postback && event.postback.payload === 'analitic'){
 
