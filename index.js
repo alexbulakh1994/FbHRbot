@@ -179,6 +179,7 @@ function emailValidation(event, senderId){
 function telephoneValidation(event, senderId){
     if(phoneExp.test(event.message.text)){  
       allSenders[senderId].states++;
+      console.log('current state  is ' + allSenders[senderId].states);
       allSenders[senderId].phone = event.message.text;
       sendMessage(senderId, structedRequest(postbacks.specialistType, specText, currentListPosition));
     }else{
