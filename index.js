@@ -14,8 +14,12 @@ var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[
 var specText = "Choose all skills ? If you choose all skills print finish.";
 var saveText = "Do you want save information about you ?";
 var chooseLocation = "Choose city where do you live ?";
-var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))
+                              @((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+
 var phoneExp = new RegExp(/^(\+38|38|8){0,1}[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
+var currentListPosition = 0;
+
 //--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
@@ -107,20 +111,23 @@ app.post('/webhook/', function (req, res) {
       
       telephoneValidation(event, senderId);
     }
-    else if(event.postback && allSenders[senderId].states === 5 ){
+    else if(event.postback && allSenders[senderId] === 5){
+      professionChosing(event, senderId);
+    }
+    else if(event.postback && allSenders[senderId].states === 6 ){
     	
     	specialization(event, senderId);
-    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 5 ){
+    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 6 ){
   		
   		allSenders[senderId].states++;
   		sendMessage(senderId, {text:"What is last place of your work ?"});
-    }else if(event.message && event.message.text && allSenders[senderId].states === 6){
+    }else if(event.message && event.message.text && allSenders[senderId].states === 7){
   		
   		personExperience(event, senderId);
-    }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 7){
+    }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 8){
   		
   		attachedFile(senderId, attachedObj);
-  }else if(event.postback && allSenders[senderId].states === 8){
+  }else if(event.postback && allSenders[senderId].states === 9){
   		saveInformation(event, senderId);	
   } 
 }
@@ -174,9 +181,26 @@ function telephoneValidation(event, senderId){
     if(phoneExp.test(event.message.text)){  
       allSenders[senderId].states++;
       allSenders[senderId].phone = event.message.text;
-      sendMessage(senderId, structedRequest(postbacks.specialization, specText));
+      sendMessage(senderId, structedRequest(postbacks.specialistType, specText, currentListPosition));
     }else{
       sendMessage(senderId, {text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
+    }
+}
+
+function  professionChosing(event, senderId)(){
+
+    if(event.postback && event.postback.payload === 'developer'){
+        sendMessage(senderId, structedRequest(postbacks.specialization, specText));
+    }else if(event.postback && event.postback.payload === 'tester'){
+        sendMessage(senderId, structedRequest(postbacks.testerSpecialization, specText));
+    }else if(event.postback && event.postback.payload === 'projManager'){
+        sendMessage(senderId, structedRequest(postbacks.projectSpecialization, specText));
+    }else if(event.postback && event.postback.payload === 'analitic'){
+
+    }else if(event.postback && event.postback.payload === 'next'){
+        sendMessage(senderId, structedRequest(postbacks.specialistType, specText, ++currentListPosition));
+    }else if(event.postback && event.postback.payload === 'prev'){
+        sendMessage(senderId, structedRequest(postbacks.specialistType, specText, --currentListPosition));
     }
 }
 
