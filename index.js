@@ -186,7 +186,7 @@ function telephoneValidation(event, senderId){
     }
 }
 
-function  professionChosing(event, senderId)(){
+function  professionChosing(event, senderId){
 
     if(event.postback && event.postback.payload === 'developer'){
         sendMessage(senderId, structedRequest(postbacks.specialization, specText));
