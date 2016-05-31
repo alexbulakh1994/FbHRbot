@@ -1,5 +1,13 @@
 var postbacks = require('./postbacks');
 
+var buttonsConstructor = function(elements){
+  var buttons = [];
+  elements.forEach(function(obj){
+    buttons.push({type: 'postback', title: obj, payload: obj.split(' ')[0].toLowerCase().concat('_postback')});
+  });
+  return buttons;
+} 
+
 var request = function(objArray, text, currentListPosition){
     var buttons = [];
     if(currentListPosition !== undefined){
@@ -8,7 +16,7 @@ var request = function(objArray, text, currentListPosition){
         }else{
              buttons.push(objArray[currentListPosition % objArray.length]);
         }
-     //   buttons = buttons.concat(postbacks.previousNextButton);
+        buttons = buttons.concat(postbacks.previousNextButton);
     }else
         buttons = objArray;
     return {
@@ -17,7 +25,7 @@ var request = function(objArray, text, currentListPosition){
             payload: {
                 template_type: "button",
                 text: text, 
-                buttons: buttons
+                buttons: buttonsConstructor(buttons)
             }
         }
   }
