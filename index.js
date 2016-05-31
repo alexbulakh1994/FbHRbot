@@ -110,7 +110,7 @@ app.post('/webhook/', function (req, res) {
       
       telephoneValidation(event, senderId);
     }
-    else if(event.postback && allSenders[senderId] === 5){
+    else if(event.postback && allSenders[senderId].states === 5){
       professionChosing(event, senderId);
     }
     else if(event.postback && allSenders[senderId].states === 6 ){
