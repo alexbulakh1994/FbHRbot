@@ -6,7 +6,7 @@ var request = function(objArray, text, currentListPosition){
         if(currentListPosition < 0){
             buttons.push(objArray[objArray.length +  currentListPosition]);
         }else{
-             buttons.push(objArray[currentListPosition]);
+             buttons.push(objArray[currentListPosition % objArray.length]);
         }
         buttons = buttons.concat(postbacks.previousNextButton);
     }else
