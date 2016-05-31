@@ -8,7 +8,7 @@ var request = function(objArray, text, currentListPosition){
         }else{
              buttons.push(objArray[currentListPosition % objArray.length]);
         }
-        buttons = buttons.concat(postbacks.previousNextButton);
+     //   buttons = buttons.concat(postbacks.previousNextButton);
     }else
         buttons = objArray;
     return {

@@ -182,11 +182,7 @@ function telephoneValidation(event, senderId){
       console.log('current state  is ' + allSenders[senderId].states);
       allSenders[senderId].phone = event.message.text;
       console.log(buttonsConstructor(postbacks.specialistType));
-      sendMessage(senderId, structedRequest([{type: 'postback', title: 'Deleloper', payload: 'developer_postback'},
-                                            {type: 'postback', title: 'QA', payload: 'qa_postback'},
-                                            {type: 'postback', title: 'Project Manager', payload: 'project_postback'},
-                                            {type: 'postback', title: 'Analyst', payload: 'analyst_postback'}],
-               specText, currentListPosition));
+      sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.specialistType), specText, currentListPosition));
     }else{
       sendMessage(senderId, {text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
     }
@@ -197,7 +193,7 @@ function  professionChosing(event, senderId){
     if(event.postback && event.postback.payload === 'developer_postback'){
         allSenders[senderId].states++;
         sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.specialization), specText));
-    }else if(event.postback && event.postback.payload === 'qa_postback'){
+    }else if(event.postback && event.postback.payload === 'tester_postback'){
         allSenders[senderId].states++;
         sendMessage(senderId, structedRequest(buttonsConstructor(postbacks.testerSpecialization), specText));
     }else if(event.postback && event.postback.payload === 'project_postback'){
