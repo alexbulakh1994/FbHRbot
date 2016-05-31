@@ -47,10 +47,6 @@ var locations = ['Kiev', 'Lviv', 'Kharkiv'];
 //     	 												  {type: "postback", title: "Lviv", payload: "lviv_loc"}];
 
 
-
-   	 												  
-
-
  module.exports.frontEnd = frontEndPostbacks;   
  module.exports.backEnd = backEndPostbacks;
  module.exports.science = scienceReseachPostbacks;

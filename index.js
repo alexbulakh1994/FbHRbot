@@ -151,13 +151,13 @@ function introducePerson(event, senderId){
 
 function personLocation(event, senderId){
     switch(event.postback.payload){
-        case 'kiev_loc': 
+        case 'kiev_postback': 
             allSenders[senderId].city = "Kiev";
             break;
-        case 'kharkiv_loc': 
+        case 'kharkiv_postback': 
              allSenders[senderId].city = "Kharkiv";
             break;
-        case 'lviv_loc': 
+        case 'lviv_postback': 
               allSenders[senderId].city = "Lviv";
             break;
     }
