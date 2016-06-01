@@ -255,9 +255,9 @@ function chooseSkills(event, senderId){
         postbacks.Android = find.filter(postbacks.IOS, skill);
         sendMessage(senderId, structedRequest(postbacks.IOS, specText, currentListPosition++));
   }else if(event.postback && event.postback.payload === 'Next_postback'){
-        sendMessage(senderId, structedRequest(postbacks.specialistType, specText, ++currentListPosition));
+        sendMessage(senderId, structedRequest(postbacks.backEnd, specText, ++currentListPosition));
   }else if(event.postback && event.postback.payload === 'Previous_postback'){
-        sendMessage(senderId, structedRequest(postbacks.specialistType, specText, --currentListPosition));
+        sendMessage(senderId, structedRequest(postbacks.backEnd, specText, --currentListPosition));
   }
 
   allSenders[senderId].skills.push(skill);
