@@ -235,48 +235,23 @@ function specialization(event, senderId){
 }
 
 function chooseSkills(event, senderId){
-	switch(event.postback.payload){
-    		case 'Python_postback': 
-    				postbacks.backEnd = find.filter(postbacks.backEnd, event.postback.payload);
-    				allSenders[senderId].skills.push('python_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
-    				break;
-    		case 'Ruby_postback': 
-    				postbacks.backEnd = find.filter(postbacks.backEnd, event.postback.payload);
-    				allSenders[senderId].skills.push('ruby_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
-    				break;
-    		case 'Node JS_postback': 
-    				postbacks.backEnd = find.filter(postbacks.backEnd, event.postback.payload);
-    				allSenders[senderId].skills.push('node_dev');
-    				sendMessage(senderId, structedRequest(postbacks.backEnd), specText); 
-    				break;
-    		case 'PythonScience_postback': 
-    				postbacks.science = find.filter(postbacks.science, event.postback.payload);
-    				allSenders[senderId].skills.push('python_net');
-    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
-    				break;
-    		case 'Apache Spark_postback': 
-    				postbacks.science = find.filter(postbacks.science, event.postback.payload);
-    				allSenders[senderId].skills.push('apache');
-    				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
-    				break;
-    		case 'Html CSS': 
-    				postbacks.frontEnd = find.filter(postbacks.frontEnd, event.postback.payload);
-    				allSenders[senderId].skills.push('html_dev');
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
-    				break;
-    		case 'JavaScript_postback': 
-    				postbacks.frontEnd = find.filter(postbacks.frontEnd, event.postback.payload);
-    				allSenders[senderId].skills.push('javaScript_dev'); 
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
-    				break;
-    		case 'Angular JS_postback': 
-    				postbacks.frontEnd = find.filter(postbacks.frontEnd, event.postback.payload);
-    				allSenders[senderId].skills.push('angular');
-    				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));  
-    				break; 		   										
-    	}	
+  var skill = event.postback.payload.split('_')[0];
+  currentListPosition = 0;
+  if(postbacks.backEnd.indexOF(skill) !== -1 ){
+        postbacks.backEnd = find.filter(postbacks.backEnd, skill);
+        sendMessage(senderId, structedRequest(postbacks.backEnd, specText, currentListPosition++)); 
+  }else if(postbacks.frontEnd.indexOF(skill) !== -1 ){
+        postbacks.frontEnd = find.filter(postbacks.frontEnd, skill);
+        sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, currentListPosition++));
+  }else if(postbacks.Android.indexOF(skill) !== -1 ){
+        postbacks.Android = find.filter(postbacks.Android, skill);
+        sendMessage(senderId, structedRequest(postbacks.Android, specText, currentListPosition++));
+  }else if(postbacks.IOS.indexOF(skill) !== -1 ){
+        postbacks.Android = find.filter(postbacks.IOS, skill);
+        sendMessage(senderId, structedRequest(postbacks.IOS, specText, currentListPosition++));
+  }
+
+  allSenders[senderId].skills.push(skill);
 }
 
 function personExperience(event, senderId){
