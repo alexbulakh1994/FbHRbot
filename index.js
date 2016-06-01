@@ -207,7 +207,7 @@ function  professionChosing(event, senderId){
 }
 
 function specialization(event, senderId){
-  currentListPosition = 0;
+  
 	console.log(event.postback.payload);
     	if(event.postback && event.postback.payload === 'Frontend_postback'){
     		allSenders[senderId].specialization = 'frontEndDev';
@@ -233,6 +233,7 @@ function specialization(event, senderId){
           allSenders[senderId].states++;
     			sendMessage(senderId, {text:"What is last place of your work"});
     	}else{
+        currentListPosition = 0;
   			chooseSkills(event, senderId);
     	}
 }
@@ -260,7 +261,7 @@ function chooseSkills(event, senderId){
   }else if(event.postback && event.postback.payload === 'Previous_postback'){
         sendMessage(senderId, structedRequest(postbacks.backEnd, specText, --currentListPosition));
   }
-
+  console.log(currentListPosition);
   allSenders[senderId].skills.push(skill);
 }
 
