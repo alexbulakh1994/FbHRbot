@@ -203,7 +203,7 @@ function  professionChosing(event, senderId){
     }else if(event.postback && event.postback.payload === 'Analyst_postback'){
 
     }else{
-       previousNextButtonNavigation(event, postbacks.specialistType);
+       previousNextButtonNavigation(event, senderId, postbacks.specialistType);
     }
 }
 
@@ -261,7 +261,7 @@ function chooseSkills(event, senderId){
         currentSpecialization = postbacks.IOS; 
         sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
   }else{
-    previousNextButtonNavigation(event, currentSpecialization);
+    previousNextButtonNavigation(event, senderId, currentSpecialization);
   }
   console.log(currentListPosition);
   allSenders[senderId].skills.push(skill);
@@ -306,7 +306,7 @@ function saveInformation(event, senderId){
   		}
 }
 
-function previousNextButtonNavigation(event, buttons){
+function previousNextButtonNavigation(event, senderId, buttons){
   if(event.postback && event.postback.payload === 'Next_postback'){
         sendMessage(senderId, structedRequest(buttons, specText, ++currentListPosition));
   }else if(event.postback && event.postback.payload === 'Previous_postback'){
