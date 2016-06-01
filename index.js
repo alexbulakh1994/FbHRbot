@@ -18,6 +18,7 @@ var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)
 
 var phoneExp = new RegExp(/^(\+38|38|8){0,1}[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
 var currentListPosition = 0;
+var currentSpecialization;
 
 //--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
@@ -201,10 +202,8 @@ function  professionChosing(event, senderId){
         sendMessage(senderId, structedRequest(postbacks.projectSpecialization, specText));
     }else if(event.postback && event.postback.payload === 'Analyst_postback'){
 
-    }else if(event.postback && event.postback.payload === 'Next_postback'){
-        sendMessage(senderId, structedRequest(postbacks.specialistType, specText, ++currentListPosition));
-    }else if(event.postback && event.postback.payload === 'Previous_postback'){
-        sendMessage(senderId, structedRequest(postbacks.specialistType, specText, --currentListPosition));
+    }else{
+       previousNextButtonNavigation(event, postbacks.specialistType);
     }
 }
 
@@ -242,27 +241,27 @@ function specialization(event, senderId){
 }
 
 function chooseSkills(event, senderId){
-  console.log('code running here !!');
-  console.log(event.postback.payload);
   var skill = event.postback.payload.toString().split('_')[0];
   //console.log(skill);
   console.log(currentListPosition);
   if(postbacks.backEnd.indexOf(skill) !== -1 ){
         postbacks.backEnd = find.filter(postbacks.backEnd, skill);
-        sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0)); 
+        currentSpecialization = postbacks.backEnd; 
+        sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
   }else if(postbacks.frontEnd.indexOf(skill) !== -1 ){
         postbacks.frontEnd = find.filter(postbacks.frontEnd, skill);
+        currentSpecialization = postbacks.frontEnd; 
         sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
   }else if(postbacks.Android.indexOf(skill) !== -1 ){
+        currentSpecialization = postbacks.Android; 
         postbacks.Android = find.filter(postbacks.Android, skill);
         sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
   }else if(postbacks.IOS.indexOf(skill) !== -1 ){
         postbacks.Android = find.filter(postbacks.IOS, skill);
+        currentSpecialization = postbacks.IOS; 
         sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
-  }else if(event.postback && event.postback.payload === 'Next_postback'){
-        sendMessage(senderId, structedRequest(postbacks.backEnd, specText, ++currentListPosition));
-  }else if(event.postback && event.postback.payload === 'Previous_postback'){
-        sendMessage(senderId, structedRequest(postbacks.backEnd, specText, --currentListPosition));
+  }else{
+    previousNextButtonNavigation(event, currentSpecialization);
   }
   console.log(currentListPosition);
   allSenders[senderId].skills.push(skill);
@@ -305,6 +304,14 @@ function saveInformation(event, senderId){
   		}else{
   			sendMessage(senderId, {text:"Good by? we dont savev information about you."});
   		}
+}
+
+function previousNextButtonNavigation(event, buttons){
+  if(event.postback && event.postback.payload === 'Next_postback'){
+        sendMessage(senderId, structedRequest(buttons, specText, ++currentListPosition));
+  }else if(event.postback && event.postback.payload === 'Previous_postback'){
+        sendMessage(senderId, structedRequest(buttons, specText, --currentListPosition));
+  }
 }
 
 function insertData(obj){
