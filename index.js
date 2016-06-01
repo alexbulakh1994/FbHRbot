@@ -213,15 +213,18 @@ function specialization(event, senderId){
     		allSenders[senderId].specialization = 'frontEndDev';
     		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
     	}else
-    	if(event.postback && event.postback.payload === 'Science_postback'){
-    		allSenders[senderId].specialization = 'Science Reseacher';
-    		sendMessage(senderId, structedRequest(postbacks.science, specText));
+    	if(event.postback && event.postback.payload === 'Android_postback'){
+    		allSenders[senderId].specialization = 'Android';
+    		sendMessage(senderId, structedRequest(postbacks.Android, specText));
     	}else
     		if(event.postback && event.postback.payload === 'Backend_postback'){
     		allSenders[senderId].specialization = 'BackEnd developer';
     		sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
   
-    	}else 
+    	}else if(event.postback && event.postback.payload === 'IOS_postback'){
+        allSenders[senderId].specialization = 'IOS developer';
+        sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
+      }else 
     		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science.length === 1){
     			if(postbacks.frontEnd.length === 1) allSenders[senderId].skills.push(postbacks.frontEnd[0].title);
           if(postbacks.backEnd.length === 1) allSenders[senderId].skills.push(postbacks.backEnd[0].title);

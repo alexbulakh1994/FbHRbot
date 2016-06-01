@@ -16,7 +16,6 @@ var analystTypeSpecialist = ['Market Analyst', 'System Analyst', 'Finance Analys
  module.exports.backEnd = backEndPostbacks;
  module.exports.Android = androidPostbacks;
  module.exports.IOS = IOS;
- module.exports.science = scienceReseachPostbacks;
  module.exports.specialization = specialization;
  module.exports.save = savePostback;
  module.exports.locations = locations;
