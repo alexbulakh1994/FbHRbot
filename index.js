@@ -238,7 +238,8 @@ function specialization(event, senderId){
 }
 
 function chooseSkills(event, senderId){
-  var skill = event.postback.payload.split('_')[0];
+  console.log(event.postback.payload);
+  var skill = event.postback.payload.toString().split('_')[0];
   console.log(skill);
   currentListPosition = 0;
   if(postbacks.backEnd.indexOF(skill) !== -1 ){
