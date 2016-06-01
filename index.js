@@ -229,6 +229,8 @@ function specialization(event, senderId){
            currentSpecialization = postbacks.IOS;
            allSenders[senderId].specialization = 'IOS developer';
            sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
+      }else{
+        previousNextButtonNavigation(event, senderId, postbacks.specialization);
       }
      //  else 
     	// 	if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1){
@@ -253,19 +255,19 @@ function chooseSkills(event, senderId){
         console.log('Choose backEnd language');
         postbacks.backEnd = find.filter(postbacks.backEnd, skill);
         currentSpecialization = postbacks.backEnd;
-        sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
+        sendMessage(senderId, structedRequest(postbacks.backEnd, specText, currentSpecialization++));
   }else if(postbacks.frontEnd.indexOf(skill) !== -1 ){
         postbacks.frontEnd = find.filter(postbacks.frontEnd, skill);
         currentSpecialization = postbacks.frontEnd; 
-        sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
+        sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, currentSpecialization++));
   }else if(postbacks.Android.indexOf(skill) !== -1 ){ 
         postbacks.Android = find.filter(postbacks.Android, skill);
         currentSpecialization = postbacks.Android; 
-        sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
+        sendMessage(senderId, structedRequest(postbacks.Android, specText, currentSpecialization++));
   }else if(postbacks.IOS.indexOf(skill) !== -1 ){ 
         postbacks.IOS = find.filter(postbacks.IOS, skill);
         currentSpecialization = postbacks.IOS; 
-        sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
+        sendMessage(senderId, structedRequest(postbacks.IOS, specText, currentSpecialization++));
   }else{
     previousNextButtonNavigation(event, senderId, currentSpecialization);
   }

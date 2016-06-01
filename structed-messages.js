@@ -8,11 +8,15 @@ var buttonsConstructor = function(elements){
   return buttons;
 } 
 
+Number.prototype.mod = function(n) {
+    return ((this % n) + n) % n;
+}
+
 var request = function(objArray, text, currentListPosition){
     var buttons = [];
     if(currentListPosition !== undefined){
         if(currentListPosition < 0){
-            buttons.push(objArray[objArray.length +  currentListPosition]);
+            buttons.push(objArray[Number(currentListPosition).mod(objArray.length)]);
         }else{
              buttons.push(objArray[currentListPosition % objArray.length]);
         }
