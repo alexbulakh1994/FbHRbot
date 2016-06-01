@@ -229,21 +229,12 @@ function specialization(event, senderId){
            currentSpecialization = postbacks.IOS;
            allSenders[senderId].specialization = 'IOS developer';
            sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
-      }else{
+      }else if(event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
         previousNextButtonNavigation(event, senderId, postbacks.specialization);
+        return;
       }
-     //  else 
-    	// 	if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1){
-    	// 		if(postbacks.frontEnd.length === 1) allSenders[senderId].skills.push(postbacks.frontEnd[0].title);
-     //      if(postbacks.backEnd.length === 1) allSenders[senderId].skills.push(postbacks.backEnd[0].title);
-     //      if(postbacks.science.length === 1) allSenders[senderId].skills.push(postbacks.science[0].title);
-
-     //      allSenders[senderId].states++;
-    	// 		sendMessage(senderId, {text:"What is last place of your work"});
-    	// }else{
         allSenders[senderId].states++;
         currentListPosition = 0;
-  		//	chooseSkills(event, senderId);
 }
 
 function chooseSkills(event, senderId){
@@ -268,7 +259,7 @@ function chooseSkills(event, senderId){
         postbacks.IOS = find.filter(postbacks.IOS, skill);
         currentSpecialization = postbacks.IOS; 
         sendMessage(senderId, structedRequest(postbacks.IOS, specText, currentSpecialization++));
-  }else{
+  }else if(event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
     previousNextButtonNavigation(event, senderId, currentSpecialization);
   }
   console.log(currentListPosition);
