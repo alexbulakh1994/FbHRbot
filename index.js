@@ -245,20 +245,20 @@ function chooseSkills(event, senderId){
   //console.log(skill);
   console.log(currentListPosition);
   if(postbacks.backEnd.indexOf(skill) !== -1 ){
-        postbacks.backEnd = find.filter(postbacks.backEnd, skill);
         currentSpecialization = postbacks.backEnd; 
+        postbacks.backEnd = find.filter(postbacks.backEnd, skill);
         sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
   }else if(postbacks.frontEnd.indexOf(skill) !== -1 ){
-        postbacks.frontEnd = find.filter(postbacks.frontEnd, skill);
         currentSpecialization = postbacks.frontEnd; 
+        postbacks.frontEnd = find.filter(postbacks.frontEnd, skill);
         sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
   }else if(postbacks.Android.indexOf(skill) !== -1 ){
         currentSpecialization = postbacks.Android; 
         postbacks.Android = find.filter(postbacks.Android, skill);
         sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
   }else if(postbacks.IOS.indexOf(skill) !== -1 ){
-        postbacks.Android = find.filter(postbacks.IOS, skill);
         currentSpecialization = postbacks.IOS; 
+        postbacks.IOS = find.filter(postbacks.IOS, skill);
         sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
   }else{
     previousNextButtonNavigation(event, senderId, currentSpecialization);
