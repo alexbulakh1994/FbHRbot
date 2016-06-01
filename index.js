@@ -114,7 +114,7 @@ app.post('/webhook/', function (req, res) {
       professionChosing(event, senderId);
     }
     else if(event.postback && allSenders[senderId].states === 6 ){
-    	
+    	currentListPosition = 0;
     	specialization(event, senderId);
     }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 6 ){
   		
@@ -233,7 +233,6 @@ function specialization(event, senderId){
           allSenders[senderId].states++;
     			sendMessage(senderId, {text:"What is last place of your work"});
     	}else{
-        currentListPosition = 0;
   			chooseSkills(event, senderId);
     	}
 }
