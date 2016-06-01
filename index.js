@@ -207,6 +207,7 @@ function  professionChosing(event, senderId){
 }
 
 function specialization(event, senderId){
+  currentListPosition = 0;
 	console.log(event.postback.payload);
     	if(event.postback && event.postback.payload === 'Frontend_postback'){
     		allSenders[senderId].specialization = 'frontEndDev';
@@ -241,7 +242,6 @@ function chooseSkills(event, senderId){
   console.log(event.postback.payload);
   var skill = event.postback.payload.toString().split('_')[0];
   //console.log(skill);
-  currentListPosition = 0;
   if(postbacks.backEnd.indexOf(skill) !== -1 ){
         postbacks.backEnd = find.filter(postbacks.backEnd, skill);
         sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0)); 
