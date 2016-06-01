@@ -211,18 +211,22 @@ function specialization(event, senderId){
   
 	console.log(event.postback.payload);
     	if(event.postback && event.postback.payload === 'Frontend_postback'){
+        currentSpecialization = postbacks.frontEnd;
     		allSenders[senderId].specialization = 'frontEndDev';
     		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
     	}else
     	  if(event.postback && event.postback.payload === 'Android_postback'){
+            currentSpecialization = postbacks.Android;
     		    allSenders[senderId].specialization = 'Android';
     		    sendMessage(senderId, structedRequest(postbacks.Android, specText));
     	}else
     		if(event.postback && event.postback.payload === 'Backend_postback'){
+            currentSpecialization = postbacks.backEnd;
     		    allSenders[senderId].specialization = 'BackEnd developer';
     		    sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
   
     	}else if(event.postback && event.postback.payload === 'IOS_postback'){
+           currentSpecialization = postbacks.IOS;
            allSenders[senderId].specialization = 'IOS developer';
            sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
       }
@@ -245,20 +249,16 @@ function chooseSkills(event, senderId){
   var skill = event.postback.payload.toString().split('_')[0];
   //console.log(skill);
   console.log(currentSpecialization);
-  if(postbacks.backEnd.indexOf(skill) !== -1 ){
-        currentSpecialization = postbacks.backEnd; 
+  if(postbacks.backEnd.indexOf(skill) !== -1 ){ 
         postbacks.backEnd = find.filter(postbacks.backEnd, skill);
         sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
   }else if(postbacks.frontEnd.indexOf(skill) !== -1 ){
-        currentSpecialization = postbacks.frontEnd; 
         postbacks.frontEnd = find.filter(postbacks.frontEnd, skill);
         sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
-  }else if(postbacks.Android.indexOf(skill) !== -1 ){
-        currentSpecialization = postbacks.Android; 
+  }else if(postbacks.Android.indexOf(skill) !== -1 ){ 
         postbacks.Android = find.filter(postbacks.Android, skill);
         sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
-  }else if(postbacks.IOS.indexOf(skill) !== -1 ){
-        currentSpecialization = postbacks.IOS; 
+  }else if(postbacks.IOS.indexOf(skill) !== -1 ){ 
         postbacks.IOS = find.filter(postbacks.IOS, skill);
         sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
   }else{
