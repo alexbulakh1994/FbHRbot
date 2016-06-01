@@ -1,8 +1,7 @@
 function filter(arr, payloadDel){
-	var result = arr.filter(function (el) {
-                      return el.payload !== payloadDel;
-                 });
-    return result;             
+	var index = arr.indexOf(payloadDel);
+	arr.splice(index, 1);
+    return arr;             
 }
 
 function findAttachObject(messageArray){
