@@ -114,19 +114,22 @@ app.post('/webhook/', function (req, res) {
       professionChosing(event, senderId);
     }
     else if(event.postback && allSenders[senderId].states === 6 ){
-    	currentListPosition = 0;
+    	
     	specialization(event, senderId);
-    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 6 ){
+    }else if(event.postback && allSenders[senderId].states === 7 ){
+      currentListPosition = 0;
+      chooseSkills(event, senderId);
+    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7 ){
   		
   		allSenders[senderId].states++;
   		sendMessage(senderId, {text:"What is last place of your work ?"});
-    }else if(event.message && event.message.text && allSenders[senderId].states === 7){
+    }else if(event.message && event.message.text && allSenders[senderId].states === 8){
   		
   		personExperience(event, senderId);
-    }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 8){
+    }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 9){
   		
   		attachedFile(senderId, attachedObj);
-  }else if(event.postback && allSenders[senderId].states === 9){
+  }else if(event.postback && allSenders[senderId].states === 10){
   		saveInformation(event, senderId);	
   } 
 }
@@ -233,6 +236,7 @@ function specialization(event, senderId){
           allSenders[senderId].states++;
     			sendMessage(senderId, {text:"What is last place of your work"});
     	}else{
+        allSenders[senderId].states++;
   			chooseSkills(event, senderId);
     	}
 }
