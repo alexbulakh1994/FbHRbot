@@ -242,16 +242,16 @@ function chooseSkills(event, senderId){
   var skill = event.postback.payload.toString().split('_')[0];
   //console.log(skill);
   currentListPosition = 0;
-  if(postbacks.backEnd.indexOF(skill) !== -1 ){
+  if(postbacks.backEnd.indexOf(skill) !== -1 ){
         postbacks.backEnd = find.filter(postbacks.backEnd, skill);
         sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0)); 
-  }else if(postbacks.frontEnd.indexOF(skill) !== -1 ){
+  }else if(postbacks.frontEnd.indexOf(skill) !== -1 ){
         postbacks.frontEnd = find.filter(postbacks.frontEnd, skill);
         sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
-  }else if(postbacks.Android.indexOF(skill) !== -1 ){
+  }else if(postbacks.Android.indexOf(skill) !== -1 ){
         postbacks.Android = find.filter(postbacks.Android, skill);
         sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
-  }else if(postbacks.IOS.indexOF(skill) !== -1 ){
+  }else if(postbacks.IOS.indexOf(skill) !== -1 ){
         postbacks.Android = find.filter(postbacks.IOS, skill);
         sendMessage(senderId, structedRequest(postbacks.IOS, specText, currentListPosition++));
   }else if(event.postback && event.postback.payload === 'Next_postback'){
