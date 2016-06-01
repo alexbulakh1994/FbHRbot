@@ -245,12 +245,14 @@ function specialization(event, senderId){
 }
 
 function chooseSkills(event, senderId){
-  console.log('chooseSkills was called !');
+
   var skill = event.postback.payload.toString().split('_')[0];
   //console.log(skill);
   console.log(currentSpecialization);
   if(postbacks.backEnd.indexOf(skill) !== -1 ){
+        console.log('Choose backEnd language');
         postbacks.backEnd = find.filter(postbacks.backEnd, skill);
+        console.log(postbacks.backEnd);
         currentSpecialization = postbacks.backEnd; 
         sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
   }else if(postbacks.frontEnd.indexOf(skill) !== -1 ){
