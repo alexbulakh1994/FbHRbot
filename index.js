@@ -256,15 +256,15 @@ function chooseSkills(event, senderId){
 
         sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
   }else if(postbacks.frontEnd.indexOf(skill) !== -1 ){
-        postbacks.frontEnd = find.filter(structedRequest(postbacks.frontEnd,'') skill);
+        postbacks.frontEnd = find.filter(structedRequest(postbacks.frontEnd,''), skill);
         currentSpecialization = postbacks.frontEnd; 
         sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
   }else if(postbacks.Android.indexOf(skill) !== -1 ){ 
-        postbacks.Android = find.filter(structedRequest(postbacks.Android,'') skill);
+        postbacks.Android = find.filter(structedRequest(postbacks.Android,''), skill);
         currentSpecialization = postbacks.Android; 
         sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
   }else if(postbacks.IOS.indexOf(skill) !== -1 ){ 
-        postbacks.IOS = find.filter(structedRequest(postbacks.IOS,'') skill);
+        postbacks.IOS = find.filter(structedRequest(postbacks.IOS,''), skill);
         currentSpecialization = postbacks.IOS; 
         sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
   }else{
