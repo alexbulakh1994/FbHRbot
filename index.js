@@ -191,7 +191,7 @@ function  professionChosing(event, senderId){
     console.log('code running here !!');
     if(event.postback && event.postback.payload === 'Developer_postback'){
         allSenders[senderId].states++;
-        sendMessage(senderId, structedRequest(postbacks.specialization, specText));
+        sendMessage(senderId, structedRequest(postbacks.specialization, specText, 0));
     }else if(event.postback && event.postback.payload === 'QA_postback'){
         allSenders[senderId].states++;
         sendMessage(senderId, structedRequest(postbacks.testerSpecialization, specText));
