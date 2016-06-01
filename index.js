@@ -242,6 +242,7 @@ function chooseSkills(event, senderId){
   console.log(event.postback.payload);
   var skill = event.postback.payload.toString().split('_')[0];
   //console.log(skill);
+  console.log(currentListPosition);
   if(postbacks.backEnd.indexOf(skill) !== -1 ){
         postbacks.backEnd = find.filter(postbacks.backEnd, skill);
         sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0)); 
@@ -253,7 +254,7 @@ function chooseSkills(event, senderId){
         sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
   }else if(postbacks.IOS.indexOf(skill) !== -1 ){
         postbacks.Android = find.filter(postbacks.IOS, skill);
-        sendMessage(senderId, structedRequest(postbacks.IOS, specText, currentListPosition++));
+        sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
   }else if(event.postback && event.postback.payload === 'Next_postback'){
         sendMessage(senderId, structedRequest(postbacks.backEnd, specText, ++currentListPosition));
   }else if(event.postback && event.postback.payload === 'Previous_postback'){
