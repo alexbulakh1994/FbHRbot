@@ -224,7 +224,7 @@ function specialization(event, senderId){
            allSenders[senderId].specialization = 'IOS developer';
            sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
       }else 
-    		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science.length === 1){
+    		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1){
     			if(postbacks.frontEnd.length === 1) allSenders[senderId].skills.push(postbacks.frontEnd[0].title);
           if(postbacks.backEnd.length === 1) allSenders[senderId].skills.push(postbacks.backEnd[0].title);
           if(postbacks.science.length === 1) allSenders[senderId].skills.push(postbacks.science[0].title);
