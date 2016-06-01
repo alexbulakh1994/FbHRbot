@@ -117,7 +117,6 @@ app.post('/webhook/', function (req, res) {
     	
     	specialization(event, senderId);
     }else if(event.postback && allSenders[senderId].states === 7 ){
-      currentListPosition = 0;
       chooseSkills(event, senderId);
     }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7 ){
   		
@@ -237,6 +236,7 @@ function specialization(event, senderId){
     			sendMessage(senderId, {text:"What is last place of your work"});
     	}else{
         allSenders[senderId].states++;
+        currentListPosition = 0;
   			chooseSkills(event, senderId);
     	}
 }
