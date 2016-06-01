@@ -151,13 +151,13 @@ function introducePerson(event, senderId){
 
 function personLocation(event, senderId){
     switch(event.postback.payload){
-        case 'kiev_postback': 
+        case 'Kiev_postback': 
             allSenders[senderId].city = "Kiev";
             break;
-        case 'kharkiv_postback': 
+        case 'Kharkiv_postback': 
              allSenders[senderId].city = "Kharkiv";
             break;
-        case 'lviv_postback': 
+        case 'Lviv_postback': 
               allSenders[senderId].city = "Lviv";
             break;
     }
@@ -189,35 +189,35 @@ function telephoneValidation(event, senderId){
 
 function  professionChosing(event, senderId){
     console.log('code running here !!');
-    if(event.postback && event.postback.payload === 'developer_postback'){
+    if(event.postback && event.postback.payload === 'Developer_postback'){
         allSenders[senderId].states++;
         sendMessage(senderId, structedRequest(postbacks.specialization, specText));
-    }else if(event.postback && event.postback.payload === 'tester_postback'){
+    }else if(event.postback && event.postback.payload === 'QA_postback'){
         allSenders[senderId].states++;
         sendMessage(senderId, structedRequest(postbacks.testerSpecialization, specText));
-    }else if(event.postback && event.postback.payload === 'project_postback'){
+    }else if(event.postback && event.postback.payload === 'PM_postback'){
         allSenders[senderId].states++;
         sendMessage(senderId, structedRequest(postbacks.projectSpecialization, specText));
-    }else if(event.postback && event.postback.payload === 'analyst_postback'){
+    }else if(event.postback && event.postback.payload === 'Analyst_postback'){
 
-    }else if(event.postback && event.postback.payload === 'next_postback'){
+    }else if(event.postback && event.postback.payload === 'Next_postback'){
         sendMessage(senderId, structedRequest(postbacks.specialistType, specText, ++currentListPosition));
-    }else if(event.postback && event.postback.payload === 'prev_postback'){
+    }else if(event.postback && event.postback.payload === 'Previous_postback'){
         sendMessage(senderId, structedRequest(postbacks.specialistType, specText, --currentListPosition));
     }
 }
 
 function specialization(event, senderId){
 	console.log(event.postback.payload);
-    	if(event.postback && event.postback.payload === 'frontend_postback'){
+    	if(event.postback && event.postback.payload === 'Frontend_postback'){
     		allSenders[senderId].specialization = 'frontEndDev';
     		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));
     	}else
-    	if(event.postback && event.postback.payload === 'science_postback'){
+    	if(event.postback && event.postback.payload === 'Science_postback'){
     		allSenders[senderId].specialization = 'Science Reseacher';
     		sendMessage(senderId, structedRequest(postbacks.science, specText));
     	}else
-    		if(event.postback && event.postback.payload === 'backend_postback'){
+    		if(event.postback && event.postback.payload === 'Backend_postback'){
     		allSenders[senderId].specialization = 'BackEnd developer';
     		sendMessage(senderId, structedRequest(postbacks.backEnd, specText));
   
@@ -236,42 +236,42 @@ function specialization(event, senderId){
 
 function chooseSkills(event, senderId){
 	switch(event.postback.payload){
-    		case 'python_postback': 
+    		case 'Python_postback': 
     				postbacks.backEnd = find.filter(postbacks.backEnd, event.postback.payload);
     				allSenders[senderId].skills.push('python_dev');
     				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
     				break;
-    		case 'ruby_postback': 
+    		case 'Ruby_postback': 
     				postbacks.backEnd = find.filter(postbacks.backEnd, event.postback.payload);
     				allSenders[senderId].skills.push('ruby_dev');
     				sendMessage(senderId, structedRequest(postbacks.backEnd, specText)); 
     				break;
-    		case 'node_postback': 
+    		case 'Node JS_postback': 
     				postbacks.backEnd = find.filter(postbacks.backEnd, event.postback.payload);
     				allSenders[senderId].skills.push('node_dev');
     				sendMessage(senderId, structedRequest(postbacks.backEnd), specText); 
     				break;
-    		case 'pythonscience_postback': 
+    		case 'PythonScience_postback': 
     				postbacks.science = find.filter(postbacks.science, event.postback.payload);
     				allSenders[senderId].skills.push('python_net');
     				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
     				break;
-    		case 'apache_postback': 
+    		case 'Apache Spark_postback': 
     				postbacks.science = find.filter(postbacks.science, event.postback.payload);
     				allSenders[senderId].skills.push('apache');
     				sendMessage(senderId, structedRequest(postbacks.science, specText)); 
     				break;
-    		case 'html_postback': 
+    		case 'Html CSS': 
     				postbacks.frontEnd = find.filter(postbacks.frontEnd, event.postback.payload);
     				allSenders[senderId].skills.push('html_dev');
     				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
     				break;
-    		case 'javascript_postback': 
+    		case 'JavaScript_postback': 
     				postbacks.frontEnd = find.filter(postbacks.frontEnd, event.postback.payload);
     				allSenders[senderId].skills.push('javaScript_dev'); 
     				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText)); 
     				break;
-    		case 'angular_postback': 
+    		case 'Angular JS_postback': 
     				postbacks.frontEnd = find.filter(postbacks.frontEnd, event.postback.payload);
     				allSenders[senderId].skills.push('angular');
     				sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));  

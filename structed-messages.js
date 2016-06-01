@@ -3,7 +3,7 @@ var postbacks = require('./postbacks');
 var buttonsConstructor = function(elements){
   var buttons = [];
   elements.forEach(function(obj){
-    buttons.push({type: 'postback', title: obj, payload: obj.split(' ')[0].toLowerCase().concat('_postback')});
+    buttons.push({type: 'postback', title: obj, payload: obj.concat('_postback')});
   });
   return buttons;
 } 
