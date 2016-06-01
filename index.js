@@ -211,7 +211,7 @@ function specialization(event, senderId){
 	console.log(event.postback.payload);
     	if(event.postback && event.postback.payload === 'Frontend_postback'){
     		allSenders[senderId].specialization = 'frontEndDev';
-    		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText));
+    		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
     	}else
     	if(event.postback && event.postback.payload === 'Science_postback'){
     		allSenders[senderId].specialization = 'Science Reseacher';
@@ -219,7 +219,7 @@ function specialization(event, senderId){
     	}else
     		if(event.postback && event.postback.payload === 'Backend_postback'){
     		allSenders[senderId].specialization = 'BackEnd developer';
-    		sendMessage(senderId, structedRequest(postbacks.backEnd, specText));
+    		sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
   
     	}else 
     		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1 || postbacks.science.length === 1){
