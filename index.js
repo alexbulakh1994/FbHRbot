@@ -225,25 +225,26 @@ function specialization(event, senderId){
     	}else if(event.postback && event.postback.payload === 'IOS_postback'){
            allSenders[senderId].specialization = 'IOS developer';
            sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
-      }else 
-    		if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1){
-    			if(postbacks.frontEnd.length === 1) allSenders[senderId].skills.push(postbacks.frontEnd[0].title);
-          if(postbacks.backEnd.length === 1) allSenders[senderId].skills.push(postbacks.backEnd[0].title);
-          if(postbacks.science.length === 1) allSenders[senderId].skills.push(postbacks.science[0].title);
+      }
+     //  else 
+    	// 	if(postbacks.frontEnd.length === 1 || postbacks.backEnd.length === 1){
+    	// 		if(postbacks.frontEnd.length === 1) allSenders[senderId].skills.push(postbacks.frontEnd[0].title);
+     //      if(postbacks.backEnd.length === 1) allSenders[senderId].skills.push(postbacks.backEnd[0].title);
+     //      if(postbacks.science.length === 1) allSenders[senderId].skills.push(postbacks.science[0].title);
 
-          allSenders[senderId].states++;
-    			sendMessage(senderId, {text:"What is last place of your work"});
-    	}else{
+     //      allSenders[senderId].states++;
+    	// 		sendMessage(senderId, {text:"What is last place of your work"});
+    	// }else{
         allSenders[senderId].states++;
         currentListPosition = 0;
-  			chooseSkills(event, senderId);
-    	}
+  		//	chooseSkills(event, senderId);
 }
 
 function chooseSkills(event, senderId){
+  console.log('chooseSkills was called !');
   var skill = event.postback.payload.toString().split('_')[0];
   //console.log(skill);
-  console.log(currentListPosition);
+  console.log(currentSpecialization);
   if(postbacks.backEnd.indexOf(skill) !== -1 ){
         currentSpecialization = postbacks.backEnd; 
         postbacks.backEnd = find.filter(postbacks.backEnd, skill);
