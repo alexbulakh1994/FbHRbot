@@ -3,13 +3,12 @@ var previousNextButton = ['Previous', 'Next'];
 var specialization = ['Backend', 'FrontEnd', 'Science'];
 var backEndPostbacks = ['Ruby', 'Python', 'Node JS', 'Java', '.NET', 'C++'];
 var scienceReseachPostbacks = ['PythonScience', 'Apache Spark'];
-var frontEndPostbacks = ['Html CSS ', 'JavaScript', 'Angular JS', 'ReatOS', 'BootStrap'];
+var frontEndPostbacks = ['Html CSS', 'JavaScript', 'Angular JS', 'ReatOS', 'BootStrap'];
 var savePostback = ['Yes', 'No'];
 var locations = ['Kiev', 'Lviv', 'Kharkiv'];
 var testerSpecialization = ['Manual', 'Automate'];
 var projectSpecialist = ['Junior', 'Middle', 'Senior'];
 var analystTypeSpecialist = ['Market Analyst', 'System Analyst', 'Finance Analyst'];
-var 
 
 
  module.exports.frontEnd = frontEndPostbacks;   
