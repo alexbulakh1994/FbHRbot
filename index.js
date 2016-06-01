@@ -238,10 +238,8 @@ function specialization(event, senderId){
 }
 
 function chooseSkills(event, senderId){
-
   var skill = event.postback.payload.toString().split('_')[0];
   console.log(skill);
-  console.log(currentSpecialization);
   if(postbacks.backEnd.indexOf(skill) !== -1 ){
         console.log('Choose backEnd language');
         postbacks.backEnd = find.filter(postbacks.backEnd, skill);
