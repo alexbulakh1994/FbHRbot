@@ -16,7 +16,7 @@ var request = function(objArray, text, currentListPosition){
     var buttons = [];
     if(currentListPosition !== undefined){
         if(currentListPosition < 0){
-            buttons.push(objArray[Number(currentListPosition).mod(objArray.length)]);
+            buttons.push(objArray[currentListPosition + objArray.length]);
         }else{
              buttons.push(objArray[currentListPosition % objArray.length]);
         }
