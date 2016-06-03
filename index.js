@@ -244,7 +244,7 @@ function lastWorkExperience(senderId){
 
 function chooseSkills(event, senderId){
   var skill = event.postback.payload.toString().split('_')[0];
-  var skillsSpecialization = findSpecs(skill);
+  var skillsSpecialization = postbacks.findSpecs(skill);
   
   skillsSpecialization = find.filter(postbacks.backEnd, skill);
   if(skillsSpecialization !== 0){

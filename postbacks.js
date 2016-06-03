@@ -12,7 +12,7 @@ var projectSpecialist = ['Junior', 'Middle', 'Senior'];
 var analystTypeSpecialist = ['Market Analyst', 'System Analyst', 'Finance Analyst'];
 
 
-var findSpecsBySkill =  function(skill){
+function findSpecs(skill){
 	if(backEndPostbacks.indexOf(skill) !== -1){
 		return backEndPostbacks;
 	}else if (frontEndPostbacks.indexOf(skill) !== -1){
@@ -26,7 +26,7 @@ var findSpecsBySkill =  function(skill){
 	}
 }
 
- module.exports findSpecs = findSpecsBySkill;
+ module.exports findSpecs = findSpecs;
  module.exports.frontEnd = frontEndPostbacks;   
  module.exports.backEnd = backEndPostbacks;
  module.exports.Android = androidPostbacks;
