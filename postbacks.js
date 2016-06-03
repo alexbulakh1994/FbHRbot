@@ -14,16 +14,26 @@ var analystTypeSpecialist = ['Market Analyst', 'System Analyst', 'Finance Analys
 
 function findSpecs(skill){
 	if(backEndPostbacks.indexOf(skill) !== -1){
-		return backEndPostbacks;
+		backEndPostbacks = filter(backEndPostbacks, skill);
+		return backEndPostbacks
 	}else if (frontEndPostbacks.indexOf(skill) !== -1){
+		frontEndPostbacks = filter(frontEndPostbacks,skill);
 		return frontEndPostbacks;
 	}else if (androidPostbacks.indexOf(skill) !== -1){
+		androidPostbacks = filter(androidPostbacks,skill);
 		return androidPostbacks;
 	}else if(IOS.indexOf(skill) !== -1){
+		IOS = filter(IOS,skill);
 		return IOS;
 	}else{
 		return null;
 	}
+}
+
+function filter(arr, payloadDel){
+	var index = arr.indexOf(payloadDel);
+	arr.splice(index, 1);
+    return arr;             
 }
 
  module.exports.findSpecs = findSpecs;
