@@ -122,10 +122,9 @@ app.post('/webhook/', function (req, res) {
     }else if(event.postback && allSenders[senderId].states === 7 && event.postback.payload !== 'Yes_postback' 
                                                                 && event.postback.payload !== 'No_postback'){
          chooseSkills(event, senderId);
-    }else if((event.message && event.message.text === 'finish' && allSenders[senderId].states === 7) ||
-                               (event.postbacks && allSenders[senderId].states === 7 && postbacks.specialization.length === 4)){
+    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7){
   		   finishChoosingSkills(senderId);     
-    }else if(event.postback && allSenders[senderId].states === 7 && postback.specialization.length < 4 &&
+    }else if(event.postback && allSenders[senderId].states === 7 &&
                             (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
       
           if(event.postback.payload === 'Yes_postback'){
@@ -267,8 +266,10 @@ function chooseSkills(event, senderId){
   if(skillsSpecialization.length !== 0){
       currentSpecialization = skillsSpecialization;
       sendMessage(senderId, structedRequest(skillsSpecialization, specText, currentListPosition));
+  }else if(postbacks.testerSpecialization.length === 0 || postbacks.projectSpecialization.length === 0){
+      finishChoosingSkills(senderId);      
   }else{
-      lastWorkExperience(senderId);      
+      lastWorkExperience(senderId);
   }
   allSenders[senderId].skills.push(skill);
 }
