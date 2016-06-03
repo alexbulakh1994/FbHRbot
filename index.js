@@ -11,7 +11,7 @@ var app = express();
 var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XICUrjqo99sdWjqbXL9ytycJLjDTPIOb50vXhZCoFnvbW45ZAl1opG3ny2OdhXo5RxAoaqwNcoMu7pzHY9WrEQtSjC7XMZBhuxzUpyZBmzGQuwZDZD";
 //var regExp = new RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/);
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
-var specText = "If you choose all skills print finish or prev to return on upper level";
+var specText = "If you want  all skills print finish or prev to return on upper level";
 var devBranch = 'Choose all sphere of developing witch you know';
 var ITSpeciality = 'Choose sphere of IT witch you are interesting'
 var saveText = "Do you want save information about you ?";
@@ -127,11 +127,15 @@ app.post('/webhook/', function (req, res) {
     }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 7){
          continueChooseWorkSkills(senderId);   
     }else if(event.postback && allSenders[senderId].states === 7 && (event.postback.payload === 'Yes_postback' 
-                                                                                            || event.postback.payload === 'No_postback')){
-        if(event.postback.payload === 'Yes_postback'){
-            continueChooseWorkSkills(senderId);
+                                                                                           || event.postback.payload === 'No_postback')){
+        if( postbacks.specialization.length < 4){  
+          if(event.postback.payload === 'Yes_postback'){
+              continueChooseWorkSkills(senderId);
+          }else{
+              finishChoosingSkills(senderId);
+          }
         }else{
-            finishChoosingSkills(senderId);
+          finishChoosingSkills(senderId);
         }
     }else if(event.message && event.message.text && allSenders[senderId].states === 8){
   		personExperience(event, senderId);
@@ -257,7 +261,7 @@ function finishChoosingSkills(senderId){
 }
 
 function lastWorkExperience(senderId){
-     sendMessage(senderId, structedRequest(postbacks.save, 'If you choose all skills press YES, else NO'));   
+     sendMessage(senderId, structedRequest(postbacks.save, 'If you dont choose all skills press YES to continue, else NO'));   
 }
 
 function chooseSkills(event, senderId){
