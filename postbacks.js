@@ -25,6 +25,12 @@ function findSpecs(skill){
 	}else if(IOS.indexOf(skill) !== -1){
 		IOS = filter(IOS,skill);
 		return IOS;
+	}else if(testerSpecialization.indexOf(skill) !== -1){
+		testerSpecialization = filter(testerSpecialization,skill);
+		return testerSpecialization;	
+	}else if(projectSpecialist.indexOf(skill) !== -1){
+		projectSpecialist = filter(projectSpecialist,skill);
+		return projectSpecialist;
 	}else{
 		return null;
 	}
@@ -46,4 +52,5 @@ function filter(arr, payloadDel){
  module.exports.locations = locations;
  module.exports.specialistType = specialistType;
  module.exports.previousNextButton = previousNextButton;	 
- module.exports.testerSpecialization = testerSpecialization;												     	 												     	 												  
+ module.exports.testerSpecialization = testerSpecialization;
+ module.exports.projectSpecialization = projectSpecialist;												     	 												     	 												  
