@@ -112,13 +112,15 @@ app.post('/webhook/', function (req, res) {
     }
     else if(event.postback && allSenders[senderId].states === 6 ){
     	   specialization(event, senderId);
-    }else if(event.postback && allSenders[senderId].states === 7 && (event.postback !== 'Yes_postback' && event.postback !== 'No_postback')){
+    }else if(event.postback && allSenders[senderId].states === 7 && event.postback.payload !== 'Yes_postback' 
+                                                                && event.postback.payload !== 'No_postback'){
          chooseSkills(event, senderId);
     }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7 ){
   		   finishChoosingSkills(senderId);
     }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 7){
          continueChooseWorkSkills(senderId);   
-    }else if(event.postback && allSenders[senderId].states === 7 && (event.postback === 'Yes_postback' || event.postback === 'No_postback')){
+    }else if(event.postback && allSenders[senderId].states === 7 && (event.postback.payload === 'Yes_postback' 
+                                                                                            || event.postback.payload === 'No_postback')){
         if(event.postback === 'Yes_postback'){
             continueChooseWorkSkills(senderId);
         }else{
