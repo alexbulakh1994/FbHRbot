@@ -94,41 +94,37 @@ app.post('/webhook/', function (req, res) {
     console.log(req.body.entry[0]);
 
     if (event.message && event.message.text && !allSenders[senderId]) {
-    	
-    	greeting(senderId);
+    	   greeting(senderId);
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 1){
-    	
-    	introducePerson(event, senderId);
+    	   introducePerson(event, senderId);
     }else if(event.postback && allSenders[senderId].states === 2){
-
-        personLocation(event, senderId);
+         personLocation(event, senderId);
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 3){
-      
-      emailValidation(event, senderId);
+         emailValidation(event, senderId);
     }
     else if(event.message && event.message.text && allSenders[senderId].states === 4){
-      
-      telephoneValidation(event, senderId);
+         telephoneValidation(event, senderId);
     }
     else if(event.postback && allSenders[senderId].states === 5){
-      professionChosing(event, senderId);
+         professionChosing(event, senderId);
     }
     else if(event.postback && allSenders[senderId].states === 6 ){
-    	
-    	specialization(event, senderId);
-    }else if(event.postback && allSenders[senderId].states === 7 ){
-      chooseSkills(event, senderId);
+    	   specialization(event, senderId);
+    }else if(event.postback && allSenders[senderId].states === 7 && (event.postback !== 'Yes_postback' && event.postback !== 'No_postback')){
+         chooseSkills(event, senderId);
     }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7 ){
-  		
-  		allSenders[senderId].states++;
-  		sendMessage(senderId, {text:"What is last place of your work ?"});
+  		   finishChoosingSkills(senderId);
     }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 7){
-      allSenders[senderId].states = 6;
-      sendMessage(senderId, structedRequest(postbacks.specialization, specText, 0));
+         continueChooseWorkSkills(senderId);   
+    }else if(event.postback && allSenders[senderId].states === 7 && (event.postback === 'Yes_postback' || event.postback === 'No_postback')){
+        if(event.postback === 'Yes_postback'){
+            continueChooseWorkSkills(senderId);
+        }else{
+            finishChoosingSkills(senderId);
+        }
     }else if(event.message && event.message.text && allSenders[senderId].states === 8){
-  		
   		personExperience(event, senderId);
     }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 9){
   		
@@ -219,14 +215,12 @@ function specialization(event, senderId){
         currentSpecialization = postbacks.frontEnd;
     		allSenders[senderId].specialization = 'frontEndDev';
     		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
-    	}else
-    	  if(event.postback && event.postback.payload === 'Android_postback'){
+    	}else if(event.postback && event.postback.payload === 'Android_postback'){
             postbacks.specialization = find.filter(postbacks.specialization, 'Android');
             currentSpecialization = postbacks.Android;
     		    allSenders[senderId].specialization = 'Android';
     		    sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
-    	}else
-    		if(event.postback && event.postback.payload === 'Backend_postback'){
+    	}else if(event.postback && event.postback.payload === 'Backend_postback'){
             postbacks.specialization = find.filter(postbacks.specialization, 'Backend');
             currentSpecialization = postbacks.backEnd;
     		    allSenders[senderId].specialization = 'BackEnd developer';
@@ -245,53 +239,29 @@ function specialization(event, senderId){
         currentListPosition = 0;
 }
 
-function lastWorkExperience(senderId){
+function continueChooseWorkSkills(senderId){
+    allSenders[senderId].states = 6;
+    sendMessage(senderId, structedRequest(postbacks.specialization, specText, 0));
+}
+
+function finishChoosingSkills(senderId){
      allSenders[senderId].states++;
-     sendMessage(senderId, {text:"What is last place of your work ?"});   
+     sendMessage(senderId, {text:"What is last place of your work ?"});
+}
+
+function lastWorkExperience(senderId){
+     sendMessage(senderId, structedRequest(postbacks.save, 'If you choose all skills press YES, else NO'));   
 }
 
 function chooseSkills(event, senderId){
   var skill = event.postback.payload.toString().split('_')[0];
   var skillsSpecialization = postbacks.findSpecs(skill);
-  console.log(skillsSpecialization);
-  
-//  skillsSpecialization = find.filter(skillsSpecialization, skill);
   if(skillsSpecialization.length !== 0){
       currentSpecialization = skillsSpecialization;
       sendMessage(senderId, structedRequest(skillsSpecialization, specText, currentListPosition));
   }else{
       lastWorkExperience(senderId);      
   }
-
-  // if(postbacks.backEnd.indexOf(skill) !== -1 ){
-  //       console.log('Choose backEnd language');
-  //       postbacks.backEnd = find.filter(postbacks.backEnd, skill);
-  //       if(postbacks.backEnd.length !== 0){
-  //           currentSpecialization = postbacks.backEnd;
-  //           sendMessage(senderId, structedRequest(postbacks.backEnd, specText, currentListPosition));
-  //       }else{
-  //           lastWorkExperience(senderId);      
-  //       }
-  // }else if(postbacks.frontEnd.indexOf(skill) !== -1 ){
-  //       postbacks.frontEnd = find.filter(postbacks.frontEnd, skill);
-  //       if(postback.frontEnd.length !== 0){
-  //           currentSpecialization = postbacks.frontEnd; 
-  //           sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, currentListPosition));
-  //       }else{
-  //           lastWorkExperience(senderId);  
-  //       }
-  // }else if(postbacks.Android.indexOf(skill) !== -1 ){ 
-  //       postbacks.Android = find.filter(postbacks.Android, skill);
-  //       currentSpecialization = postbacks.Android; 
-  //       sendMessage(senderId, structedRequest(postbacks.Android, specText, currentListPosition));
-  // }else if(postbacks.IOS.indexOf(skill) !== -1 ){ 
-  //       postbacks.IOS = find.filter(postbacks.IOS, skill);
-  //       currentSpecialization = postbacks.IOS; 
-  //       sendMessage(senderId, structedRequest(postbacks.IOS, specText, currentSpecialization));
-  // }else{
-  //   previousNextButtonNavigation(event, senderId, currentSpecialization);
-  // }
-  console.log(currentListPosition);
   allSenders[senderId].skills.push(skill);
 }
 
