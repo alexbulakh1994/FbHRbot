@@ -242,12 +242,22 @@ function chooseSkills(event, senderId){
   if(postbacks.backEnd.indexOf(skill) !== -1 ){
         console.log('Choose backEnd language');
         postbacks.backEnd = find.filter(postbacks.backEnd, skill);
-        currentSpecialization = postbacks.backEnd;
-        sendMessage(senderId, structedRequest(postbacks.backEnd, specText, currentListPosition));
+        if(postbacks.backEnd.length !== 0){
+            currentSpecialization = postbacks.backEnd;
+            sendMessage(senderId, structedRequest(postbacks.backEnd, specText, currentListPosition));
+        }else{
+            allSenders[senderId].states++;
+            sendMessage(senderId, {text:"What is last place of your work ?"});      
+        }
   }else if(postbacks.frontEnd.indexOf(skill) !== -1 ){
         postbacks.frontEnd = find.filter(postbacks.frontEnd, skill);
-        currentSpecialization = postbacks.frontEnd; 
-        sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, currentListPosition));
+        if(postback.frontEnd.length !== 0){
+            currentSpecialization = postbacks.frontEnd; 
+            sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, currentListPosition));
+        }else{
+            allSenders[senderId].states++;
+            sendMessage(senderId, {text:"What is last place of your work ?"});      
+        }
   }else if(postbacks.Android.indexOf(skill) !== -1 ){ 
         postbacks.Android = find.filter(postbacks.Android, skill);
         currentSpecialization = postbacks.Android; 
