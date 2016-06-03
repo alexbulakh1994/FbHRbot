@@ -1,4 +1,5 @@
 var postbacks = require('./postbacks');
+var MAX_BUTTON_NUMBERS = 3;
 
 var buttonsConstructor = function(elements){
   var buttons = [];
@@ -14,7 +15,7 @@ Number.prototype.mod = function(n) {
 
 var request = function(objArray, text, currentListPosition){
     var buttons = [];
-    if(currentListPosition !== undefined){
+    if(currentListPosition !== undefined && objArray >= MAX_BUTTON_NUMBERS){
         if(currentListPosition < 0){
             buttons.push(objArray[Number(currentListPosition).mod(objArray.length)]);
         }else{
@@ -23,7 +24,7 @@ var request = function(objArray, text, currentListPosition){
         buttons = buttons.concat(postbacks.previousNextButton);
     }else
         buttons = objArray;
-        
+
     return {
         attachment: {
             type: "template",
