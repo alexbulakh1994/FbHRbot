@@ -124,6 +124,9 @@ app.post('/webhook/', function (req, res) {
   		
   		allSenders[senderId].states++;
   		sendMessage(senderId, {text:"What is last place of your work ?"});
+    }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 7){
+      allSenders[senderId].states = 6;
+      sendMessage(senderId, structedRequest(postbacks.specialization, specText, 0));
     }else if(event.message && event.message.text && allSenders[senderId].states === 8){
   		
   		personExperience(event, senderId);
