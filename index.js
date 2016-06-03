@@ -309,12 +309,12 @@ function personExperience(event, senderId){
 
 function attachedFile(senderId, attachedObj){
 	if(attachedObj.type === 'file'){
-  				allSenders[senderId].cv_url = attachedObj.payload.url;
-  				allSenders[senderId].states++;
-  				sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
-  			}else{
-  				sendMessage(senderId, {text:"Please send CV in doc or pdf format"}); 
-  			}
+  		allSenders[senderId].cv_url = attachedObj.payload.url;
+  		allSenders[senderId].states++;
+  		sendMessage(senderId, structedRequest(postbacks.save, saveText)); 
+  }else{
+  		sendMessage(senderId, {text:"Please send CV in doc or pdf"}); 
+  }
 }
 
 function saveInformation(event, senderId){
