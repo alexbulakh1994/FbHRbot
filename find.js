@@ -12,6 +12,7 @@ function findAttachObject(messageArray){
 		}
 			
 	}
+	return null;
 }
 
 function findMessageState(messageArray){

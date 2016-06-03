@@ -309,7 +309,7 @@ function personExperience(event, senderId){
 }
 
 function attachedFile(senderId, attachedObj){
-	if(attachedObj.hasOwnProperty('type') !== true){
+	if(attachedObj === null){
       sendMessage(senderId, {text:"Please send CV in doc or pdf"});  
   }else if(attachedObj.type === 'file'){
   		allSenders[senderId].cv_url = attachedObj.payload.url;
