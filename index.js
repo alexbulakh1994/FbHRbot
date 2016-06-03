@@ -188,7 +188,7 @@ function telephoneValidation(event, senderId){
       allSenders[senderId].states++;
       console.log('current state  is ' + allSenders[senderId].states);
       allSenders[senderId].phone = event.message.text;
-      sendMessage(senderId, structedRequest(postbacks.specialistType, specText, currentListPosition));
+      sendMessage(senderId, structedRequest(postbacks.specialistType, ITSpeciality, currentListPosition));
     }else{
       sendMessage(senderId, {text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
     }
@@ -197,13 +197,13 @@ function telephoneValidation(event, senderId){
 function  professionChosing(event, senderId){
     if(event.postback && event.postback.payload === 'Developer_postback'){
         allSenders[senderId].states++;
-        sendMessage(senderId, structedRequest(postbacks.specialization, ITSpeciality, 0));
+        sendMessage(senderId, structedRequest(postbacks.specialization, devBranch, 0));
     }else if(event.postback && event.postback.payload === 'QA_postback'){
         allSenders[senderId].states++;
-        sendMessage(senderId, structedRequest(postbacks.testerSpecialization, ITSpeciality));
+        sendMessage(senderId, structedRequest(postbacks.testerSpecialization, devBranch));
     }else if(event.postback && event.postback.payload === 'PM_postback'){
         allSenders[senderId].states++;
-        sendMessage(senderId, structedRequest(postbacks.projectSpecialization, ITSpeciality));
+        sendMessage(senderId, structedRequest(postbacks.projectSpecialization, devBranch));
     }else if(event.postback && event.postback.payload === 'Analyst_postback'){
 
     }else{
@@ -217,22 +217,22 @@ function specialization(event, senderId){
         postbacks.specialization = find.filter(postbacks.specialization, 'FrontEnd');
         currentSpecialization = postbacks.frontEnd;
     		allSenders[senderId].specialization = 'frontEndDev';
-    		sendMessage(senderId, structedRequest(postbacks.frontEnd, devBranch, 0));
+    		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
     	}else if(event.postback && event.postback.payload === 'Android_postback'){
             postbacks.specialization = find.filter(postbacks.specialization, 'Android');
             currentSpecialization = postbacks.Android;
     		    allSenders[senderId].specialization = 'Android';
-    		    sendMessage(senderId, structedRequest(postbacks.Android, devBranch, 0));
+    		    sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
     	}else if(event.postback && event.postback.payload === 'Backend_postback'){
             postbacks.specialization = find.filter(postbacks.specialization, 'Backend');
             currentSpecialization = postbacks.backEnd;
     		    allSenders[senderId].specialization = 'BackEnd developer';
-    		    sendMessage(senderId, structedRequest(postbacks.backEnd, devBranch, 0));
+    		    sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
     	}else if(event.postback && event.postback.payload === 'IOS_postback'){
            postbacks.specialization = find.filter(postbacks.specialization, 'IOS');
            currentSpecialization = postbacks.IOS;
            allSenders[senderId].specialization = 'IOS developer';
-           sendMessage(senderId, structedRequest(postbacks.IOS, devBranch, 0));
+           sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
       }else if(event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
         previousNextButtonNavigation(event, senderId, postbacks.specialization);
         return;
