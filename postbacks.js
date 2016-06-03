@@ -26,7 +26,7 @@ function findSpecs(skill){
 	}
 }
 
- module.exports findSpecs = findSpecs;
+ module.exports.findSpecs = findSpecs;
  module.exports.frontEnd = frontEndPostbacks;   
  module.exports.backEnd = backEndPostbacks;
  module.exports.Android = androidPostbacks;
