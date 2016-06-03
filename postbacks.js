@@ -7,7 +7,7 @@ var androidPostbacks = ['Java SE', 'Android SDK', 'SQL Lite', 'Groovy', 'MVP', '
 var IOS = ['IOS SDK', 'Objective-C IOS', 'Swift', 'SQL', 'OpenCV'];
 var savePostback = ['Yes', 'No'];
 var locations = ['Kiev', 'Lviv', 'Kharkiv'];
-var testerSpecialization = ['Manual', 'Automate'];
+var testerSpecialization = ['JUnit','SystemA','Manual'];
 var projectSpecialist = ['Junior', 'Middle', 'Senior'];
 var analystTypeSpecialist = ['Market Analyst', 'System Analyst', 'Finance Analyst'];
 

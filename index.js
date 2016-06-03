@@ -113,7 +113,12 @@ app.post('/webhook/', function (req, res) {
          professionChosing(event, senderId);
     }
     else if(event.postback && allSenders[senderId].states === 6 ){
-    	   specialization(event, senderId);
+         if(postbacks.specialization.indexOf(event.postback.payload) !== -1){
+    	       specialization(event, senderId);
+         }else{
+             allSenders[senderId].states++;
+             chooseSkills(event, senderId);
+         }
     }else if(event.postback && allSenders[senderId].states === 7 && event.postback.payload !== 'Yes_postback' 
                                                                 && event.postback.payload !== 'No_postback'){
          chooseSkills(event, senderId);
@@ -204,8 +209,6 @@ function  professionChosing(event, senderId){
     }else if(event.postback && event.postback.payload === 'PM_postback'){
         allSenders[senderId].states++;
         sendMessage(senderId, structedRequest(postbacks.projectSpecialization, devBranch));
-    }else if(event.postback && event.postback.payload === 'Analyst_postback'){
-
     }else{
        previousNextButtonNavigation(event, senderId, postbacks.specialistType);
     }
@@ -236,6 +239,8 @@ function specialization(event, senderId){
       }else if(event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
         previousNextButtonNavigation(event, senderId, postbacks.specialization);
         return;
+      }else{
+
       }
         allSenders[senderId].states++;
         currentListPosition = 0;
@@ -308,9 +313,9 @@ function saveInformation(event, senderId){
 
 function previousNextButtonNavigation(event, senderId, buttons){
   if(event.postback && event.postback.payload === 'Next_postback'){
-        sendMessage(senderId, structedRequest(buttons, specText, ++currentListPosition));
+        sendMessage(senderId, structedRequest(buttons, 'List variants using Next and Previous button', ++currentListPosition));
   }else if(event.postback && event.postback.payload === 'Previous_postback'){
-        sendMessage(senderId, structedRequest(buttons, specText, --currentListPosition));
+        sendMessage(senderId, structedRequest(buttons, 'List variants using Next and Previous button', --currentListPosition));
   }
 }
 
