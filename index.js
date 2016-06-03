@@ -210,7 +210,7 @@ function  professionChosing(event, senderId){
 function specialization(event, senderId){
   
 	console.log(event.postback.payload);
-    	if(event.postback && event.postback.payload === 'Frontend_postback'){
+    	if(event.postback && event.postback.payload === 'FrontEnd_postback'){
         currentSpecialization = postbacks.frontEnd;
     		allSenders[senderId].specialization = 'frontEndDev';
     		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
