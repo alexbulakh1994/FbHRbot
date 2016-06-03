@@ -23,6 +23,7 @@ var request = function(objArray, text, currentListPosition){
         buttons = buttons.concat(postbacks.previousNextButton);
     }else
         buttons = objArray;
+        
     return {
         attachment: {
             type: "template",

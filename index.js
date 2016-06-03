@@ -237,38 +237,51 @@ function specialization(event, senderId){
         currentListPosition = 0;
 }
 
+function lastWorkExperience(senderId){
+     allSenders[senderId].states++;
+     sendMessage(senderId, {text:"What is last place of your work ?"});   
+}
+
 function chooseSkills(event, senderId){
   var skill = event.postback.payload.toString().split('_')[0];
-  if(postbacks.backEnd.indexOf(skill) !== -1 ){
-        console.log('Choose backEnd language');
-        postbacks.backEnd = find.filter(postbacks.backEnd, skill);
-        if(postbacks.backEnd.length !== 0){
-            currentSpecialization = postbacks.backEnd;
-            sendMessage(senderId, structedRequest(postbacks.backEnd, specText, currentListPosition));
-        }else{
-            allSenders[senderId].states++;
-            sendMessage(senderId, {text:"What is last place of your work ?"});      
-        }
-  }else if(postbacks.frontEnd.indexOf(skill) !== -1 ){
-        postbacks.frontEnd = find.filter(postbacks.frontEnd, skill);
-        if(postback.frontEnd.length !== 0){
-            currentSpecialization = postbacks.frontEnd; 
-            sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, currentListPosition));
-        }else{
-            allSenders[senderId].states++;
-            sendMessage(senderId, {text:"What is last place of your work ?"});      
-        }
-  }else if(postbacks.Android.indexOf(skill) !== -1 ){ 
-        postbacks.Android = find.filter(postbacks.Android, skill);
-        currentSpecialization = postbacks.Android; 
-        sendMessage(senderId, structedRequest(postbacks.Android, specText, currentListPosition));
-  }else if(postbacks.IOS.indexOf(skill) !== -1 ){ 
-        postbacks.IOS = find.filter(postbacks.IOS, skill);
-        currentSpecialization = postbacks.IOS; 
-        sendMessage(senderId, structedRequest(postbacks.IOS, specText, currentSpecialization));
+  var skillsSpecialization = findSpecs(skill);
+  
+  skillsSpecialization = find.filter(postbacks.backEnd, skill);
+  if(skillsSpecialization !== 0){
+      currentSpecialization = skillsSpecialization;
+      sendMessage(senderId, structedRequest(skillsSpecialization, specText, currentListPosition));
   }else{
-    previousNextButtonNavigation(event, senderId, currentSpecialization);
+      lastWorkExperience(senderId);      
   }
+
+  // if(postbacks.backEnd.indexOf(skill) !== -1 ){
+  //       console.log('Choose backEnd language');
+  //       postbacks.backEnd = find.filter(postbacks.backEnd, skill);
+  //       if(postbacks.backEnd.length !== 0){
+  //           currentSpecialization = postbacks.backEnd;
+  //           sendMessage(senderId, structedRequest(postbacks.backEnd, specText, currentListPosition));
+  //       }else{
+  //           lastWorkExperience(senderId);      
+  //       }
+  // }else if(postbacks.frontEnd.indexOf(skill) !== -1 ){
+  //       postbacks.frontEnd = find.filter(postbacks.frontEnd, skill);
+  //       if(postback.frontEnd.length !== 0){
+  //           currentSpecialization = postbacks.frontEnd; 
+  //           sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, currentListPosition));
+  //       }else{
+  //           lastWorkExperience(senderId);  
+  //       }
+  // }else if(postbacks.Android.indexOf(skill) !== -1 ){ 
+  //       postbacks.Android = find.filter(postbacks.Android, skill);
+  //       currentSpecialization = postbacks.Android; 
+  //       sendMessage(senderId, structedRequest(postbacks.Android, specText, currentListPosition));
+  // }else if(postbacks.IOS.indexOf(skill) !== -1 ){ 
+  //       postbacks.IOS = find.filter(postbacks.IOS, skill);
+  //       currentSpecialization = postbacks.IOS; 
+  //       sendMessage(senderId, structedRequest(postbacks.IOS, specText, currentSpecialization));
+  // }else{
+  //   previousNextButtonNavigation(event, senderId, currentSpecialization);
+  // }
   console.log(currentListPosition);
   allSenders[senderId].skills.push(skill);
 }
