@@ -121,7 +121,7 @@ app.post('/webhook/', function (req, res) {
          continueChooseWorkSkills(senderId);   
     }else if(event.postback && allSenders[senderId].states === 7 && (event.postback.payload === 'Yes_postback' 
                                                                                             || event.postback.payload === 'No_postback')){
-        if(event.postback === 'Yes_postback'){
+        if(event.postback.payload === 'Yes_postback'){
             continueChooseWorkSkills(senderId);
         }else{
             finishChoosingSkills(senderId);
