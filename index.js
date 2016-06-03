@@ -91,6 +91,7 @@ app.post('/webhook/', function (req, res) {
     event = req.body.entry[0].messaging[i]; 
     var senderId = event.sender.id;
     var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
+    console.log(req.body.entry[0]);
 
     if (event.message && event.message.text && !allSenders[senderId]) {
     	
