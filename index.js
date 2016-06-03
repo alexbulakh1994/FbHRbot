@@ -123,7 +123,7 @@ app.post('/webhook/', function (req, res) {
                                                                 && event.postback.payload !== 'No_postback'){
          chooseSkills(event, senderId);
     }else if((event.message && event.message.text === 'finish' && allSenders[senderId].states === 7) ||
-                               event.postbacks && allSenders[senderId].states === 7 && postbacks.specialization.length < 4){
+                               (event.postbacks && allSenders[senderId].states === 7 && postbacks.specialization.length < 4)){
   		   finishChoosingSkills(senderId);     
     }else if(event.postback && allSenders[senderId].states === 7 && postback.specialization.length < 4 &&
                             (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
