@@ -215,21 +215,25 @@ function specialization(event, senderId){
   
 	console.log(event.postback.payload);
     	if(event.postback && event.postback.payload === 'FrontEnd_postback'){
+        postbacks.frontEnd = find.filter(postbacks.specialization, 'FrontEnd');
         currentSpecialization = postbacks.frontEnd;
     		allSenders[senderId].specialization = 'frontEndDev';
     		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
     	}else
     	  if(event.postback && event.postback.payload === 'Android_postback'){
+            postbacks.Android = find.filter(postbacks.specialization, 'Android');
             currentSpecialization = postbacks.Android;
     		    allSenders[senderId].specialization = 'Android';
     		    sendMessage(senderId, structedRequest(postbacks.Android, specText));
     	}else
     		if(event.postback && event.postback.payload === 'Backend_postback'){
+            postbacks.backEnd = find.filter(postbacks.specialization, 'Backend');
             currentSpecialization = postbacks.backEnd;
     		    allSenders[senderId].specialization = 'BackEnd developer';
     		    sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
   
     	}else if(event.postback && event.postback.payload === 'IOS_postback'){
+           postbacks.IOS = find.filter(postbacks.specialization, 'IOS');
            currentSpecialization = postbacks.IOS;
            allSenders[senderId].specialization = 'IOS developer';
            sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
