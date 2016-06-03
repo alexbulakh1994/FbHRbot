@@ -15,7 +15,7 @@ Number.prototype.mod = function(n) {
 
 var request = function(objArray, text, currentListPosition){
     var buttons = [];
-    if(currentListPosition !== undefined && objArray >= MAX_BUTTON_NUMBERS){
+    if(currentListPosition !== undefined && objArray > MAX_BUTTON_NUMBERS){
         if(currentListPosition < 0){
             buttons.push(objArray[Number(currentListPosition).mod(objArray.length)]);
         }else{
