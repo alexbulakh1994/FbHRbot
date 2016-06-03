@@ -122,21 +122,18 @@ app.post('/webhook/', function (req, res) {
     }else if(event.postback && allSenders[senderId].states === 7 && event.postback.payload !== 'Yes_postback' 
                                                                 && event.postback.payload !== 'No_postback'){
          chooseSkills(event, senderId);
-    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7 ){
-  		   finishChoosingSkills(senderId);
-    }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 7){
-         continueChooseWorkSkills(senderId);   
-    }else if(event.postback && allSenders[senderId].states === 7 && (event.postback.payload === 'Yes_postback' 
-                                                                                           || event.postback.payload === 'No_postback')){
-        if( postbacks.specialization.length < 4){  
+    }else if((event.message && event.message.text === 'finish' && allSenders[senderId].states === 7) ||
+                               event.postbacks && allSenders[senderId].states === 7 && postbacks.specialization.length < 4){
+  		   finishChoosingSkills(senderId);     
+    }else if(event.postback && allSenders[senderId].states === 7 && postback.specialization.length < 4 &&
+                            (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
+      
           if(event.postback.payload === 'Yes_postback'){
               continueChooseWorkSkills(senderId);
           }else{
               finishChoosingSkills(senderId);
           }
-        }else{
-          finishChoosingSkills(senderId);
-        }
+        
     }else if(event.message && event.message.text && allSenders[senderId].states === 8){
   		personExperience(event, senderId);
     }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 9){
