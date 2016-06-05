@@ -264,7 +264,9 @@ function lastWorkExperience(senderId){
 function chooseSkills(event, senderId){
   var skill = event.postback.payload.toString().split('_')[0];
   var skillsSpecialization = postbacks.findSpecs(skill);
-  if(skillsSpecialization.length !== 0){
+  if(skillsSpecialization === null){
+       previousNextButtonNavigation(event, senderId, currentSpecialization);
+  }else if(skillsSpecialization.length !== 0){
       currentSpecialization = skillsSpecialization;
       sendMessage(senderId, structedRequest(skillsSpecialization, specText, currentListPosition));
   }else if(postbacks.testerSpecialization.length === 0 || postbacks.projectSpecialization.length === 0){
