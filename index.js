@@ -266,7 +266,7 @@ function chooseSkills(event, senderId){
   if(skillsSpecialization.length !== 0){
       currentSpecialization = skillsSpecialization;
       sendMessage(senderId, structedRequest(skillsSpecialization, specText, currentListPosition));
-  }else if(postbacks.testerSpecialization.length === 0 || postbacks.projectSpecialization.length === 0){
+  }else if(postbacks.specialization.length === 4){
       finishChoosingSkills(senderId);      
   }else{
       lastWorkExperience(senderId);
