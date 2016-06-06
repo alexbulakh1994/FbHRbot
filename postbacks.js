@@ -18,9 +18,11 @@ var Schema = new mongoose.Schema({
 });
 
 function loadDatabaseInfo(){
-	mongoose.model('specialistType', Schema, 'specialistType').find(function(err, item){
-		    console.log(item[0].toObject());
-			specialistType.push(item[0].toObject().name);		
+	mongoose.model('specialistType', Schema, 'specialistType').find(function(err, result){
+		    //console.log(item[0].toObject());
+		    result.forEach(function(item, i, arr){
+				specialistType.push(item.toObject().name);
+			});		
 		});
 }
 
