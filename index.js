@@ -313,7 +313,7 @@ function attachedFile(senderId, attachedObj){
 }
 
 function saveInformation(event, senderId){
-	if(event.postback.payload === 'yes_save'){
+	if(event.postback.payload === 'Yes_postback'){
   			insertData(allSenders[senderId]);
   			sendMessage(senderId, {text:"All information about you was saved."});
   		}else{
