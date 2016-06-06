@@ -13,7 +13,6 @@ var testerSpecialization = ['JUnit','SystemA','Manual'];
 var projectSpecialist = ['Junior', 'Middle', 'Senior'];
 var analystTypeSpecialist = ['Market Analyst', 'System Analyst', 'Finance Analyst'];
 
-mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
 var Schema = new mongoose.Schema({
 	name : String
 });
