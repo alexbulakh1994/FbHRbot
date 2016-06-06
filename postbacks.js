@@ -17,13 +17,14 @@ var Schema = new mongoose.Schema({
 	name : String
 });
 
-function loadDatabaseInfo(){
-	mongoose.model('specialistType', Schema, 'specialistType').find(function(err, result){
-		    //console.log(item[0].toObject());
-		    result.forEach(function(item, i, arr){
-				specialistType.push(item.toObject().name);
-			});		
-		});
+function loadDatabaseInfo(loadingArray){
+	loadingArray.forEach(function(elem, i, arr){
+		mongoose.model(elem, Schema, elem).find(function(err, result){
+			    result.forEach(function(item, i, arr){
+					eval(elem).push(item.toObject().name);
+				});		
+			});
+    });
 }
 
 function findSpecs(skill){
