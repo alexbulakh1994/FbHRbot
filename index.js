@@ -83,7 +83,7 @@ var Schema = new mongoose.Schema({
 });
 mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
 var client = mongoose.model('clients', Schema, 'clients');
-postbacks.loadDatabaseInfo(['specialistType']);
+postbacks.loadDatabaseInfo();
 //----------------------------------------
 
 

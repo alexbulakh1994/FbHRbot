@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
 
 var specialistType = []; // = ['Developer', 'QA', 'PM', 'Analyst'];
-var previousNextButton = ['Previous', 'Next'];
-var specialization = ['Backend', 'FrontEnd', 'Android', 'IOS'];
-var backEndPostbacks = ['C', 'C++', 'C#', 'Objective-C', 'PHP', 'Ruby', 'Scala', 'Erlang', 'Go', '1C'];
-var frontEndPostbacks = ['Html CSS', 'JavaScript', 'Angular JS', 'ReatOS', 'BootStrap'];
-var androidPostbacks = ['Java SE', 'Android SDK', 'SQL Lite', 'Groovy', 'MVP', 'RxJava', 'Dagger2'];
-var IOS = ['IOS SDK', 'Objective-C IOS', 'Swift', 'SQL', 'OpenCV'];
-var savePostback = ['Yes', 'No'];
-var locations = ['Kiev', 'Lviv', 'Kharkiv'];
+var previousNextButton = [];//['Previous', 'Next'];
+var specialization = [];//['Backend', 'FrontEnd', 'Android', 'IOS'];
+var backEndPostbacks = [];//['C', 'C++', 'C#', 'Objective-C', 'PHP', 'Ruby', 'Scala', 'Erlang', 'Go', '1C'];
+var frontEndPostbacks = [];//['Html CSS', 'JavaScript', 'Angular JS', 'ReatOS', 'BootStrap'];
+var androidPostbacks = [];//['Java SE', 'Android SDK', 'SQL Lite', 'Groovy', 'MVP', 'RxJava', 'Dagger2'];
+var IOS = [];//['IOS SDK', 'Objective-C IOS', 'Swift', 'SQL', 'OpenCV'];
+var savePostback = [];//['Yes', 'No'];
+var locations = [];//['Kiev', 'Lviv', 'Kharkiv'];
 var testerSpecialization = ['JUnit','SystemA','Manual'];
 var projectSpecialist = ['Junior', 'Middle', 'Senior'];
 var analystTypeSpecialist = ['Market Analyst', 'System Analyst', 'Finance Analyst'];
@@ -17,7 +17,9 @@ var Schema = new mongoose.Schema({
 	name : String
 });
 
-function loadDatabaseInfo(loadingArray){
+function loadDatabaseInfo(){
+	var loadingArray = ['specialistType', 'previousNextButton', 'specialization', 'backEndPostbacks','frontEndPostbacks',
+										'androidPostbacks','IOS','savePostback','locations'];
 	loadingArray.forEach(function(elem, i, arr){
 		mongoose.model(elem, Schema, elem).find(function(err, result){
 			    result.forEach(function(item, i, arr){
