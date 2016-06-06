@@ -20,7 +20,7 @@ var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)
 
 var phoneExp = new RegExp(/^(\+38|38|8){0,1}[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
 var currentListPosition = 0;
-var currentSpecialization;
+var currentSpecialization = null;
 
 //--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
@@ -73,16 +73,19 @@ function sendMessage(sender, messageData) {
 var Schema = new mongoose.Schema({
 	surname : String,
 	name: String,
-	specialization: String,
+  ITSpeciality: String,
+	devSpecialization: [String],
 	skills: [String],
   email: String,
   phone: String,
 	cv_url: String,
   city: String,
+  experience: String,
 	states: Number
 });
 mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
 var client = mongoose.model('clients', Schema, 'clients');
+// load DB dates to node JS arrays
 postbacks.loadDatabaseInfo();
 //----------------------------------------
 
@@ -123,18 +126,18 @@ app.post('/webhook/', function (req, res) {
          }
     }else if(event.postback && allSenders[senderId].states === 7 && event.postback.payload !== 'Yes_postback' 
                                                                 && event.postback.payload !== 'No_postback'){
-         chooseSkills(event, senderId);
+           chooseSkills(event, senderId);
+    }else if(event.message && event.message.text === 'prev' && allSenders[senderId] === 7 ){
+           continueChooseWorkSkills(senderId);
     }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7){
-  		   finishChoosingSkills(senderId);     
+  		     finishChoosingSkills(senderId);     
     }else if(event.postback && allSenders[senderId].states === 7 &&
                             (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
-      
           if(event.postback.payload === 'Yes_postback'){
               continueChooseWorkSkills(senderId);
           }else{
               finishChoosingSkills(senderId);
           }
-        
     }else if(event.message && event.message.text && allSenders[senderId].states === 8){
   		personExperience(event, senderId);
     }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 9){
@@ -159,7 +162,6 @@ function introducePerson(event, senderId){
     var FIO = event.message.text.split(' ');
     allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
-    //sendMessage(senderId, structedRequest(postbacks.specialization, specText));
     sendMessage(senderId, structedRequest(postbacks.locations, chooseLocation));
 }
 
@@ -206,13 +208,18 @@ function  professionChosing(event, senderId){
         sendMessage(senderId, structedRequest(postbacks.specialization, devBranch, 0));
     }else if(event.postback && event.postback.payload === 'QA_postback'){
         allSenders[senderId].states++;
+        currentSpecialization = postbacks.testerSpecialization;
         sendMessage(senderId, structedRequest(postbacks.testerSpecialization, devBranch));
     }else if(event.postback && event.postback.payload === 'PM_postback'){
         allSenders[senderId].states++;
+        currentSpecialization = postbacks.projectSpecialization;
         sendMessage(senderId, structedRequest(postbacks.projectSpecialization, devBranch));
     }else{
        previousNextButtonNavigation(event, senderId, postbacks.specialistType);
+       return;
     }
+       allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
+
 }
 
 function specialization(event, senderId){
@@ -220,31 +227,26 @@ function specialization(event, senderId){
     	if(event.postback && event.postback.payload === 'FrontEnd_postback'){
         postbacks.specialization = find.filter(postbacks.specialization, 'FrontEnd');
         currentSpecialization = postbacks.frontEnd;
-    		allSenders[senderId].specialization = 'frontEndDev';
     		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
     	}else if(event.postback && event.postback.payload === 'Android_postback'){
             postbacks.specialization = find.filter(postbacks.specialization, 'Android');
             currentSpecialization = postbacks.Android;
-    		    allSenders[senderId].specialization = 'Android';
     		    sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
     	}else if(event.postback && event.postback.payload === 'Backend_postback'){
             postbacks.specialization = find.filter(postbacks.specialization, 'Backend');
             currentSpecialization = postbacks.backEnd;
-    		    allSenders[senderId].specialization = 'BackEnd developer';
     		    sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
     	}else if(event.postback && event.postback.payload === 'IOS_postback'){
            postbacks.specialization = find.filter(postbacks.specialization, 'IOS');
            currentSpecialization = postbacks.IOS;
-           allSenders[senderId].specialization = 'IOS developer';
            sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
       }else if(event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
-        previousNextButtonNavigation(event, senderId, postbacks.specialization);
+           previousNextButtonNavigation(event, senderId, postbacks.specialization);
         return;
-      }else{
-
       }
-        allSenders[senderId].states++;
-        currentListPosition = 0;
+           allSenders[senderId].devSpecialization.push(event.postback.payload.split('_')[0]);
+           allSenders[senderId].states++;
+           currentListPosition = 0;
 }
 
 function continueChooseWorkSkills(senderId){
@@ -266,6 +268,7 @@ function chooseSkills(event, senderId){
   var skillsSpecialization = postbacks.findSpecs(skill);
   if(skillsSpecialization === null){
        previousNextButtonNavigation(event, senderId, currentSpecialization);
+       return;
   }else if(skillsSpecialization.length !== 0){
       currentSpecialization = skillsSpecialization;
       sendMessage(senderId, structedRequest(skillsSpecialization, specText, currentListPosition));
@@ -285,6 +288,7 @@ function personExperience(event, senderId){
   		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1]) ){
   			if(startWorking < finishWorking){	
     			allSenders[senderId].states++;
+          allSenders[senderId].exrerience = (finishWorking - startWorking).toString();
     			sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
     		}else{
     			sendMessage(senderId, {text:"What is your exrerience? First date must be smaller than second."});
