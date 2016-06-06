@@ -237,7 +237,7 @@ function specialization(event, senderId){
             currentSpecialization = postbacks.Android;
     		    sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
     	}else if(event.postback && event.postback.payload === 'BackEnd_postback'){
-            postbacks.specialization = find.filter(postbacks.specialization, 'Backend');
+            postbacks.specialization = find.filter(postbacks.specialization, 'BackEnd');
             currentSpecialization = postbacks.backEnd;
     		    sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
     	}else if(event.postback && event.postback.payload === 'IOS_postback'){
