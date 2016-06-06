@@ -9,9 +9,8 @@ var androidPostbacks = [];//['Java SE', 'Android SDK', 'SQL Lite', 'Groovy', 'MV
 var IOS = [];//['IOS SDK', 'Objective-C IOS', 'Swift', 'SQL', 'OpenCV'];
 var savePostback = [];//['Yes', 'No'];
 var locations = [];//['Kiev', 'Lviv', 'Kharkiv'];
-var testerSpecialization = ['JUnit','SystemA','Manual'];
-var projectSpecialist = ['Junior', 'Middle', 'Senior'];
-var analystTypeSpecialist = ['Market Analyst', 'System Analyst', 'Finance Analyst'];
+var testerSpecialization = ['JUnit','Automation','Manual'];
+var projectSpecialist = ['Upper English', 'Agile', 'Scrum', 'Effect time manager', 'Nice Presentation', 'MS Office'];
 
 var Schema = new mongoose.Schema({
 	name : String
