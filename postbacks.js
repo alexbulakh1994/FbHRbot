@@ -1,4 +1,6 @@
-var specialistType = ['Developer', 'QA', 'PM', 'Analyst'];
+var mongoose = require('mongoose');
+
+var specialistType = []; // = ['Developer', 'QA', 'PM', 'Analyst'];
 var previousNextButton = ['Previous', 'Next'];
 var specialization = ['Backend', 'FrontEnd', 'Android', 'IOS'];
 var backEndPostbacks = ['C', 'C++', 'C#', 'Objective-C', 'PHP', 'Ruby', 'Scala', 'Erlang', 'Go', '1C'];
@@ -11,6 +13,16 @@ var testerSpecialization = ['JUnit','SystemA','Manual'];
 var projectSpecialist = ['Junior', 'Middle', 'Senior'];
 var analystTypeSpecialist = ['Market Analyst', 'System Analyst', 'Finance Analyst'];
 
+mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
+var Schema = new mongoose.Schema({
+	name : String
+});
+
+function loadDatabaseInfo(){
+	mongoose.model('specialistType', Schema, 'specialistType').find(function(err, item){
+			specialistType.push(item.name);		
+		});
+}
 
 function findSpecs(skill){
 	if(backEndPostbacks.indexOf(skill) !== -1){
@@ -42,6 +54,7 @@ function filter(arr, payloadDel){
     return arr;             
 }
 
+ module.exports.loadDatabaseInfo = loadDatabaseInfo;
  module.exports.findSpecs = findSpecs;
  module.exports.frontEnd = frontEndPostbacks;   
  module.exports.backEnd = backEndPostbacks;
