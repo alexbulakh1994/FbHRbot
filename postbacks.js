@@ -19,6 +19,7 @@ var Schema = new mongoose.Schema({
 
 function loadDatabaseInfo(){
 	mongoose.model('specialistType', Schema, 'specialistType').find(function(err, item){
+		    console.log(item);
 			specialistType.push(item.name);		
 		});
 }

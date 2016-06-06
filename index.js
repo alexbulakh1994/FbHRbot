@@ -193,7 +193,6 @@ function emailValidation(event, senderId){
 function telephoneValidation(event, senderId){
     if(phoneExp.test(event.message.text)){  
       allSenders[senderId].states++;
-      console.log('current state  is ' + allSenders[senderId].states);
       allSenders[senderId].phone = event.message.text;
       sendMessage(senderId, structedRequest(postbacks.specialistType, ITSpeciality, currentListPosition));
     }else{
@@ -282,9 +281,6 @@ function personExperience(event, senderId){
 	var dateTimes = event.message.text.split(' ');
   		var startWorking = new Date(dateTimes[0]);
   		var finishWorking = new Date(dateTimes[1]);
-
-      console.log(dateTimes);
-      console.log('timeFirst : ' + startWorking + 'finishWorking : ' + finishWorking);
   
   		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1]) ){
   			if(startWorking < finishWorking){	
