@@ -128,7 +128,11 @@ app.post('/webhook/', function (req, res) {
                                                                 && event.postback.payload !== 'No_postback'){
            chooseSkills(event, senderId);
     }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 7 ){
-           continueChooseWorkSkills(senderId);
+          if(postbacks.testerSpecialization.indexOf(currentSpecialization[0]) === -1 && postbacks.projectSpecialization.indexOf(currentSpecialization[0]) === -1){
+             continueChooseWorkSkills(senderId);
+          }else{
+             sendMessage(senderId, {text:"You couldnot go to upper level. What is last place of your work ?"});
+          } 
     }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7){
   		     finishChoosingSkills(senderId);     
     }else if(event.postback && allSenders[senderId].states === 7 &&
