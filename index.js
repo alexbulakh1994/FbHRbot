@@ -22,9 +22,6 @@ var chooseLocation = "Choose city where do you live ?";
 ////////////////---------regex for email and phone------------///////////////////////
 var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 var phoneExp = new RegExp(/^(\+38|38|8){0,1}[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
-////////////////----------applied variable for list iteration using prev/next------//////////
-var currentListPosition = 0;
-var currentSpecialization = null;
 
 //--------------------------------------------------------------------------
 app.set('port', (process.env.PORT || 5000));
@@ -196,7 +193,8 @@ function telephoneValidation(event, senderId){
     if(phoneExp.test(event.message.text)){  
       allSenders[senderId].states++;
       allSenders[senderId].phone = event.message.text;
-      sendMessage(senderId, structedRequest(postbacks.specialistType, ITSpeciality, currentListPosition));
+      allSenders[senderId].currentListPosition = 0;
+      sendMessage(senderId, structedRequest(postbacks.specialistType, ITSpeciality, allSenders[senderId].currentListPosition));
     }else{
       sendMessage(senderId, {text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
     }
@@ -246,7 +244,7 @@ function specialization(event, senderId){
       }
            allSenders[senderId].devSpecialization.push(event.postback.payload.split('_')[0]);
            allSenders[senderId].states++;
-           currentListPosition = 0;
+           allSenders[senderId].currentListPosition = 0;
 }
 
 function continueChooseWorkSkills(senderId){
@@ -271,7 +269,7 @@ function chooseSkills(event, senderId){
        return;
   }else if(skillsSpecialization.length !== 0){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
-      sendMessage(senderId, structedRequest(skillsSpecialization, specText, currentListPosition));
+      sendMessage(senderId, structedRequest(skillsSpecialization, specText, allSenders[senderId].currentListPosition));
   }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialization.length === 0){
       finishChoosingSkills(senderId);      
   }else{
@@ -321,9 +319,9 @@ function saveInformation(event, senderId){
 
 function previousNextButtonNavigation(event, senderId, buttons){
   if(event.postback && event.postback.payload === 'Next_postback'){
-        sendMessage(senderId, structedRequest(buttons, 'List variants using Next and Previous button', ++currentListPosition));
+        sendMessage(senderId, structedRequest(buttons, 'List variants using Next and Previous button', ++allSenders[senderId].currentListPosition));
   }else if(event.postback && event.postback.payload === 'Previous_postback'){
-        sendMessage(senderId, structedRequest(buttons, 'List variants using Next and Previous button', --currentListPosition));
+        sendMessage(senderId, structedRequest(buttons, 'List variants using Next and Previous button', --allSenders[senderId].currentListPosition));
   }
 }
 
