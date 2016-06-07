@@ -26,7 +26,7 @@ var request = function(objArray, text, currentListPosition){
         console.log('buttons length 3 ' + buttons.length);
     }else{
         buttons = objArray;
-          console.log('buttons length 2 ' + buttons.length);
+          console.log('buttons length 2 ' + buttons.length + 'objArray length is : ' + objArray.length);
     }
 
     return {
