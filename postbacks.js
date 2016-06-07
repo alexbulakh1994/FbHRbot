@@ -67,6 +67,7 @@ function filter(arr, payloadDel){
     return arr;             
 }
 
+ module.exports.gettingClientsDBData = gettingClientsDBData;
  module.exports.loadDatabaseInfo = loadDatabaseInfo;
  module.exports.findSpecs = findSpecs;
  module.exports.frontEnd = frontEndPostbacks;   
