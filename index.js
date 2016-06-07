@@ -233,7 +233,7 @@ function specialization(event, senderId){
     	}else if(event.postback && event.postback.payload === 'BackEnd_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'BackEnd');
             allSenders[senderId].currentSpecialization = allSenders[senderId].backEndPostbacks;
-    		    sendMessage(senderId, structedRequest(allSenders[senderId].frontEndPostbacks, specText, 0));
+    		    sendMessage(senderId, structedRequest(allSenders[senderId].backEndPostbacks, specText, 0));
     	}else if(event.postback && event.postback.payload === 'IOS_postback'){
            allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'IOS');
            allSenders[senderId].currentSpecialization = allSenders[senderId].IOS;
