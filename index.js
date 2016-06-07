@@ -99,7 +99,7 @@ app.post('/webhook/', function (req, res) {
     event = req.body.entry[0].messaging[i]; 
     var senderId = event.sender.id;
    
-    console.log(allSenders);
+   // console.log(allSenders);
 
         var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
         if (event.message && event.message.text && !allSenders[senderId]) {
@@ -170,7 +170,7 @@ function introducePerson(event, senderId){
     var FIO = event.message.text.split(' ');
     allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
-    sendMessage(senderId, structedRequest(postbacks.locations, chooseLocation);
+    sendMessage(senderId, structedRequest(postbacks.locations, chooseLocation));
 }
 
 function personLocation(event, senderId){
@@ -307,7 +307,7 @@ function attachedFile(senderId, attachedObj){
 }
 
 function saveInformation(event, senderId){
-  console.log(allSenders[senderId]);
+ // console.log(allSenders[senderId]);
 	if(event.postback.payload === 'Yes_postback'){
   			insertData(allSenders[senderId]);
   			sendMessage(senderId, {text:"All information about you was saved."});
