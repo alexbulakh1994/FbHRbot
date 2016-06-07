@@ -13,7 +13,7 @@ var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XIC
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 
 ////////////-------------informative message title------------ ///////////////////////////////////////
-var specText = "If you choose all skills print finish or prev to return on upper level";
+var specText = "If you choose all skills print finish or you could type prev for continue choosing skill in section (BackEnd, FrontEnd, IOS, Android)";
 var devBranch = 'Choose all sphere of developing witch you know';
 var ITSpeciality = 'Choose sphere of IT witch you are interesting'
 var saveText = "Do you want save information about you ?";
@@ -98,9 +98,7 @@ app.post('/webhook/', function (req, res) {
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i]; 
     var senderId = event.sender.id;
-   
-   // console.log(allSenders);
-
+  
         var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
         if (event.message && event.message.text && !allSenders[senderId]) {
              allSenders[senderId] = true;
@@ -111,17 +109,18 @@ app.post('/webhook/', function (req, res) {
         	   introducePerson(event, senderId);
         }else if(event.postback && allSenders[senderId].states === 2){
              personLocation(event, senderId);
-        }
-        else if(event.message && event.message.text && allSenders[senderId].states === 3){
+        }else if(event.postback && allSenders[senderId].states === 3){
+             chooseInformationTypeInputing(event,senderId);
+        }else if(event.message && event.message.text && allSenders[senderId].states === 4){
              emailValidation(event, senderId);
         }
-        else if(event.message && event.message.text && allSenders[senderId].states === 4){
+        else if(event.message && event.message.text && allSenders[senderId].states === 5){
              telephoneValidation(event, senderId);
         }
-        else if(event.postback && allSenders[senderId].states === 5){
+        else if(event.postback && allSenders[senderId].states === 6){
              professionChosing(event, senderId);
         }
-        else if(event.postback && allSenders[senderId].states === 6 ){
+        else if(event.postback && allSenders[senderId].states === 7 ){
              if(allSenders[senderId].specialization.indexOf(event.postback.payload.split('_')[0]) !== -1 
                                                       || event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
         	       specialization(event, senderId);
@@ -129,29 +128,29 @@ app.post('/webhook/', function (req, res) {
                  allSenders[senderId].states++;
                  chooseSkills(event, senderId);
              }
-        }else if(event.postback && allSenders[senderId].states === 7 && event.postback.payload !== 'Yes_postback' 
+        }else if(event.postback && allSenders[senderId].states === 8 && event.postback.payload !== 'Yes_postback' 
                                                                     && event.postback.payload !== 'No_postback'){
                chooseSkills(event, senderId);
-        }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 7 ){
+        }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 8 ){
               if(allSenders[senderId].testerSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === -1 && 
                                         allSenders[senderId].projectSpecialist.indexOf(allSenders[senderId].currentSpecialization[0]) === -1){
                  continueChooseWorkSkills(senderId);
               }else{
                  sendMessage(senderId, {text:"You couldnot go to upper level. What is last place of your work ?"});
               } 
-        }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7){
+        }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 8){
       		     finishChoosingSkills(senderId);     
-        }else if(event.postback && allSenders[senderId].states === 7 && (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
+        }else if(event.postback && allSenders[senderId].states === 8 && (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
               if(event.postback.payload === 'Yes_postback'){
                   continueChooseWorkSkills(senderId);
               }else{
                   finishChoosingSkills(senderId);
               }
-        }else if(event.message && event.message.text && allSenders[senderId].states === 8){
+        }else if(event.message && event.message.text && allSenders[senderId].states === 9){
       		personExperience(event, senderId);
-        }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 9){
+        }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 10){
       		attachedFile(senderId, attachedObj);
-      }else if(event.postback && allSenders[senderId].states === 10){
+      }else if(event.postback && allSenders[senderId].states === 11){
       		saveInformation(event, senderId);	
       } 
   }
@@ -162,7 +161,8 @@ app.post('/webhook/', function (req, res) {
 
 function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
-   sendMessage(senderId, {text: 'Hi. Write Surname and Name'});
+   sendMessage(senderId, {text: 'Hellow, welcome to DataRoot team. You have started to communicate with our HR-bot.' +
+                                'He will ask you a few professional questions, gather all the necessary information. We will review it and contact with you.'});
 }
 
 function introducePerson(event, senderId){
@@ -170,14 +170,27 @@ function introducePerson(event, senderId){
     var FIO = event.message.text.split(' ');
     allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
-    console.log('length is postback is : ' + allSenders[senderId].locations);
     sendMessage(senderId, structedRequest(allSenders[senderId].locations, chooseLocation));
 }
 
 function personLocation(event, senderId){
     allSenders[senderId].city = event.postback.payload.split('_')[0];
     allSenders[senderId].states++;
-    sendMessage(senderId, {text: 'Please enter your email.'});
+    // sendMessage(senderId, {text: 'Please enter your email.'});
+    sendMessage(senderId, structedRequest(postbacks.themselvesInformationType, 'Choose type of information which you want tell us about yourthelf.'));
+}
+
+function chooseInformationTypeInputing(event, senderId){
+    if(event.postback.payload === 'phone number_postback'){
+        allSenders[senderId].states += 2;
+        telephoneValidation(event,senderId);
+    }else if(event.postback.payload === 'email_postback'){
+        allSenders[senderId].states += 2;
+        emailValidation(event,senderId);
+    }else{
+        allSenders[senderId].states++;
+        emailValidation(event,senderId);
+    }
 }
 
 function emailValidation(event, senderId){
@@ -222,7 +235,6 @@ function  professionChosing(event, senderId){
 }
 
 function specialization(event, senderId){
-
     	if(event.postback && event.postback.payload === 'FrontEnd_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'FrontEnd');
             allSenders[senderId].currentSpecialization = allSenders[senderId].frontEndPostbacks;
@@ -270,7 +282,7 @@ function chooseSkills(event, senderId){
        return;
   }else if(skillsSpecialization.length !== 0){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
-      sendMessage(senderId, structedRequest(skillsSpecialization, specText, allSenders[senderId].currentListPosition));
+      sendMessage(senderId, structedRequest(skillsSpecialization, 'Finish - go choosing year experience', allSenders[senderId].currentListPosition));
   }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialization.length === 0){
       finishChoosingSkills(senderId);      
   }else{
