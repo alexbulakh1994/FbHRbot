@@ -16,13 +16,13 @@ var Schema = new mongoose.Schema({
 	name : String
 });
 
-function loadDatabaseInfo(){
+function loadDatabaseInfo(obj){
 	var loadingArray = ['specialistType', 'previousNextButton', 'specialization', 'backEndPostbacks','frontEndPostbacks',
 										'androidPostbacks','IOS','savePostback','locations'];
 	loadingArray.forEach(function(elem, i, arr){
 		mongoose.model(elem, Schema, elem).find(function(err, result){
 			    result.forEach(function(item, i, arr){
-					eval(elem).push(item.toObject().name);
+					obj.(eval(elem)).push(item.toObject().name);
 				});		
 			});
     });

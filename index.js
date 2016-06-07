@@ -91,7 +91,7 @@ var Schema = new mongoose.Schema({
 mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
 var client = mongoose.model('clients', Schema, 'clients');
 // load DB dates to node JS arrays
-postbacks.loadDatabaseInfo();
+
 //----------------------------------------
 
 ////////----main itration threw state in witch uset situated--------
@@ -101,58 +101,63 @@ app.post('/webhook/', function (req, res) {
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i]; 
     var senderId = event.sender.id;
-    var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
+    allSenders[senderId] = true;
 
-    if (event.message && event.message.text && !allSenders[senderId]) {
-    	   greeting(senderId);
-    }
-    else if(event.message && event.message.text && allSenders[senderId].states === 1){
-    	   introducePerson(event, senderId);
-    }else if(event.postback && allSenders[senderId].states === 2){
-         personLocation(event, senderId);
-    }
-    else if(event.message && event.message.text && allSenders[senderId].states === 3){
-         emailValidation(event, senderId);
-    }
-    else if(event.message && event.message.text && allSenders[senderId].states === 4){
-         telephoneValidation(event, senderId);
-    }
-    else if(event.postback && allSenders[senderId].states === 5){
-         professionChosing(event, senderId);
-    }
-    else if(event.postback && allSenders[senderId].states === 6 ){
-         if(postbacks.specialization.indexOf(event.postback.payload.split('_')[0]) !== -1 
-                                                  || event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
-    	       specialization(event, senderId);
-         }else{
-             allSenders[senderId].states++;
-             chooseSkills(event, senderId);
-         }
-    }else if(event.postback && allSenders[senderId].states === 7 && event.postback.payload !== 'Yes_postback' 
-                                                                && event.postback.payload !== 'No_postback'){
-           chooseSkills(event, senderId);
-    }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 7 ){
-          if(postbacks.testerSpecialization.indexOf(currentSpecialization[0]) === -1 && postbacks.projectSpecialization.indexOf(currentSpecialization[0]) === -1){
-             continueChooseWorkSkills(senderId);
-          }else{
-             sendMessage(senderId, {text:"You couldnot go to upper level. What is last place of your work ?"});
-          } 
-    }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7){
-  		     finishChoosingSkills(senderId);     
-    }else if(event.postback && allSenders[senderId].states === 7 && (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
-          if(event.postback.payload === 'Yes_postback'){
-              continueChooseWorkSkills(senderId);
-          }else{
-              finishChoosingSkills(senderId);
-          }
-    }else if(event.message && event.message.text && allSenders[senderId].states === 8){
-  		personExperience(event, senderId);
-    }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 9){
-  		attachedFile(senderId, attachedObj);
-  }else if(event.postback && allSenders[senderId].states === 10){
-  		saveInformation(event, senderId);	
-  } 
-}
+    Object.keys(allSenders).forEach(function(senderId){
+        var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
+        if (event.message && event.message.text && !allSenders[senderId]) {
+        	   greeting(senderId);
+             postbacks.loadDatabaseInfo(allSenders[senderId]);
+             console.log(allSenders[senderId].specialization);
+        }
+        else if(event.message && event.message.text && allSenders[senderId].states === 1){
+        	   introducePerson(event, senderId);
+        }else if(event.postback && allSenders[senderId].states === 2){
+             personLocation(event, senderId);
+        }
+        else if(event.message && event.message.text && allSenders[senderId].states === 3){
+             emailValidation(event, senderId);
+        }
+        else if(event.message && event.message.text && allSenders[senderId].states === 4){
+             telephoneValidation(event, senderId);
+        }
+        else if(event.postback && allSenders[senderId].states === 5){
+             professionChosing(event, senderId);
+        }
+        else if(event.postback && allSenders[senderId].states === 6 ){
+             if(postbacks.specialization.indexOf(event.postback.payload.split('_')[0]) !== -1 
+                                                      || event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
+        	       specialization(event, senderId);
+             }else{
+                 allSenders[senderId].states++;
+                 chooseSkills(event, senderId);
+             }
+        }else if(event.postback && allSenders[senderId].states === 7 && event.postback.payload !== 'Yes_postback' 
+                                                                    && event.postback.payload !== 'No_postback'){
+               chooseSkills(event, senderId);
+        }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 7 ){
+              if(postbacks.testerSpecialization.indexOf(currentSpecialization[0]) === -1 && postbacks.projectSpecialization.indexOf(currentSpecialization[0]) === -1){
+                 continueChooseWorkSkills(senderId);
+              }else{
+                 sendMessage(senderId, {text:"You couldnot go to upper level. What is last place of your work ?"});
+              } 
+        }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7){
+      		     finishChoosingSkills(senderId);     
+        }else if(event.postback && allSenders[senderId].states === 7 && (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
+              if(event.postback.payload === 'Yes_postback'){
+                  continueChooseWorkSkills(senderId);
+              }else{
+                  finishChoosingSkills(senderId);
+              }
+        }else if(event.message && event.message.text && allSenders[senderId].states === 8){
+      		personExperience(event, senderId);
+        }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 9){
+      		attachedFile(senderId, attachedObj);
+      }else if(event.postback && allSenders[senderId].states === 10){
+      		saveInformation(event, senderId);	
+      } 
+   });
+  }
 
   res.sendStatus(200);
 });
