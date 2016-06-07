@@ -199,11 +199,12 @@ function emailValidation(event, senderId){
     if(emailExp.test(event.message.text)){
       if(allSenders[senderId].typeInformationChoosing === 'email'){
           allSenders[senderId].states =+ 2;
+          sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality, allSenders[senderId].currentListPosition));
       }else{
           allSenders[senderId].states++;
+           sendMessage(senderId, {text: 'Please enter your mobile phone.'});
       }  
       allSenders[senderId].email = event.message.text;
-      sendMessage(senderId, {text: 'Please enter your mobile phone.'});
     }else{
       sendMessage(senderId, {text: 'Check input information, your email have incorrect format.'});
     }
