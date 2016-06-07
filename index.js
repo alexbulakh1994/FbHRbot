@@ -170,7 +170,7 @@ function introducePerson(event, senderId){
     var FIO = event.message.text.split(' ');
     allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
-    sendMessage(senderId, structedRequest(postbacks.locations, chooseLocation));
+    sendMessage(senderId, structedRequest(allSenders[senderId].locations, chooseLocation));
 }
 
 function personLocation(event, senderId){
@@ -194,7 +194,7 @@ function telephoneValidation(event, senderId){
       allSenders[senderId].states++;
       allSenders[senderId].phone = event.message.text;
       allSenders[senderId].currentListPosition = 0;
-      sendMessage(senderId, structedRequest(postbacks.specialistType, ITSpeciality, allSenders[senderId].currentListPosition));
+      sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality, allSenders[senderId].currentListPosition));
     }else{
       sendMessage(senderId, {text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
     }
@@ -258,7 +258,7 @@ function finishChoosingSkills(senderId){
 }
 
 function lastWorkExperience(senderId){
-     sendMessage(senderId, structedRequest(postbacks.save, 'If you dont choose all skills press YES to continue, else NO'));   
+     sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'If you dont choose all skills press YES to continue, else NO'));   
 }
 
 function chooseSkills(event, senderId){
@@ -302,7 +302,7 @@ function attachedFile(senderId, attachedObj){
   }else if(attachedObj.type === 'file'){
   		allSenders[senderId].cv_url = attachedObj.payload.url;
       allSenders[senderId].states++;
-      sendMessage(senderId, structedRequest(postbacks.save, saveText));
+      sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, saveText));
   }
 }
 
