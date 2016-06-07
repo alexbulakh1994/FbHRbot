@@ -88,7 +88,7 @@ var Schema = new mongoose.Schema({
 mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
 var client = mongoose.model('clients', Schema, 'clients');
 // load DB dates to node JS arrays
-
+ postbacks.loadDatabaseInfo();
 //----------------------------------------
 
 ////////----main itration threw state in witch uset situated--------
@@ -105,7 +105,7 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text && !allSenders[senderId]) {
              allSenders[senderId] = true;
         	   greeting(senderId);
-             postbacks.loadDatabaseInfo(allSenders[senderId]);
+             postbacks.gettingClientsDBData(allSenders[senderId]);
         }
         else if(event.message && event.message.text && allSenders[senderId].states === 1){
         	   introducePerson(event, senderId);

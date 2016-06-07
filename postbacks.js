@@ -16,7 +16,7 @@ var Schema = new mongoose.Schema({
 	name : String
 });
 
-function loadDatabaseInfo(obj){
+function loadDatabaseInfo(){
 	var loadingArray = ['specialistType', 'previousNextButton', 'specialization', 'backEndPostbacks','frontEndPostbacks',
 										'androidPostbacks','IOS','savePostback','locations', 'testerSpecialization', 'projectSpecialist'];
 	loadingArray.forEach(function(elem, i, arr){
@@ -28,6 +28,15 @@ function loadDatabaseInfo(obj){
 			});
     });
 }
+
+function gettingClientsDBData(obj){
+	var loadingArray = ['specialistType', 'previousNextButton', 'specialization', 'backEndPostbacks','frontEndPostbacks',
+										'androidPostbacks','IOS','savePostback','locations', 'testerSpecialization', 'projectSpecialist'];
+	loadingArray.forEach(function(elem, i, arr){
+		obj[elem] = eval(elem);
+	});									
+}
+
 
 function findSpecs(obj, skill){
 	if(obj.backEndPostbacks.indexOf(skill) !== -1){
