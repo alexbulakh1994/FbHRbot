@@ -183,10 +183,12 @@ function personLocation(event, senderId){
 function chooseInformationTypeInputing(event, senderId){
     if(event.postback.payload === 'phone number_postback'){
         allSenders[senderId].states += 2;
-        telephoneValidation(event,senderId);
+         sendMessage(senderId, {text: 'Please enter your mobile phone.'});
+         allSenders[senderId].typeInformationChoosing = 'phone number';
     }else if(event.postback.payload === 'email_postback'){
-        allSenders[senderId].states += 2;
-        emailValidation(event,senderId);
+        allSenders[senderId].states++;
+        allSenders[senderId].typeInformationChoosing = 'email';
+        sendMessage(senderId, {text: 'Please enter your email.'});
     }else{
         allSenders[senderId].states++;
         emailValidation(event,senderId);
@@ -195,7 +197,11 @@ function chooseInformationTypeInputing(event, senderId){
 
 function emailValidation(event, senderId){
     if(emailExp.test(event.message.text)){
-      allSenders[senderId].states++;
+      if(allSenders[senderId].typeInformationChoosing === 'email'){
+          allSenders[senderId].states =+ 2;
+      }else{
+          allSenders[senderId].states++;
+      }  
       allSenders[senderId].email = event.message.text;
       sendMessage(senderId, {text: 'Please enter your mobile phone.'});
     }else{
