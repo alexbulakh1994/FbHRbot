@@ -213,7 +213,7 @@ function  professionChosing(event, senderId){
         allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialization;
         sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialization, devBranch));
     }else{
-       previousNextButtonNavigation(event, senderId, postbacks.specialistType);
+       previousNextButtonNavigation(event, senderId, allSenders[senderId].specialistType);
        return;
     }
        allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
@@ -239,7 +239,7 @@ function specialization(event, senderId){
            allSenders[senderId].currentSpecialization = allSenders[senderId].IOS;
            sendMessage(senderId, structedRequest(allSenders[senderId].IOS, specText, 0));
       }else if(event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
-           previousNextButtonNavigation(event, senderId, postbacks.specialization);
+           previousNextButtonNavigation(event, senderId, allSenders[senderId].specialization);
         return;
       }
            allSenders[senderId].devSpecialization.push(event.postback.payload.split('_')[0]);
@@ -265,7 +265,7 @@ function chooseSkills(event, senderId){
   var skill = event.postback.payload.toString().split('_')[0];
   var skillsSpecialization = postbacks.findSpecs(allSenders[senderId], skill);
   if(skillsSpecialization === null){
-       previousNextButtonNavigation(event, senderId, currentSpecialization);
+       previousNextButtonNavigation(event, senderId, allSenders[senderId].currentSpecialization);
        return;
   }else if(skillsSpecialization.length !== 0){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
