@@ -122,7 +122,7 @@ app.post('/webhook/', function (req, res) {
              professionChosing(event, senderId);
         }
         else if(event.postback && allSenders[senderId].states === 6 ){
-             if(postbacks.specialization.indexOf(event.postback.payload.split('_')[0]) !== -1 
+             if(allSenders[senderId].specialization.indexOf(event.postback.payload.split('_')[0]) !== -1 
                                                       || event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
         	       specialization(event, senderId);
              }else{
@@ -249,7 +249,7 @@ function specialization(event, senderId){
 
 function continueChooseWorkSkills(senderId){
     allSenders[senderId].states = 6;
-    sendMessage(senderId, structedRequest(postbacks.specialization, specText, 0));
+    sendMessage(senderId, structedRequest(allSenders[senderId].specialization, specText, 0));
 }
 
 function finishChoosingSkills(senderId){
