@@ -105,6 +105,7 @@ app.post('/webhook/', function (req, res) {
     console.log(allSenders);
 
     Object.keys(allSenders).forEach(function(senderId){
+      console.log("I am here !");
         var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
         if (event.message && event.message.text && !allSenders[senderId]) {
         	   greeting(senderId);
