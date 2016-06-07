@@ -161,7 +161,7 @@ app.post('/webhook/', function (req, res) {
 
 
 function greeting(senderId){
-	 allSenders[senderId] = new client({states: 1});
+	 allSenders[senderId].states = 1;
    sendMessage(senderId, {text: 'Hi. Write Surname and Name'});
 }
 
