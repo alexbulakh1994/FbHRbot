@@ -108,7 +108,7 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text && !allSenders[senderId]) {
         	   greeting(senderId);
              postbacks.loadDatabaseInfo(allSenders[senderId]);
-             console.log(allSenders[senderId].specialization);
+             console.log(allSenders[senderId].backEnd);
         }
         else if(event.message && event.message.text && allSenders[senderId].states === 1){
         	   introducePerson(event, senderId);
@@ -330,4 +330,6 @@ function insertData(obj){
       if(err) console.log(err);
     });
 }
+
+
 

@@ -22,7 +22,8 @@ function loadDatabaseInfo(obj){
 	loadingArray.forEach(function(elem, i, arr){
 		mongoose.model(elem, Schema, elem).find(function(err, result){
 			    result.forEach(function(item, i, arr){
-					obj.(eval(elem)).push(item.toObject().name);
+					eval(elem).push(item.toObject().name);
+					obj[elem] = eval(elem);
 				});		
 			});
     });
