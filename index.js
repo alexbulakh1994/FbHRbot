@@ -109,7 +109,6 @@ app.post('/webhook/', function (req, res) {
              allSenders[senderId] = true;
         	   greeting(senderId);
              postbacks.loadDatabaseInfo(allSenders[senderId]);
-             console.log(allSenders[senderId].backEnd);
         }
         else if(event.message && event.message.text && allSenders[senderId].states === 1){
         	   introducePerson(event, senderId);
@@ -310,12 +309,14 @@ function attachedFile(senderId, attachedObj){
 }
 
 function saveInformation(event, senderId){
+  console.log(allSenders[senderId]);
 	if(event.postback.payload === 'Yes_postback'){
   			insertData(allSenders[senderId]);
   			sendMessage(senderId, {text:"All information about you was saved."});
   		}else{
   			sendMessage(senderId, {text:"Goodbye! We dont save information about you."});
   		}
+      allSenders[senderId] = {};
 }
 
 function previousNextButtonNavigation(event, senderId, buttons){
