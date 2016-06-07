@@ -101,13 +101,12 @@ app.post('/webhook/', function (req, res) {
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i]; 
     var senderId = event.sender.id;
-    allSenders[senderId] = true;
+   
     console.log(allSenders);
 
-    Object.keys(allSenders).forEach(function(senderId){
-      console.log("I am here !");
         var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
         if (event.message && event.message.text && !allSenders[senderId]) {
+             allSenders[senderId] = true;
         	   greeting(senderId);
              postbacks.loadDatabaseInfo(allSenders[senderId]);
              console.log(allSenders[senderId].backEnd);
@@ -158,7 +157,6 @@ app.post('/webhook/', function (req, res) {
       }else if(event.postback && allSenders[senderId].states === 10){
       		saveInformation(event, senderId);	
       } 
-   });
   }
 
   res.sendStatus(200);
