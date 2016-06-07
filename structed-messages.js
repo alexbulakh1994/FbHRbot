@@ -6,6 +6,7 @@ var buttonsConstructor = function(elements){
   elements.forEach(function(obj){
     buttons.push({type: 'postback', title: obj, payload: obj.concat('_postback')});
   });
+  console.log('buttons length 1 ' + buttons.length);
   return buttons;
 } 
 
@@ -22,8 +23,11 @@ var request = function(objArray, text, currentListPosition){
              buttons.push(objArray[currentListPosition % objArray.length]);
         }
         buttons = buttons.concat(postbacks.previousNextButton);
-    }else
+        console.log('buttons length 3 ' + buttons.length);
+    }else{
         buttons = objArray;
+          console.log('buttons length 2 ' + buttons.length);
+    }
 
     return {
         attachment: {
