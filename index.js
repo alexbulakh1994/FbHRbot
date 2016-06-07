@@ -161,7 +161,7 @@ app.post('/webhook/', function (req, res) {
 
 
 function greeting(senderId){
-	 allSenders[senderId].states = 1;
+	 allSenders[senderId] = new client({states: 1});
    sendMessage(senderId, {text: 'Hi. Write Surname and Name'});
 }
 
@@ -207,7 +207,7 @@ function  professionChosing(event, senderId){
     }else if(event.postback && event.postback.payload === 'QA_postback'){
         allSenders[senderId].states++;
         allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
-        sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, devBranch, 0));
+        sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, devBranch,0));
     }else if(event.postback && event.postback.payload === 'PM_postback'){
         allSenders[senderId].states++;
         allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialization;
