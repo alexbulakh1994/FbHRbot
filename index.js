@@ -9,16 +9,20 @@ var postbacks = require('./postbacks');
 var app = express();
 
 var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XICUrjqo99sdWjqbXL9ytycJLjDTPIOb50vXhZCoFnvbW45ZAl1opG3ny2OdhXo5RxAoaqwNcoMu7pzHY9WrEQtSjC7XMZBhuxzUpyZBmzGQuwZDZD";
-//var regExp = new RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/);
+
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
-var specText = "If you want  all skills print finish or prev to return on upper level";
+
+////////////-------------informative message title------------ ///////////////////////////////////////
+var specText = "If you choose all skills print finish or prev to return on upper level";
 var devBranch = 'Choose all sphere of developing witch you know';
 var ITSpeciality = 'Choose sphere of IT witch you are interesting'
 var saveText = "Do you want save information about you ?";
 var chooseLocation = "Choose city where do you live ?";
-var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
+////////////////---------regex for email and phone------------///////////////////////
+var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 var phoneExp = new RegExp(/^(\+38|38|8){0,1}[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
+////////////////----------applied variable for list iteration using prev/next------//////////
 var currentListPosition = 0;
 var currentSpecialization = null;
 
@@ -69,7 +73,7 @@ function sendMessage(sender, messageData) {
   });
 }
 
-// ------------------------------
+// -----------------database shema object structure
 var Schema = new mongoose.Schema({
 	surname : String,
 	name: String,
@@ -83,13 +87,14 @@ var Schema = new mongoose.Schema({
   experience: String,
 	states: Number
 });
+////////////-----connecting to DB
 mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
 var client = mongoose.model('clients', Schema, 'clients');
 // load DB dates to node JS arrays
 postbacks.loadDatabaseInfo();
 //----------------------------------------
 
-
+////////----main itration threw state in witch uset situated--------
 var allSenders = {};
 app.post('/webhook/', function (req, res) {
   messaging_events = req.body.entry[0].messaging;
@@ -97,7 +102,6 @@ app.post('/webhook/', function (req, res) {
     event = req.body.entry[0].messaging[i]; 
     var senderId = event.sender.id;
     var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
-    console.log(req.body.entry[0]);
 
     if (event.message && event.message.text && !allSenders[senderId]) {
     	   greeting(senderId);
@@ -135,8 +139,7 @@ app.post('/webhook/', function (req, res) {
           } 
     }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 7){
   		     finishChoosingSkills(senderId);     
-    }else if(event.postback && allSenders[senderId].states === 7 &&
-                            (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
+    }else if(event.postback && allSenders[senderId].states === 7 && (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
           if(event.postback.payload === 'Yes_postback'){
               continueChooseWorkSkills(senderId);
           }else{
@@ -145,7 +148,6 @@ app.post('/webhook/', function (req, res) {
     }else if(event.message && event.message.text && allSenders[senderId].states === 8){
   		personExperience(event, senderId);
     }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 9){
-  		
   		attachedFile(senderId, attachedObj);
   }else if(event.postback && allSenders[senderId].states === 10){
   		saveInformation(event, senderId);	
@@ -170,18 +172,7 @@ function introducePerson(event, senderId){
 }
 
 function personLocation(event, senderId){
-    switch(event.postback.payload){
-        case 'Kiev_postback': 
-            allSenders[senderId].city = "Kiev";
-            break;
-        case 'Kharkiv_postback': 
-             allSenders[senderId].city = "Kharkiv";
-            break;
-        case 'Lviv_postback': 
-              allSenders[senderId].city = "Lviv";
-            break;
-    }
-
+    allSenders[senderId].city = event.postback.payload.split('_')[0];
     allSenders[senderId].states++;
     sendMessage(senderId, {text: 'Please enter your email.'});
 }
@@ -317,7 +308,7 @@ function saveInformation(event, senderId){
   			insertData(allSenders[senderId]);
   			sendMessage(senderId, {text:"All information about you was saved."});
   		}else{
-  			sendMessage(senderId, {text:"Good by? we dont savev information about you."});
+  			sendMessage(senderId, {text:"Goodbye! We dont save information about you."});
   		}
 }
 
