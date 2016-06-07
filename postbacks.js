@@ -29,25 +29,25 @@ function loadDatabaseInfo(obj){
     });
 }
 
-function findSpecs(skill){
-	if(backEndPostbacks.indexOf(skill) !== -1){
-		backEndPostbacks = filter(backEndPostbacks, skill);
-		return backEndPostbacks
-	}else if (frontEndPostbacks.indexOf(skill) !== -1){
-		frontEndPostbacks = filter(frontEndPostbacks,skill);
-		return frontEndPostbacks;
-	}else if (androidPostbacks.indexOf(skill) !== -1){
-		androidPostbacks = filter(androidPostbacks,skill);
-		return androidPostbacks;
+function findSpecs(obj, skill){
+	if(obj.backEndPostbacks.indexOf(skill) !== -1){
+		obj.backEndPostbacks = filter(obj.backEndPostbacks, skill);
+		return obj.backEndPostbacks
+	}else if (obj.frontEndPostbacks.indexOf(skill) !== -1){
+		obj.frontEndPostbacks = filter(obj.frontEndPostbacks,skill);
+		return obj.frontEndPostbacks;
+	}else if (obj.androidPostbacks.indexOf(skill) !== -1){
+		obj.androidPostbacks = filter(obj.androidPostbacks,skill);
+		return obj.androidPostbacks;
 	}else if(IOS.indexOf(skill) !== -1){
-		IOS = filter(IOS,skill);
-		return IOS;
-	}else if(testerSpecialization.indexOf(skill) !== -1){
-		testerSpecialization = filter(testerSpecialization,skill);
-		return testerSpecialization;	
-	}else if(projectSpecialist.indexOf(skill) !== -1){
-		projectSpecialist = filter(projectSpecialist,skill);
-		return projectSpecialist;
+		obj.IOS = filter(obj.IOS,skill);
+		return obj.IOS;
+	}else if(obj.testerSpecialization.indexOf(skill) !== -1){
+		obj.testerSpecialization = filter(obj.testerSpecialization,skill);
+		return obj.testerSpecialization;	
+	}else if(obj.projectSpecialist.indexOf(skill) !== -1){
+		obj.projectSpecialist = filter(obj.projectSpecialist,skill);
+		return obj.projectSpecialist;
 	}else{
 		return null;
 	}

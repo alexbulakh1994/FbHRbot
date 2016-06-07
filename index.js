@@ -137,7 +137,8 @@ app.post('/webhook/', function (req, res) {
                                                                     && event.postback.payload !== 'No_postback'){
                chooseSkills(event, senderId);
         }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 7 ){
-              if(postbacks.testerSpecialization.indexOf(currentSpecialization[0]) === -1 && postbacks.projectSpecialization.indexOf(currentSpecialization[0]) === -1){
+              if(allSenders[senderId].testerSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === -1 && 
+                                        allSenders[senderId].projectSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === -1){
                  continueChooseWorkSkills(senderId);
               }else{
                  sendMessage(senderId, {text:"You couldnot go to upper level. What is last place of your work ?"});
@@ -205,15 +206,15 @@ function telephoneValidation(event, senderId){
 function  professionChosing(event, senderId){
     if(event.postback && event.postback.payload === 'Developer_postback'){
         allSenders[senderId].states++;
-        sendMessage(senderId, structedRequest(postbacks.specialization, devBranch, 0));
+        sendMessage(senderId, structedRequest(allSenders[senderId].specialization, devBranch, 0));
     }else if(event.postback && event.postback.payload === 'QA_postback'){
         allSenders[senderId].states++;
-        currentSpecialization = postbacks.testerSpecialization;
-        sendMessage(senderId, structedRequest(postbacks.testerSpecialization, devBranch));
+        allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
+        sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, devBranch));
     }else if(event.postback && event.postback.payload === 'PM_postback'){
         allSenders[senderId].states++;
-        currentSpecialization = postbacks.projectSpecialization;
-        sendMessage(senderId, structedRequest(postbacks.projectSpecialization, devBranch));
+        allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialization;
+        sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialization, devBranch));
     }else{
        previousNextButtonNavigation(event, senderId, postbacks.specialistType);
        return;
@@ -225,21 +226,21 @@ function  professionChosing(event, senderId){
 function specialization(event, senderId){
 
     	if(event.postback && event.postback.payload === 'FrontEnd_postback'){
-        postbacks.specialization = find.filter(postbacks.specialization, 'FrontEnd');
-        currentSpecialization = postbacks.frontEnd;
-    		sendMessage(senderId, structedRequest(postbacks.frontEnd, specText, 0));
+            allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'FrontEnd');
+            allSenders[senderId].currentSpecialization = allSenders[senderId].frontEndPostbacks;
+        		sendMessage(senderId, structedRequest(allSenders[senderId].frontEndPostbacks, specText, 0));
     	}else if(event.postback && event.postback.payload === 'Android_postback'){
-            postbacks.specialization = find.filter(postbacks.specialization, 'Android');
-            currentSpecialization = postbacks.Android;
-    		    sendMessage(senderId, structedRequest(postbacks.Android, specText, 0));
+            allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'Android');
+            allSenders[senderId].currentSpecialization = allSenders[senderId].Android;
+    		    sendMessage(senderId, structedRequest(allSenders[senderId].Android, specText, 0));
     	}else if(event.postback && event.postback.payload === 'BackEnd_postback'){
-            postbacks.specialization = find.filter(postbacks.specialization, 'BackEnd');
-            currentSpecialization = postbacks.backEnd;
-    		    sendMessage(senderId, structedRequest(postbacks.backEnd, specText, 0));
+            allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'BackEnd');
+            allSenders[senderId].currentSpecialization = allSenders[senderId].backEndPostbacks;
+    		    sendMessage(senderId, structedRequest(allSenders[senderId].frontEndPostbacks, specText, 0));
     	}else if(event.postback && event.postback.payload === 'IOS_postback'){
-           postbacks.specialization = find.filter(postbacks.specialization, 'IOS');
-           currentSpecialization = postbacks.IOS;
-           sendMessage(senderId, structedRequest(postbacks.IOS, specText, 0));
+           allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'IOS');
+           allSenders[senderId].currentSpecialization = allSenders[senderId].IOS;
+           sendMessage(senderId, structedRequest(allSenders[senderId].IOS, specText, 0));
       }else if(event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
            previousNextButtonNavigation(event, senderId, postbacks.specialization);
         return;
@@ -265,14 +266,14 @@ function lastWorkExperience(senderId){
 
 function chooseSkills(event, senderId){
   var skill = event.postback.payload.toString().split('_')[0];
-  var skillsSpecialization = postbacks.findSpecs(skill);
+  var skillsSpecialization = postbacks.findSpecs(allSenders[senderId], skill);
   if(skillsSpecialization === null){
        previousNextButtonNavigation(event, senderId, currentSpecialization);
        return;
   }else if(skillsSpecialization.length !== 0){
-      currentSpecialization = skillsSpecialization;
+      allSenders[senderId].currentSpecialization = skillsSpecialization;
       sendMessage(senderId, structedRequest(skillsSpecialization, specText, currentListPosition));
-  }else if(postbacks.testerSpecialization.length === 0 || postbacks.projectSpecialization.length === 0){
+  }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialization.length === 0){
       finishChoosingSkills(senderId);      
   }else{
       lastWorkExperience(senderId);
