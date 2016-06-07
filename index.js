@@ -170,7 +170,7 @@ function introducePerson(event, senderId){
     var FIO = event.message.text.split(' ');
     allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
-    sendMessage(senderId, structedRequest(allSenders[senderId].locations, chooseLocation));
+    sendMessage(senderId, structedRequest(allSenders[senderId].locations, chooseLocation, 0));
 }
 
 function personLocation(event, senderId){
