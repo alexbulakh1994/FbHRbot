@@ -23,7 +23,6 @@ function loadDatabaseInfo(){
 		mongoose.model(elem, Schema, elem).find(function(err, result){
 			    result.forEach(function(item, i, arr){
 					eval(elem).push(item.toObject().name);
-					obj[elem] = eval(elem);
 				});		
 			});
     });
