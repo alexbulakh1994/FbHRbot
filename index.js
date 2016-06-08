@@ -193,6 +193,7 @@ function personLocation(event, senderId){
 }
 
 function chooseInformationTypeInputing(event, senderId){
+    allSenders[senderId].currentListPosition = 0;
     if(event.postback.payload === 'phone number_postback'){
         allSenders[senderId].states += 2;
          sendMessage(senderId, {text: 'Please enter your mobile phone.'});
@@ -226,7 +227,6 @@ function telephoneValidation(event, senderId){
     if(phoneExp.test(event.message.text)){  
       allSenders[senderId].states++;
       allSenders[senderId].phone = event.message.text;
-      allSenders[senderId].currentListPosition = 0;
       sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality, allSenders[senderId].currentListPosition));
     }else{
       sendMessage(senderId, {text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
