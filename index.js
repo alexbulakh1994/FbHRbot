@@ -106,7 +106,7 @@ app.post('/webhook/', function (req, res) {
         }
         else if(event.message && event.message.text && allSenders[senderId].states === 1){
         	   introducePerson(event, senderId);
-        }else if(event.postback && allSenders[senderId].states === 2){
+        }else if((event.postback || (event.message && event.message.text)) && allSenders[senderId].states === 2){
              personLocation(event, senderId);
         }else if(event.postback && allSenders[senderId].states === 3){
              chooseInformationTypeInputing(event,senderId);
@@ -157,7 +157,7 @@ app.post('/webhook/', function (req, res) {
         }else if(event.message && event.message.text && allSenders[senderId].states === 10){
             personExperience(event, senderId);
         }else if(event.message && event.message.text && allSenders[senderId].states === 11){
-            yearExperience(eve, senderId);
+            yearExperience(event, senderId);
         }else if(event.postback && allSenders[senderId].states === 12){
             haveCVORNot(event, senderId);
         }else if(event.message && event.message.text && allSenders[senderId].states === 13){
@@ -189,7 +189,11 @@ function introducePerson(event, senderId){
 }
 
 function personLocation(event, senderId){
-    allSenders[senderId].city = event.postback.payload.split('_')[0];
+    if(event.postback.payload !== undefined){
+        allSenders[senderId].city = event.postback.payload.split('_')[0];
+    }else{
+        allSenders[senderId].city = event.message.text;
+    }
     allSenders[senderId].states++;
     // sendMessage(senderId, {text: 'Please enter your email.'});
     sendMessage(senderId, structedRequest(postbacks.themselvesInformationType, 'Choose type of information which you want tell us about yourthelf.'));
