@@ -326,7 +326,7 @@ function skipContinueState(event, senderId){
 }
 
 function haveCVORNot(event, senderId){
-        if(event.postback.payload === 'Yes_postback'){
+    if(event.postback.payload === 'Yes_postback'){
          allSenders[senderId].states++; 
          sendMessage(senderId, {text:"PLese send CV on doc or pdf format."});  
     }else{
@@ -336,21 +336,26 @@ function haveCVORNot(event, senderId){
 }
 
 function personExperience(event, senderId){
-	var dateTimes = event.message.text.split(' ');
-  		var startWorking = new Date(dateTimes[0]);
-  		var finishWorking = new Date(dateTimes[1]);
+     allSenders[senderId].states++;
+	   sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?'));
+}
+
+function yearExperience(event, senderId){
+      var dateTimes = event.message.text.split(' ');
+      var startWorking = new Date(dateTimes[0]);
+      var finishWorking = new Date(dateTimes[1]);
   
-  		if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1]) ){
-  			if(startWorking < finishWorking){	
-    			allSenders[senderId].states++;
+      if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1]) ){
+        if(startWorking < finishWorking){ 
+          allSenders[senderId].states++;
           allSenders[senderId].exrerience = (finishWorking - startWorking).toString();
-    			sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?')); 
-    		}else{
-    			sendMessage(senderId, {text:"What is your exrerience? First date must be smaller than second."});
-    		}
-    	}else{
-    		sendMessage(senderId, {text:"What is your exrerience? Input correct data in format YEAR/MM/DAY YEAR/MM/DAY."});
-    	}	
+          sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?')); 
+        }else{
+          sendMessage(senderId, {text:"What is your exrerience? First date must be smaller than second."});
+        }
+      }else{
+        sendMessage(senderId, {text:"What is your exrerience? Input correct data in format YEAR/MM/DAY YEAR/MM/DAY."});
+      } 
 }
 
 function attachedFile(senderId, attachedObj){
