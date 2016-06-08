@@ -189,7 +189,7 @@ function introducePerson(event, senderId){
 }
 
 function personLocation(event, senderId){
-    if(event.postback.payload !== undefined){
+    if(event.postback !== undefined ){
         allSenders[senderId].city = event.postback.payload.split('_')[0];
     }else{
         allSenders[senderId].city = event.message.text;
