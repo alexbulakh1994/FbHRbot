@@ -346,12 +346,13 @@ function yearExperience(event, senderId){
 function attachedFile(senderId, attachedObj){
   console.log('hi I am in attachedFile !!!');
   console.log(attachedObj);
-	if(attachedObj === null){
-      sendMessage(senderId, {text:"Please send CV in doc or pdf"});  
-  }else if(attachedObj.type === 'file'){
+      
+  if(attachedObj !== null && attachedObj.type === 'file'){
   		allSenders[senderId].cv_url = attachedObj.payload.url;
       allSenders[senderId].states++;
       sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, saveText));
+  }else{
+    sendMessage(senderId, {text:"Please send CV in doc or pdf"});  
   }
 }
 
