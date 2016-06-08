@@ -254,6 +254,7 @@ function  professionChosing(event, senderId){
 }
 
 function specialization(event, senderId){
+  console.log('I was here in specialization');
     	if(event.postback && event.postback.payload === 'FrontEnd_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'FrontEnd');
             allSenders[senderId].currentSpecialization = allSenders[senderId].frontEndPostbacks;
@@ -298,6 +299,7 @@ function chooseSkills(event, senderId){
   var skill = event.postback.payload.toString().split('_')[0];
   var skillsSpecialization = postbacks.findSpecs(allSenders[senderId], skill);
   if(skillsSpecialization === null){
+       console.log('current Spec is : ' + allSenders[senderId].currentSpecialization);
        previousNextButtonNavigation(event, senderId, allSenders[senderId].currentSpecialization);
        return;
   }else if(skillsSpecialization.length !== 0){
