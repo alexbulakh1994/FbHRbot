@@ -98,7 +98,7 @@ app.post('/webhook/', function (req, res) {
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i]; 
     var senderId = event.sender.id;
-  
+        console.log('state is : ' + allSenders[senderId].states);
         var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
         if (event.message && event.message.text && !allSenders[senderId]) {
              allSenders[senderId] = true;
