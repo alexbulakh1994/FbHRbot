@@ -14,8 +14,8 @@ var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[
 
 ////////////-------------informative message title------------ ///////////////////////////////////////
 var specText = "If you choose all skills print finish or you could type prev for continue choosing skill in section (BackEnd, FrontEnd, IOS, Android)";
-var devBranch = 'Choose all sphere of developing witch you know';
-var ITSpeciality = 'Choose sphere of IT witch you are interesting'
+var devBranch = 'Choose all sphere of developing which you know';
+var ITSpeciality = 'Choose sphere of IT which you are interesting'
 var saveText = "Do you want save information about you ?";
 var chooseLocation = "Choose city where do you live ?";
 
@@ -139,18 +139,22 @@ app.post('/webhook/', function (req, res) {
                  sendMessage(senderId, {text:"You couldnot go to upper level. What is last place of your work ?"});
               } 
         }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 8){
-      		     finishChoosingSkills(senderId);     
+      		     skipContinueState(event, senderId);     
         }else if(event.postback && allSenders[senderId].states === 8 && (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
               if(event.postback.payload === 'Yes_postback'){
                   continueChooseWorkSkills(senderId);
               }else{
-                  finishChoosingSkills(senderId);
+                  skipContinueState(event, senderId);
               }
         }else if(event.message && event.message.text && allSenders[senderId].states === 9){
-      		personExperience(event, senderId);
-        }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 10){
-      		attachedFile(senderId, attachedObj);
-      }else if(event.postback && allSenders[senderId].states === 11){
+            personExperience(event, senderId);
+        }else if(event.message && event.message.text && allSenders[senderId].states === 10){
+            haveCVORNot(event, senderId);
+        }else if(event.message && event.message.text && allSenders[senderId].states === 11){
+      		  attachedFile(senderId, attachedObj);
+        }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 12){
+      		
+      }else if(event.postback && allSenders[senderId].states === 13){
       		saveInformation(event, senderId);	
       } 
   }
@@ -162,7 +166,8 @@ app.post('/webhook/', function (req, res) {
 function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
    sendMessage(senderId, {text: 'Hellow, welcome to DataRoot team. You have started to communicate with our HR-bot.' +
-                                'He will ask you a few professional questions, gather all the necessary information. We will review it and contact with you.'});
+                                'He will ask you a few professional questions, gather all the necessary information. We will review it and contact with you. '+
+                                 'Please type your Name and Surname.'});
 }
 
 function introducePerson(event, senderId){
@@ -274,7 +279,7 @@ function continueChooseWorkSkills(senderId){
 
 function finishChoosingSkills(senderId){
      allSenders[senderId].states++;
-     sendMessage(senderId, {text:"What is last place of your work ?"});
+     sendMessage(senderId, structedRequest(postbacks.savePostback, 'Please choose variant to continue'));
 }
 
 function lastWorkExperience(senderId){
@@ -291,11 +296,31 @@ function chooseSkills(event, senderId){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
       sendMessage(senderId, structedRequest(skillsSpecialization, 'Finish - go choosing year experience', allSenders[senderId].currentListPosition));
   }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialization.length === 0){
-      finishChoosingSkills(senderId);      
+      skipContinueState(event, senderId);      
   }else{
       lastWorkExperience(senderId);
   }
   allSenders[senderId].skills.push(skill);
+}
+
+function skipContinueState(event, senderId){
+    if(event.postback.payload === 'Yes_postback'){
+         allSenders[senderId].states++; 
+         sendMessage(senderId, {text:"What is last place of your work ?"});  
+    }else{
+         allSenders[senderId].states += 2;
+         sendMessage(senderId, structedRequest(postbacks.savePostback, 'Do you have CV ?'));   
+    }
+}
+
+function haveCVORNot(event, senderId){
+        if(event.postback.payload === 'Yes_postback'){
+         allSenders[senderId].states++; 
+         sendMessage(senderId, {text:"PLese send CV on doc or pdf format."});  
+    }else{
+         allSenders[senderId].states +=2;
+         sendMessage(senderId, structedRequest(postbacks.savePostback, saveText));   
+    }
 }
 
 function personExperience(event, senderId){
@@ -307,7 +332,7 @@ function personExperience(event, senderId){
   			if(startWorking < finishWorking){	
     			allSenders[senderId].states++;
           allSenders[senderId].exrerience = (finishWorking - startWorking).toString();
-    			sendMessage(senderId, {text:"Upload CV in doc or pdf format"});
+    			sendMessage(senderId, structedRequest(postbacks.savePostback, 'Do you have CV ?')); 
     		}else{
     			sendMessage(senderId, {text:"What is your exrerience? First date must be smaller than second."});
     		}
