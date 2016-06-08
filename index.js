@@ -243,8 +243,8 @@ function  professionChosing(event, senderId){
         sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, devBranch,0));
     }else if(event.postback && event.postback.payload === 'PM_postback'){
         allSenders[senderId].states++;
-        allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialization;
-        sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialization, devBranch, 0));
+        allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
+        sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, devBranch, 0));
     }else{
        previousNextButtonNavigation(event, senderId, allSenders[senderId].specialistType);
        return;
@@ -303,7 +303,7 @@ function chooseSkills(event, senderId){
   }else if(skillsSpecialization.length !== 0){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
       sendMessage(senderId, structedRequest(skillsSpecialization, 'Press finish - for stoping choosing IT skills and going talk about you experience', allSenders[senderId].currentListPosition));
-  }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialization.length === 0){
+  }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialist.length === 0){
       finishChoosingSkills(senderId);      
   }else{
       lastWorkExperience(senderId);
