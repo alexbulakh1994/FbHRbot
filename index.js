@@ -124,7 +124,8 @@ app.post('/webhook/', function (req, res) {
              console.log('state in professionChosing : ' + allSenders[senderId].states);
         }
         else if(event.postback && allSenders[senderId].states === 7 ){
-             if(allSenders[senderId].specialization.indexOf(event.postback.payload.split('_')[0]) !== -1){
+             if((allSenders[senderId].specialization.indexOf(event.postback.payload.split('_')[0]) !== -1 || event.postback.payload.split('_')[0] === 'Next_postback' 
+              || event.postback.payload.split('_')[0] === 'Previous_postback') && allSenders[senderId].currentSpecialization === undefined){
                  console.log('payload is : ' + event.postback.payload);
         	       specialization(event, senderId);
              }else{
