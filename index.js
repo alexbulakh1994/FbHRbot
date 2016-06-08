@@ -155,7 +155,7 @@ app.post('/webhook/', function (req, res) {
              skipContinueState(event,senderId);
         }else if(event.message && event.message.text && allSenders[senderId].states === 10){
             personExperience(event, senderId);
-        }else if(event.message && event.message.text && allSenders[senderId].states === 11){
+        }else if(event.postback && allSenders[senderId].states === 11){
             haveCVORNot(event, senderId);
         }else if(event.message && event.message.text && allSenders[senderId].states === 12){
       		  attachedFile(senderId, attachedObj);
