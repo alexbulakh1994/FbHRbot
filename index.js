@@ -285,6 +285,7 @@ function continueChooseWorkSkills(senderId){
 }
 
 function finishChoosingSkills(senderId){
+     console.log('finishChoosingSkills calling ' + allSenders[senderId].states);
      allSenders[senderId].states++;
      sendMessage(senderId, structedRequest(postbacks.savePostback, 'Please choose variant to continue'));
 }
@@ -311,6 +312,7 @@ function chooseSkills(event, senderId){
 }
 
 function skipContinueState(event, senderId){
+    console.log('finishChoosingSkills calling ' + allSenders[senderId].states);
     if(event.postback.payload === 'Yes_postback'){
          allSenders[senderId].states++; 
          sendMessage(senderId, {text:"What is last place of your work ?"});  
