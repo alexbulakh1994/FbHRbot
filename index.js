@@ -265,7 +265,7 @@ function specialization(event, senderId){
     	}else if(event.postback && event.postback.payload === 'Android_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'Android');
             allSenders[senderId].currentSpecialization = allSenders[senderId].Android;
-    		    sendMessage(senderId, structedRequest(allSenders[senderId].Android, specText, 0));
+    		    sendMessage(senderId, structedRequest(allSenders[senderId].androidPostbacks, specText, 0));
     	}else if(event.postback && event.postback.payload === 'BackEnd_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'BackEnd');
             allSenders[senderId].currentSpecialization = allSenders[senderId].backEndPostbacks;
