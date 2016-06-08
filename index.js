@@ -98,7 +98,6 @@ app.post('/webhook/', function (req, res) {
   for (i = 0; i < messaging_events.length; i++) {
     event = req.body.entry[0].messaging[i]; 
     var senderId = event.sender.id;
-        console.log('state is : ' + allSenders[senderId].states);
         var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
         if (event.message && event.message.text && !allSenders[senderId]) {
              allSenders[senderId] = true;
@@ -111,14 +110,18 @@ app.post('/webhook/', function (req, res) {
              personLocation(event, senderId);
         }else if(event.postback && allSenders[senderId].states === 3){
              chooseInformationTypeInputing(event,senderId);
+             console.log('state in chooseInformationTypeInputing : ' + allSenders[senderId].states);
         }else if(event.message && event.message.text && allSenders[senderId].states === 4){
              emailValidation(event, senderId);
+             console.log('state in emailValidation : ' + allSenders[senderId].states);
         }
         else if(event.message && event.message.text && allSenders[senderId].states === 5){
              telephoneValidation(event, senderId);
+             console.log('state in telephoneValidation : ' + allSenders[senderId].states);
         }
         else if(event.postback && allSenders[senderId].states === 6){
              professionChosing(event, senderId);
+             console.log('state in professionChosing : ' + allSenders[senderId].states);
         }
         else if(event.postback && allSenders[senderId].states === 7 ){
              if(allSenders[senderId].specialization.indexOf(event.postback.payload.split('_')[0]) !== -1 
@@ -128,9 +131,11 @@ app.post('/webhook/', function (req, res) {
                  allSenders[senderId].states++;
                  chooseSkills(event, senderId);
              }
+             console.log('state in specialization : ' + allSenders[senderId].states);
         }else if(event.postback && allSenders[senderId].states === 8 && event.postback.payload !== 'Yes_postback' 
                                                                     && event.postback.payload !== 'No_postback'){
                chooseSkills(event, senderId);
+               console.log('state in chooseSkills : ' + allSenders[senderId].states);
         }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 8 ){
               if(allSenders[senderId].testerSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === -1 && 
                                         allSenders[senderId].projectSpecialist.indexOf(allSenders[senderId].currentSpecialization[0]) === -1){
