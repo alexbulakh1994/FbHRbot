@@ -287,11 +287,11 @@ function continueChooseWorkSkills(senderId){
 function finishChoosingSkills(senderId){
      console.log('finishChoosingSkills calling ' + allSenders[senderId].states);
      allSenders[senderId].states++;
-     sendMessage(senderId, structedRequest(postbacks.savePostback, 'Please choose variant to continue'));
+     sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Please choose variant to continue'));
 }
 
 function lastWorkExperience(senderId){
-     sendMessage(senderId, structedRequest(postbacks.savePostback, 'If you dont choose all skills press YES to continue, else NO'));   
+     sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'If you dont choose all skills press YES to continue, else NO'));   
 }
 
 function chooseSkills(event, senderId){
@@ -318,7 +318,7 @@ function skipContinueState(event, senderId){
          sendMessage(senderId, {text:"What is last place of your work ?"});  
     }else{
          allSenders[senderId].states += 2;
-         sendMessage(senderId, structedRequest(postbacks.savePostback, 'Do you have CV ?'));   
+         sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?'));   
     }
 }
 
@@ -328,7 +328,7 @@ function haveCVORNot(event, senderId){
          sendMessage(senderId, {text:"PLese send CV on doc or pdf format."});  
     }else{
          allSenders[senderId].states +=2;
-         sendMessage(senderId, structedRequest(postbacks.savePostback, saveText));   
+         sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, saveText));   
     }
 }
 
@@ -341,7 +341,7 @@ function personExperience(event, senderId){
   			if(startWorking < finishWorking){	
     			allSenders[senderId].states++;
           allSenders[senderId].exrerience = (finishWorking - startWorking).toString();
-    			sendMessage(senderId, structedRequest(postbacks.savePostback, 'Do you have CV ?')); 
+    			sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?')); 
     		}else{
     			sendMessage(senderId, {text:"What is your exrerience? First date must be smaller than second."});
     		}
@@ -356,7 +356,7 @@ function attachedFile(senderId, attachedObj){
   }else if(attachedObj.type === 'file'){
   		allSenders[senderId].cv_url = attachedObj.payload.url;
       allSenders[senderId].states++;
-      sendMessage(senderId, structedRequest(postbacks.savePostback, saveText));
+      sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, saveText));
   }
 }
 
