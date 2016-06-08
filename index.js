@@ -203,7 +203,7 @@ function chooseInformationTypeInputing(event, senderId){
         sendMessage(senderId, {text: 'Please enter your email.'});
     }else{
         allSenders[senderId].states++;
-        emailValidation(event,senderId);
+        sendMessage(senderId, {text: 'Please enter your email.'});
     }
 }
 
