@@ -144,12 +144,12 @@ app.post('/webhook/', function (req, res) {
                  sendMessage(senderId, {text:"You couldnot go to upper level. What is last place of your work ?"});
               } 
         }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 8){
-      		     finishChoosingSkills(event, senderId);     
+      		     finishChoosingSkills(senderId);     
         }else if(event.postback && allSenders[senderId].states === 8 && (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
               if(event.postback.payload === 'Yes_postback'){
                   continueChooseWorkSkills(senderId);
               }else{
-                  finishChoosingSkills(event, senderId);
+                  finishChoosingSkills(senderId);
               }
         }else if(event.message && event.message.text && allSenders[senderId].states === 9){
              skipContinueState(event,senderId);
@@ -303,7 +303,7 @@ function chooseSkills(event, senderId){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
       sendMessage(senderId, structedRequest(skillsSpecialization, 'Finish - go choosing year experience', allSenders[senderId].currentListPosition));
   }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialization.length === 0){
-      finishChoosingSkills(event, senderId);      
+      finishChoosingSkills(senderId);      
   }else{
       lastWorkExperience(senderId);
   }
