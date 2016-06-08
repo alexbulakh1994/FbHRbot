@@ -361,7 +361,7 @@ function saveInformation(event, senderId){
   		}else{
   			sendMessage(senderId, {text:"Goodbye! We dont save information about you."});
   		}
-      allSenders[senderId] = {};
+      delete allSenders[senderId]; // delete information about client for loop working
 }
 
 function previousNextButtonNavigation(event, senderId, buttons){
