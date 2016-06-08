@@ -17,7 +17,7 @@ var specText = "If you choose all skills print finish or you could type prev for
 var devBranch = 'Choose all sphere of developing which you know';
 var ITSpeciality = 'Choose sphere of IT which you are interesting'
 var saveText = "Do you want save information about you ?";
-var chooseLocation = "Choose city where do you live ?";
+var chooseLocation = "Choose city where do you live ? If you do not find it in the list type name of your sity into the message box.";
 
 ////////////////---------regex for email and phone------------///////////////////////
 var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -156,13 +156,15 @@ app.post('/webhook/', function (req, res) {
              skipContinueState(event,senderId);
         }else if(event.message && event.message.text && allSenders[senderId].states === 10){
             personExperience(event, senderId);
-        }else if(event.postback && allSenders[senderId].states === 11){
+        }else if(event.message && event.message.text && allSenders[senderId].states === 11){
+            yearExperience(eve, senderId);
+        }else if(event.postback && allSenders[senderId].states === 12){
             haveCVORNot(event, senderId);
-        }else if(event.message && event.message.text && allSenders[senderId].states === 12){
+        }else if(event.message && event.message.text && allSenders[senderId].states === 13){
       		  attachedFile(senderId, attachedObj);
-        }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 13){
+        }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 14){
       		
-      }else if(event.postback && allSenders[senderId].states === 14){
+      }else if(event.postback && allSenders[senderId].states === 15){
       		saveInformation(event, senderId);	
       } 
   }
@@ -320,7 +322,7 @@ function skipContinueState(event, senderId){
          allSenders[senderId].states++; 
          sendMessage(senderId, {text:"What is last place of your work ?"});  
     }else{
-         allSenders[senderId].states += 2;
+         allSenders[senderId].states += 3;
          sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?'));   
     }
 }
@@ -337,7 +339,7 @@ function haveCVORNot(event, senderId){
 
 function personExperience(event, senderId){
      allSenders[senderId].states++;
-	   sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?'));
+	   sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'PLease type period when you work in the last place? Use those pattern YEAR/MM/DAY YEAR/MM/DAY.'));
 }
 
 function yearExperience(event, senderId){
