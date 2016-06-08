@@ -144,22 +144,24 @@ app.post('/webhook/', function (req, res) {
                  sendMessage(senderId, {text:"You couldnot go to upper level. What is last place of your work ?"});
               } 
         }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 8){
-      		     skipContinueState(event, senderId);     
+      		     finishChoosingSkills(event, senderId);     
         }else if(event.postback && allSenders[senderId].states === 8 && (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
               if(event.postback.payload === 'Yes_postback'){
                   continueChooseWorkSkills(senderId);
               }else{
-                  skipContinueState(event, senderId);
+                  finishChoosingSkills(event, senderId);
               }
         }else if(event.message && event.message.text && allSenders[senderId].states === 9){
-            personExperience(event, senderId);
+             skipContinueState(event,senderId);
         }else if(event.message && event.message.text && allSenders[senderId].states === 10){
-            haveCVORNot(event, senderId);
+            personExperience(event, senderId);
         }else if(event.message && event.message.text && allSenders[senderId].states === 11){
+            haveCVORNot(event, senderId);
+        }else if(event.message && event.message.text && allSenders[senderId].states === 12){
       		  attachedFile(senderId, attachedObj);
-        }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 12){
+        }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 13){
       		
-      }else if(event.postback && allSenders[senderId].states === 13){
+      }else if(event.postback && allSenders[senderId].states === 14){
       		saveInformation(event, senderId);	
       } 
   }
@@ -301,7 +303,7 @@ function chooseSkills(event, senderId){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
       sendMessage(senderId, structedRequest(skillsSpecialization, 'Finish - go choosing year experience', allSenders[senderId].currentListPosition));
   }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialization.length === 0){
-      skipContinueState(event, senderId);      
+      finishChoosingSkills(event, senderId);      
   }else{
       lastWorkExperience(senderId);
   }
