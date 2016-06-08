@@ -126,6 +126,7 @@ app.post('/webhook/', function (req, res) {
         else if(event.postback && allSenders[senderId].states === 7 ){
              if(allSenders[senderId].specialization.indexOf(event.postback.payload.split('_')[0]) !== -1 
                                                       || event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
+                 console.log('payload is : ' + event.postback.payload);
         	       specialization(event, senderId);
              }else{
                  allSenders[senderId].states++;
