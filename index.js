@@ -151,7 +151,7 @@ app.post('/webhook/', function (req, res) {
               }else{
                   finishChoosingSkills(senderId);
               }
-        }else if(event.message && event.message.text && allSenders[senderId].states === 9){
+        }else if(event.postback  && allSenders[senderId].states === 9){
              skipContinueState(event,senderId);
         }else if(event.message && event.message.text && allSenders[senderId].states === 10){
             personExperience(event, senderId);
@@ -302,7 +302,7 @@ function chooseSkills(event, senderId){
        return;
   }else if(skillsSpecialization.length !== 0){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
-      sendMessage(senderId, structedRequest(skillsSpecialization, 'Finish - go choosing year experience', allSenders[senderId].currentListPosition));
+      sendMessage(senderId, structedRequest(skillsSpecialization, 'Press finish - for going choosing year experience', allSenders[senderId].currentListPosition));
   }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialization.length === 0){
       finishChoosingSkills(senderId);      
   }else{
