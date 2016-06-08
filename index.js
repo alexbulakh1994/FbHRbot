@@ -110,33 +110,25 @@ app.post('/webhook/', function (req, res) {
              personLocation(event, senderId);
         }else if(event.postback && allSenders[senderId].states === 3){
              chooseInformationTypeInputing(event,senderId);
-             console.log('state in chooseInformationTypeInputing : ' + allSenders[senderId].states);
         }else if(event.message && event.message.text && allSenders[senderId].states === 4){
              emailValidation(event, senderId);
-             console.log('state in emailValidation : ' + allSenders[senderId].states);
         }
         else if(event.message && event.message.text && allSenders[senderId].states === 5){
              telephoneValidation(event, senderId);
-             console.log('state in telephoneValidation : ' + allSenders[senderId].states);
         }
         else if(event.postback && allSenders[senderId].states === 6){
              professionChosing(event, senderId);
-             console.log('state in professionChosing : ' + allSenders[senderId].states);
         }
         else if(event.postback && allSenders[senderId].states === 7 ){
-             if((allSenders[senderId].specialization.indexOf(event.postback.payload.split('_')[0]) !== -1 || event.postback.payload === 'Next_postback' 
-              || event.postback.payload === 'Previous_postback') && allSenders[senderId].currentSpecialization === undefined){
-                 console.log('payload is : ' + event.postback.payload);
+             if(allSenders[senderId].currentSpecialization === undefined){ //if undefined tan currentSpecialization is Developer (default)
         	       specialization(event, senderId);
              }else{
                  allSenders[senderId].states++;
                  chooseSkills(event, senderId);
              }
-             console.log('state in specialization : ' + allSenders[senderId].states);
         }else if(event.postback && allSenders[senderId].states === 8 && event.postback.payload !== 'Yes_postback' 
                                                                     && event.postback.payload !== 'No_postback'){
                chooseSkills(event, senderId);
-               console.log('state in chooseSkills : ' + allSenders[senderId].states);
         }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 8 ){
               if(allSenders[senderId].testerSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === -1 && 
                                         allSenders[senderId].projectSpecialist.indexOf(allSenders[senderId].currentSpecialization[0]) === -1){
@@ -153,18 +145,16 @@ app.post('/webhook/', function (req, res) {
                   finishChoosingSkills(senderId);
               }
         }else if(event.postback  && allSenders[senderId].states === 9){
-             skipContinueState(event,senderId);
+             yesNoChoosenState(event, senderId, 'Do you have CV ?', 3, {text:"What is last place of your work ?"});
         }else if(event.message && event.message.text && allSenders[senderId].states === 10){
             personExperience(event, senderId);
         }else if(event.message && event.message.text && allSenders[senderId].states === 11){
             yearExperience(event, senderId);
         }else if(event.postback && allSenders[senderId].states === 12){
-            haveCVORNot(event, senderId);
+            yesNoChoosenState(event, senderId, specText, 2, {text:"PLese send CV on doc or pdf format."});
         }else if(event.message && event.message.text && allSenders[senderId].states === 13){
       		  attachedFile(senderId, attachedObj);
-        }else if(find.findMessageState(req.body.entry[0].messaging) && allSenders[senderId].states === 14){
-      		
-      }else if(event.postback && allSenders[senderId].states === 15){
+        }else if(event.postback && allSenders[senderId].states === 14){
       		saveInformation(event, senderId);	
       } 
   }
@@ -320,24 +310,13 @@ function chooseSkills(event, senderId){
   allSenders[senderId].skills.push(skill);
 }
 
-function skipContinueState(event, senderId){
-    console.log('finishChoosingSkills calling ' + allSenders[senderId].states);
+function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState, botQuestion){
     if(event.postback.payload === 'Yes_postback'){
          allSenders[senderId].states++; 
-         sendMessage(senderId, {text:"What is last place of your work ?"});  
+         sendMessage(senderId, botQuestion);
     }else{
-         allSenders[senderId].states += 3;
-         sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?'));   
-    }
-}
-
-function haveCVORNot(event, senderId){
-    if(event.postback.payload === 'Yes_postback'){
-         allSenders[senderId].states++; 
-         sendMessage(senderId, {text:"PLese send CV on doc or pdf format."});  
-    }else{
-         allSenders[senderId].states +=2;
-         sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, saveText));   
+         allSenders[senderId].states += stepChangeState;
+         sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
     }
 }
 
@@ -394,9 +373,10 @@ function previousNextButtonNavigation(event, senderId, buttons){
 }
 
 function insertData(obj){
-    obj.save(function(err, doc){
-      if(err) console.log(err);
-    });
+     console.log(obj);
+    // obj.save(function(err, doc){
+    //   if(err) console.log(err);
+    // });
 }
 
 
