@@ -152,7 +152,7 @@ app.post('/webhook/', function (req, res) {
             yearExperience(event, senderId);
         }else if(event.postback && allSenders[senderId].states === 12){
             yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"PLease send CV on doc or pdf format."});
-        }else if(allSenders[senderId].states === 13){
+        }else if(event.message && allSenders[senderId].states === 13){
       		  attachedFile(senderId, attachedObj);
         }else if(event.postback && allSenders[senderId].states === 14){
       		saveInformation(event, senderId);	
