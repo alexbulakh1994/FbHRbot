@@ -339,7 +339,7 @@ function haveCVORNot(event, senderId){
 
 function personExperience(event, senderId){
      allSenders[senderId].states++;
-	   sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'PLease type period when you work in the last place? Use those pattern YEAR/MM/DAY YEAR/MM/DAY.'));
+	   sendMessage(senderId,  {text:'PLease type period when you work in the last place? Use those pattern YEAR/MM/DAY YEAR/MM/DAY.'});
 }
 
 function yearExperience(event, senderId){
