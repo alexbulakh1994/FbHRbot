@@ -287,7 +287,7 @@ function continueChooseWorkSkills(senderId){
 function finishChoosingSkills(senderId){
      console.log('finishChoosingSkills calling ' + allSenders[senderId].states);
      allSenders[senderId].states++;
-     sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Please choose variant to continue'));
+     sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have work experience ?'));
 }
 
 function lastWorkExperience(senderId){
@@ -302,7 +302,7 @@ function chooseSkills(event, senderId){
        return;
   }else if(skillsSpecialization.length !== 0){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
-      sendMessage(senderId, structedRequest(skillsSpecialization, 'Press finish - for going choosing year experience', allSenders[senderId].currentListPosition));
+      sendMessage(senderId, structedRequest(skillsSpecialization, 'Press finish - for stoping choosing IT skills and going talk about you experience', allSenders[senderId].currentListPosition));
   }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialization.length === 0){
       finishChoosingSkills(senderId);      
   }else{
