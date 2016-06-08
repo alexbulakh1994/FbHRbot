@@ -208,7 +208,7 @@ function chooseInformationTypeInputing(event, senderId){
 function emailValidation(event, senderId){
     if(emailExp.test(event.message.text)){
       if(allSenders[senderId].typeInformationChoosing === 'email'){
-          allSenders[senderId].states =+ 2;
+          allSenders[senderId].states += 2;
           sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality, allSenders[senderId].currentListPosition));
       }else{
           allSenders[senderId].states++;
