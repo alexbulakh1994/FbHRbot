@@ -344,6 +344,8 @@ function yearExperience(event, senderId){
 }
 
 function attachedFile(senderId, attachedObj){
+  console.log('hi I am in attachedFile !!!');
+  console.log(attachedObj);
 	if(attachedObj === null){
       sendMessage(senderId, {text:"Please send CV in doc or pdf"});  
   }else if(attachedObj.type === 'file'){
