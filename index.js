@@ -130,8 +130,7 @@ app.post('/webhook/', function (req, res) {
                  allSenders[senderId].states++;
                  chooseSkills(event, senderId);
              }
-        }else if(event.postback && allSenders[senderId].states === 8 && event.postback.payload !== 'Yes_postback' 
-                                                                    && event.postback.payload !== 'No_postback'){
+        }else if(event.postback && allSenders[senderId].states === 8){
                chooseSkills(event, senderId);
         }else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 8 ){
               if(allSenders[senderId].testerSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === -1 && 
@@ -193,7 +192,6 @@ function personLocation(event, senderId){
 }
 
 function chooseInformationTypeInputing(event, senderId){
-    allSenders[senderId].currentListPosition = 0;
     if(event.postback.payload === 'phone number_postback'){
         allSenders[senderId].states += 2;
          sendMessage(senderId, [{text: 'Please enter your mobile phone.'}]);
@@ -212,7 +210,7 @@ function emailValidation(event, senderId){
     if(emailExp.test(event.message.text)){
       if(allSenders[senderId].typeInformationChoosing === 'email'){
           allSenders[senderId].states += 2;
-          sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality, allSenders[senderId].currentListPosition));
+          sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality));
       }else{
           allSenders[senderId].states++;
            sendMessage(senderId, [{text: 'Please enter your mobile phone.'}]);
@@ -227,7 +225,7 @@ function telephoneValidation(event, senderId){
     if(phoneExp.test(event.message.text)){  
       allSenders[senderId].states++;
       allSenders[senderId].phone = event.message.text;
-      sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality, allSenders[senderId].currentListPosition));
+      sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality));
     }else{
       sendMessage(senderId, [{text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'}]);
     }
@@ -246,12 +244,8 @@ function  professionChosing(event, senderId){
         allSenders[senderId].states++;
         allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
         sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, specText, 0));
-    }else{
-       previousNextButtonNavigation(event, senderId, allSenders[senderId].specialistType);
-       return;
     }
        allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
-
 }
 
 function specialization(event, senderId){
@@ -276,13 +270,9 @@ function specialization(event, senderId){
            allSenders[senderId].currentSpecialization = allSenders[senderId].IOS;
            sendMessage(senderId, structedRequest(allSenders[senderId].IOS, 
                                                               postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText), 0));
-      }else if(event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
-           previousNextButtonNavigation(event, senderId, allSenders[senderId].specialization);
-        return;
       }
            allSenders[senderId].devSpecialization.push(event.postback.payload.split('_')[0]);
            allSenders[senderId].states++;
-           allSenders[senderId].currentListPosition = 0;
 }
 
 function continueChooseWorkSkills(senderId){
@@ -304,12 +294,11 @@ function chooseSkills(event, senderId){
   var skill = event.postback.payload.toString().split('_')[0];
   var skillsSpecialization = postbacks.findSpecs(allSenders[senderId], skill);
   if(skillsSpecialization === null){
-       console.log('current Spec is : ' + allSenders[senderId].currentSpecialization);
-       previousNextButtonNavigation(event, senderId, allSenders[senderId].currentSpecialization);
+       console.log('find null in chooseSkills ');
        return;
   }else if(skillsSpecialization.length !== 0){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
-      sendMessage(senderId, structedRequest(skillsSpecialization, 'Press finish - for stoping choosing IT skills and going talk about you experience', allSenders[senderId].currentListPosition));
+      sendMessage(senderId, structedRequest(skillsSpecialization, 'Press finish - for stoping choosing IT skills and going talk about you experience'));
   }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialist.length === 0){
       finishChoosingSkills(senderId);      
   }else{
@@ -373,14 +362,6 @@ function saveInformation(event, senderId){
   			sendMessage(senderId, {text:'Thank you for information ' + allSenders[senderId].name + ' . Within 3  days you will be contacted by our real HR manager.'});
   		}
       delete allSenders[senderId]; // delete information about client for loop working
-}
-
-function previousNextButtonNavigation(event, senderId, buttons){
-  if(event.postback && event.postback.payload === 'Next_postback'){
-        sendMessage(senderId, structedRequest(buttons, 'List variants using Next and Previous button', ++allSenders[senderId].currentListPosition));
-  }else if(event.postback && event.postback.payload === 'Previous_postback'){
-        sendMessage(senderId, structedRequest(buttons, 'List variants using Next and Previous button', --allSenders[senderId].currentListPosition));
-  }
 }
 
 function insertData(obj){

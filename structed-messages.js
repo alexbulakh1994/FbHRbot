@@ -13,7 +13,7 @@ Number.prototype.mod = function(n) {
     return ((this % n) + n) % n;
 }
 
-var request = function(objArray, text, currentListPosition){
+var request = function(objArray, text){
     var buttons = [];
     var messagePostBack = [];
     // if(currentListPosition !== undefined && objArray.length > MAX_BUTTON_NUMBERS){
@@ -33,7 +33,7 @@ var request = function(objArray, text, currentListPosition){
                     type: "template",
                     payload: {
                         template_type: "button",
-                        text: text, 
+                        text: '', 
                         buttons: buttonsConstructor(objArray.slice(i - 2, i + 1))
                     }
                 }
