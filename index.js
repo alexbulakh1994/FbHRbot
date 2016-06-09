@@ -239,11 +239,13 @@ function  professionChosing(event, senderId){
     }else if(event.postback && event.postback.payload === 'QA_postback'){
         allSenders[senderId].states++;
         allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
-        sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, devBranch,0));
+        sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization,
+                                                        postbacks.printSkillList(allSenders[senderId].currentSpecialization,specText),0));
     }else if(event.postback && event.postback.payload === 'PM_postback'){
         allSenders[senderId].states++;
         allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
-        sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, devBranch, 0));
+        sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, 
+                                                        postbacks.printSkillList(allSenders[senderId].currentSpecialization,specText), 0));
     }else{
        previousNextButtonNavigation(event, senderId, allSenders[senderId].specialistType);
        return;
