@@ -53,21 +53,23 @@ app.get('/webhook', function (req, res) {
 //send message
 function sendMessage(sender, messageData) {
 
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
-    method: 'POST',
-    json: {
-      recipient: {id:sender},
-      message: messageData,
+  messageData.forEach(function(item, i, arr){
+        request({
+          url: 'https://graph.facebook.com/v2.6/me/messages',
+          qs: {access_token:token},
+          method: 'POST',
+          json: {
+            recipient: {id:sender},
+            message: item,
+          }
+        }, function(error, response, body) {
+          if (error) {
+            console.log('Error sending message: ', error);
+          } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+          }
+        });
     }
-  }, function(error, response, body) {
-    if (error) {
-      console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-      console.log('Error: ', response.body.error);
-    }
-  });
 }
 
 // -----------------database shema object structure
@@ -105,7 +107,7 @@ app.post('/webhook/', function (req, res) {
              postbacks.gettingClientsDBData(allSenders[senderId]);
         }else if(event.message && event.message.text === '\\stop' ){
              delete allSenders[senderId];
-             sendMessage(senderId, {text: 'You stopping chat with HR bot.'});
+             sendMessage(senderId, [{text: 'You stopping chat with HR bot.'}]);
         } 
         else if(event.message && event.message.text && allSenders[senderId].states === 1){
         	   introducePerson(event, senderId);
@@ -137,7 +139,7 @@ app.post('/webhook/', function (req, res) {
                                         allSenders[senderId].projectSpecialist.indexOf(allSenders[senderId].currentSpecialization[0]) === -1){
                  continueChooseWorkSkills(senderId);
               }else{
-                 sendMessage(senderId, {text:"You couldnot go to upper level. What is last place of your work ?"});
+                 sendMessage(senderId, [{text:"You couldnot go to upper level. What is last place of your work ?"}]);
               } 
         }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 8){
       		     finishChoosingSkills(senderId);     
@@ -168,9 +170,9 @@ app.post('/webhook/', function (req, res) {
 
 function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
-   sendMessage(senderId, {text: 'Hellow, welcome to DataRoot team. You have started to communicate with our HR-bot.' +
+   sendMessage(senderId, [{text: 'Hellow, welcome to DataRoot team. You have started to communicate with our HR-bot.' +
                                 'He will ask you a few professional questions, gather all the necessary information. We will review it and contact with you. '+
-                                'Please type your Name and Surname.'});
+                                'Please type your Name and Surname.'}]);
 }
 
 function introducePerson(event, senderId){
@@ -195,15 +197,15 @@ function chooseInformationTypeInputing(event, senderId){
     allSenders[senderId].currentListPosition = 0;
     if(event.postback.payload === 'phone number_postback'){
         allSenders[senderId].states += 2;
-         sendMessage(senderId, {text: 'Please enter your mobile phone.'});
+         sendMessage(senderId, [{text: 'Please enter your mobile phone.'}]);
          allSenders[senderId].typeInformationChoosing = 'phone number';
     }else if(event.postback.payload === 'email_postback'){
         allSenders[senderId].states++;
         allSenders[senderId].typeInformationChoosing = 'email';
-        sendMessage(senderId, {text: 'Please enter your email.'});
+        sendMessage(senderId, [{text: 'Please enter your email.'}]);
     }else{
         allSenders[senderId].states++;
-        sendMessage(senderId, {text: 'Please enter your email.'});
+        sendMessage(senderId, [{text: 'Please enter your email.'}]);
     }
 }
 
@@ -214,11 +216,11 @@ function emailValidation(event, senderId){
           sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality, allSenders[senderId].currentListPosition));
       }else{
           allSenders[senderId].states++;
-           sendMessage(senderId, {text: 'Please enter your mobile phone.'});
+           sendMessage(senderId, [{text: 'Please enter your mobile phone.'}]);
       }  
       allSenders[senderId].email = event.message.text;
     }else{
-      sendMessage(senderId, {text: 'Check input information, your email have incorrect format.'});
+      sendMessage(senderId, [{text: 'Check input information, your email have incorrect format.'}]);
     }
 }
 
@@ -228,7 +230,7 @@ function telephoneValidation(event, senderId){
       allSenders[senderId].phone = event.message.text;
       sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality, allSenders[senderId].currentListPosition));
     }else{
-      sendMessage(senderId, {text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'});
+      sendMessage(senderId, [{text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'}]);
     }
 }
 
