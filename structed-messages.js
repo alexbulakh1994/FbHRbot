@@ -33,7 +33,7 @@ var request = function(objArray, text){
                     type: "template",
                     payload: {
                         template_type: "button",
-                        text: '', 
+                        text: 'Continue', 
                         buttons: buttonsConstructor(objArray.slice(i - 2, i + 1))
                     }
                 }
