@@ -18,7 +18,7 @@ var request = function(objArray, text){
     var messagePostBack = [];
     for(var i = 0; i < objArray.length; i++){
         if(objArray.length <= MAX_BUTTON_NUMBERS){
-            messagePostBack.push(payloadObj(text, objArray));
+            messagePostBack.push(payloadObj(text, buttonsConstructor(objArray)));
             return messagePostBack;
         }
 
