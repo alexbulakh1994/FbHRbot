@@ -242,12 +242,12 @@ function  professionChosing(event, senderId){
     }else if(event.postback && event.postback.payload === 'QA_postback'){
         allSenders[senderId].states++;
         allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
-        sendMessage(senderId, postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText));
+        sendMessage(senderId, [{ text: postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
         sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, 'tester skills'));
     }else if(event.postback && event.postback.payload === 'PM_postback'){
         allSenders[senderId].states++;
         allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
-        sendMessage(senderId, postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText));
+        sendMessage(senderId, [{ text: postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
         sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, specText, 0));
     }
        allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
@@ -258,20 +258,23 @@ function specialization(event, senderId){
     	if(event.postback && event.postback.payload === 'FrontEnd_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'FrontEnd');
             allSenders[senderId].currentSpecialization = allSenders[senderId].frontEndPostbacks;
-            sendMessage(senderId, postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText));
-        		sendMessage(senderId, structedRequest(allSenders[senderId].frontEndPostbacks, 'FrontEnd skills'));
+            sendMessage(senderId, [{ text : postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
+        		sendMessage(senderId, structedRequest(allSenders[senderId].frontEndPostbacks, 'skills'));
     	}else if(event.postback && event.postback.payload === 'Android_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'Android');
             allSenders[senderId].currentSpecialization = allSenders[senderId].androidPostbacks;
-    		    sendMessage(senderId, structedRequest(allSenders[senderId].androidPostbacks, 'Android skills'));
+            sendMessage(senderId, [{ text : postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
+    		    sendMessage(senderId, structedRequest(allSenders[senderId].androidPostbacks, 'skills'));
     	}else if(event.postback && event.postback.payload === 'BackEnd_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'BackEnd');
             allSenders[senderId].currentSpecialization = allSenders[senderId].backEndPostbacks;
-    		    sendMessage(senderId, structedRequest(allSenders[senderId].backEndPostbacks, 'BackEnd skills'));
+            sendMessage(senderId, [{ text : postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
+    		    sendMessage(senderId, structedRequest(allSenders[senderId].backEndPostbacks, 'skills'));
     	}else if(event.postback && event.postback.payload === 'IOS_postback'){
            allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'IOS');
            allSenders[senderId].currentSpecialization = allSenders[senderId].IOS;
-           sendMessage(senderId, structedRequest(allSenders[senderId].IOS, 'IOS skills'));
+           sendMessage(senderId, [{ text : postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
+           sendMessage(senderId, structedRequest(allSenders[senderId].IOS, 'skills'));
       }
            allSenders[senderId].devSpecialization.push(event.postback.payload.split('_')[0]);
            allSenders[senderId].states++;
@@ -360,9 +363,9 @@ function saveInformation(event, senderId){
  // console.log(allSenders[senderId]);
 	if(event.postback.payload === 'Yes_postback'){
   			insertData(allSenders[senderId]);
-  			sendMessage(senderId, {text:"All information about you was saved."});
+  			sendMessage(senderId, [{text:"All information about you was saved."}]);
   		}else{
-  			sendMessage(senderId, {text:'Thank you for information ' + allSenders[senderId].name + ' . Within 3  days you will be contacted by our real HR manager.'});
+  			sendMessage(senderId, [{text:'Thank you for information ' + allSenders[senderId].name + ' . Within 3  days you will be contacted by our real HR manager.'}]);
   		}
       delete allSenders[senderId]; // delete information about client for loop working
 }
