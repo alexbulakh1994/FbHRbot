@@ -13,9 +13,9 @@ var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XIC
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 
 ////////////-------------informative message title------------ ///////////////////////////////////////
-var specText = 'Choose from a list of all the skills you possess. You can copy those you possess, separated by commas, or click the button. \n';
+var specText = 'Choose from a list of all the skills you possess. If you have skills which does not situated in list, add this skills in Additional Section \n';
 var devBranch = 'Choose sphere of developer specialization which you know. If you choose all skills in this specialization type prev - for choosing 1 more specalization.';
-var ITSpeciality = 'Choose sphere of IT which you are interesting'
+var ITSpeciality = 'Choose sphere of IT which you are interesting.'
 var saveText = "Do you want save information about you ?";
 var chooseLocation = "Choose city where do you live ? If you do not find it in the list type name of your city into the message box.";
 
@@ -124,8 +124,9 @@ app.post('/webhook/', function (req, res) {
              professionChosing(event, senderId);
         }
         else if(event.postback && allSenders[senderId].states === 7 ){
-             if(allSenders[senderId].currentSpecialization === undefined || (allSenders[senderId].testerSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === - 1 && 
-                                         allSenders[senderId].projectSpecialist.indexOf(allSenders[senderId].currentSpecialization[0]) === - 1)){ //if undefined tan currentSpecialization is Developer (default)
+             if(allSenders[senderId].currentSpecialization === undefined || 
+               (allSenders[senderId].testerSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === - 1 && 
+                                                  allSenders[senderId].projectSpecialist.indexOf(allSenders[senderId].currentSpecialization[0]) === - 1)){ //if undefined tan currentSpecialization is Developer (default)
         	       specialization(event, senderId);
              }else{
                  allSenders[senderId].states++;
@@ -236,15 +237,17 @@ function telephoneValidation(event, senderId){
 function  professionChosing(event, senderId){
     if(event.postback && event.postback.payload === 'Developer_postback'){
         allSenders[senderId].states++;
-        sendMessage(senderId, structedRequest(allSenders[senderId].specialization, devBranch, 0));
+        sendMessage(senderId, [devBranch]);
+        sendMessage(senderId, structedRequest(allSenders[senderId].specialization, 'Developer Specialization'));
     }else if(event.postback && event.postback.payload === 'QA_postback'){
         allSenders[senderId].states++;
         allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
-        sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization,
-                                                        postbacks.printSkillList(allSenders[senderId].currentSpecialization,specText),0));
+        sendMessage(senderId, postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText));
+        sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, 'tester skills'));
     }else if(event.postback && event.postback.payload === 'PM_postback'){
         allSenders[senderId].states++;
         allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
+        sendMessage(senderId, postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText));
         sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, specText, 0));
     }
        allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
@@ -255,23 +258,20 @@ function specialization(event, senderId){
     	if(event.postback && event.postback.payload === 'FrontEnd_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'FrontEnd');
             allSenders[senderId].currentSpecialization = allSenders[senderId].frontEndPostbacks;
-        		sendMessage(senderId, structedRequest(allSenders[senderId].frontEndPostbacks, 
-                                                              postbacks.printSkillList(allSenders[senderId].currentSpecialization,specText), 0));
+            sendMessage(senderId, postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText));
+        		sendMessage(senderId, structedRequest(allSenders[senderId].frontEndPostbacks, 'FrontEnd skills'));
     	}else if(event.postback && event.postback.payload === 'Android_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'Android');
             allSenders[senderId].currentSpecialization = allSenders[senderId].androidPostbacks;
-    		    sendMessage(senderId, structedRequest(allSenders[senderId].androidPostbacks, 
-                                                              postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText), 0));
+    		    sendMessage(senderId, structedRequest(allSenders[senderId].androidPostbacks, 'Android skills'));
     	}else if(event.postback && event.postback.payload === 'BackEnd_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'BackEnd');
             allSenders[senderId].currentSpecialization = allSenders[senderId].backEndPostbacks;
-    		    sendMessage(senderId, structedRequest(allSenders[senderId].backEndPostbacks, 
-                                                              postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText), 0));
+    		    sendMessage(senderId, structedRequest(allSenders[senderId].backEndPostbacks, 'BackEnd skills'));
     	}else if(event.postback && event.postback.payload === 'IOS_postback'){
            allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'IOS');
            allSenders[senderId].currentSpecialization = allSenders[senderId].IOS;
-           sendMessage(senderId, structedRequest(allSenders[senderId].IOS, 
-                                                              postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText), 0));
+           sendMessage(senderId, structedRequest(allSenders[senderId].IOS, 'IOS skills'));
       }
            allSenders[senderId].devSpecialization.push(event.postback.payload.split('_')[0]);
            allSenders[senderId].states++;
@@ -300,7 +300,8 @@ function chooseSkills(event, senderId){
        return;
   }else if(skillsSpecialization.length !== 0){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
-      sendMessage(senderId, structedRequest(skillsSpecialization, 'Press finish - for stoping choosing IT skills and going talk about you experience'));
+      sendMessage(senderId, [{text: 'Press finish - for stoping choosing IT skills and going talk about you experience'}]);
+      sendMessage(senderId, structedRequest(skillsSpecialization, 'skills'));
   }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialist.length === 0){
       finishChoosingSkills(senderId);      
   }else{

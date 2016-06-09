@@ -23,7 +23,7 @@ var request = function(objArray, text){
         }
 
         if((i+1) % MAX_BUTTON_NUMBERS === 0){
-            messagePostBack.push(payloadObj('Continue', buttonsConstructor(objArray.slice(i - 2, i + 1))) );  
+            messagePostBack.push(payloadObj(text, buttonsConstructor(objArray.slice(i - 2, i + 1))) );  
         }else if(i === objArray.length - 1){
             messagePostBack.push(payloadObj(text, buttonsConstructor(objArray.slice(i - (objArray.length % 3) + 1))) );
         }
