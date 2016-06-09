@@ -365,7 +365,7 @@ function saveInformation(event, senderId){
   			insertData(allSenders[senderId]);
   			sendMessage(senderId, {text:"All information about you was saved."});
   		}else{
-  			sendMessage(senderId, {text:'Thank you for information ' + allSenders[senderId].name ' . Within 3  days you will be contacted by our real HR manager.'});
+  			sendMessage(senderId, {text:'Thank you for information ' + allSenders[senderId].name + ' . Within 3  days you will be contacted by our real HR manager.'});
   		}
       delete allSenders[senderId]; // delete information about client for loop working
 }
