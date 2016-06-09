@@ -65,7 +65,7 @@ function printSkillList(skillList, titleText){
 	skillList.forEach(function(item, a, arr){
         result.concat(item).concat(' \n');
 	});
-	return result;
+	return titleText.concat(result);
 }
 
 function filter(arr, payloadDel){
