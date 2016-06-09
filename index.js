@@ -179,6 +179,7 @@ function introducePerson(event, senderId){
     allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
     allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
     sendMessage(senderId, structedRequest(allSenders[senderId].locations, chooseLocation));
+    console.log('I am in introducePerson method ');
 }
 
 function personLocation(event, senderId){
