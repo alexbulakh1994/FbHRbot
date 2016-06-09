@@ -27,19 +27,8 @@ var request = function(objArray, text){
     //     buttons = objArray;
 
     for(var i = 0; i < objArray.length; i++){
-        if((i+1) % MAX_BUTTON_NUMBERS === 0){
-            messagePostBack.push( {
-                attachment: {
-                    type: "template",
-                    payload: {
-                        template_type: "button",
-                        text: 'Continue', 
-                        buttons: buttonsConstructor(objArray.slice(i - 2, i + 1))
-                    }
-                }
-            });
-  
-        }else if(i === objArray.length - 1){
+        
+        if(i === objArray.length - 1){
             messagePostBack.push( {
                 attachment: {
                     type: "template",
@@ -51,6 +40,18 @@ var request = function(objArray, text){
                 }
             });
            
+        }else if((i+1) % MAX_BUTTON_NUMBERS === 0){
+            messagePostBack.push( {
+                attachment: {
+                    type: "template",
+                    payload: {
+                        template_type: "button",
+                        text: 'Continue', 
+                        buttons: buttonsConstructor(objArray.slice(i - 2, i + 1))
+                    }
+                }
+            });
+  
         }
 
     }
