@@ -63,7 +63,7 @@ function findSpecs(obj, skill){
 function printSkillList(skillList, titleText){
 	var result = '';
 	skillList.forEach(function(item, a, arr){
-        result.concat(item).concat(' \n');
+        result = result.concat(item).concat(' \n');
 	});
 	return titleText.concat(result);
 }
