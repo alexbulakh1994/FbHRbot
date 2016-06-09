@@ -325,7 +325,7 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 
 function personExperience(event, senderId){
      allSenders[senderId].states++;
-	   sendMessage(senderId,  {text:'PLease type period when you work in the last place? Use those pattern YEAR/MM/DAY YEAR/MM/DAY.'});
+	   sendMessage(senderId,  [{text:'PLease type period when you work in the last place? Use those pattern YEAR/MM/DAY YEAR/MM/DAY.'}]);
 }
 
 function yearExperience(event, senderId){
@@ -339,10 +339,10 @@ function yearExperience(event, senderId){
           allSenders[senderId].exrerience = (finishWorking - startWorking).toString();
           sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?')); 
         }else{
-          sendMessage(senderId, {text:"What is your exrerience? First date must be smaller than second."});
+          sendMessage(senderId, [{text:"What is your exrerience? First date must be smaller than second."}]);
         }
       }else{
-        sendMessage(senderId, {text:"What is your exrerience? Input correct data in format YEAR/MM/DAY YEAR/MM/DAY."});
+        sendMessage(senderId, [{text:"What is your exrerience? Input correct data in format YEAR/MM/DAY YEAR/MM/DAY."}]);
       } 
 }
 
@@ -355,7 +355,7 @@ function attachedFile(senderId, attachedObj){
       allSenders[senderId].states++;
       sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, saveText));
   }else{
-    sendMessage(senderId, {text:"Hey) You send file in incorect type, we check it. We need CV in doc or pdf format."});  
+    sendMessage(senderId, [{text:"Hey) You send file in incorect type, we check it. We need CV in doc or pdf format."}]);  
   }
 }
 
