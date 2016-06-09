@@ -14,10 +14,10 @@ var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[
 
 ////////////-------------informative message title------------ ///////////////////////////////////////
 var specText = 'Choose from a list of all the skills you possess. You can copy those you possess, separated by commas, or click the button. \n';
-var devBranch = 'Choose all sphere of developing which you know';
+var devBranch = 'Choose sphere of developer specialization which you know. If you choose all skills in this specialization type prev - for choosing 1 more specalization.';
 var ITSpeciality = 'Choose sphere of IT which you are interesting'
 var saveText = "Do you want save information about you ?";
-var chooseLocation = "Choose city where do you live ? If you do not find it in the list type name of your sity into the message box.";
+var chooseLocation = "Choose city where do you live ? If you do not find it in the list type name of your city into the message box.";
 
 ////////////////---------regex for email and phone------------///////////////////////
 var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -188,7 +188,7 @@ function personLocation(event, senderId){
         allSenders[senderId].city = event.message.text;
     }
     allSenders[senderId].states++;
-    sendMessage(senderId, structedRequest(postbacks.themselvesInformationType, 'Choose type of information which you want tell us about yourthelf.'));
+    sendMessage(senderId, structedRequest(postbacks.themselvesInformationType, 'Select the method by which you would be comfortable to contact with us.'));
 }
 
 function chooseInformationTypeInputing(event, senderId){
@@ -359,7 +359,7 @@ function attachedFile(senderId, attachedObj){
       allSenders[senderId].states++;
       sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, saveText));
   }else{
-    sendMessage(senderId, {text:"Please send CV in doc or pdf"});  
+    sendMessage(senderId, {text:"Hey) You send file in incorect type, we check it. We need CV in doc or pdf format."});  
   }
 }
 
