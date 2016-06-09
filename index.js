@@ -237,7 +237,7 @@ function telephoneValidation(event, senderId){
 function  professionChosing(event, senderId){
     if(event.postback && event.postback.payload === 'Developer_postback'){
         allSenders[senderId].states++;
-        sendMessage(senderId, [devBranch]);
+        sendMessage(senderId, [{text: devBranch}]);
         sendMessage(senderId, structedRequest(allSenders[senderId].specialization, 'Developer Specialization'));
     }else if(event.postback && event.postback.payload === 'QA_postback'){
         allSenders[senderId].states++;
