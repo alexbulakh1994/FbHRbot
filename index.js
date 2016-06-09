@@ -316,7 +316,7 @@ function chooseSkills(event, senderId){
 function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState, botQuestion){
     if(event.postback.payload === 'Yes_postback'){
          allSenders[senderId].states++; 
-         sendMessage(senderId, botQuestion);
+         sendMessage(senderId, [{text: botQuestion}]);
     }else{
          allSenders[senderId].states += stepChangeState;
          sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
