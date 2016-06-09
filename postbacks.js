@@ -60,12 +60,21 @@ function findSpecs(obj, skill){
 	}
 }
 
+function printSkillList(skillList, titleText){
+	var result = '';
+	skillList.forEach(function(item, a, arr){
+        result.concat(item).concat(' \n');
+	});
+	return result;
+}
+
 function filter(arr, payloadDel){
 	var index = arr.indexOf(payloadDel);
 	arr.splice(index, 1);
     return arr;             
 }
 
+ module.exports.printSkillList = printSkillList;
  module.exports.gettingClientsDBData = gettingClientsDBData;
  module.exports.themselvesInformationType = themselvesInformationType;
  module.exports.loadDatabaseInfo = loadDatabaseInfo;

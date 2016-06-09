@@ -13,7 +13,7 @@ var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XIC
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 
 ////////////-------------informative message title------------ ///////////////////////////////////////
-var specText = "If you choose all skills print finish or you could type prev for continue choosing skill in section (BackEnd, FrontEnd, IOS, Android)";
+var specText = 'Choose from a list of all the skills you possess. You can copy those you possess, separated by commas, or click the button. \n';
 var devBranch = 'Choose all sphere of developing which you know';
 var ITSpeciality = 'Choose sphere of IT which you are interesting'
 var saveText = "Do you want save information about you ?";
@@ -170,7 +170,7 @@ function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
    sendMessage(senderId, {text: 'Hellow, welcome to DataRoot team. You have started to communicate with our HR-bot.' +
                                 'He will ask you a few professional questions, gather all the necessary information. We will review it and contact with you. '+
-                                 'Please type your Name and Surname.'});
+                                'Please type your Name and Surname.'});
 }
 
 function introducePerson(event, senderId){
@@ -188,7 +188,6 @@ function personLocation(event, senderId){
         allSenders[senderId].city = event.message.text;
     }
     allSenders[senderId].states++;
-    // sendMessage(senderId, {text: 'Please enter your email.'});
     sendMessage(senderId, structedRequest(postbacks.themselvesInformationType, 'Choose type of information which you want tell us about yourthelf.'));
 }
 
@@ -258,19 +257,23 @@ function specialization(event, senderId){
     	if(event.postback && event.postback.payload === 'FrontEnd_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'FrontEnd');
             allSenders[senderId].currentSpecialization = allSenders[senderId].frontEndPostbacks;
-        		sendMessage(senderId, structedRequest(allSenders[senderId].frontEndPostbacks, specText, 0));
+        		sendMessage(senderId, structedRequest(allSenders[senderId].frontEndPostbacks, 
+                                                              postbacks.printSkillList(allSenders[senderId].currentSpecialization,specText), 0));
     	}else if(event.postback && event.postback.payload === 'Android_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'Android');
             allSenders[senderId].currentSpecialization = allSenders[senderId].Android;
-    		    sendMessage(senderId, structedRequest(allSenders[senderId].androidPostbacks, specText, 0));
+    		    sendMessage(senderId, structedRequest(allSenders[senderId].androidPostbacks, 
+                                                              postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText), 0));
     	}else if(event.postback && event.postback.payload === 'BackEnd_postback'){
             allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'BackEnd');
             allSenders[senderId].currentSpecialization = allSenders[senderId].backEndPostbacks;
-    		    sendMessage(senderId, structedRequest(allSenders[senderId].backEndPostbacks, specText, 0));
+    		    sendMessage(senderId, structedRequest(allSenders[senderId].backEndPostbacks, 
+                                                              postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText), 0));
     	}else if(event.postback && event.postback.payload === 'IOS_postback'){
            allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'IOS');
            allSenders[senderId].currentSpecialization = allSenders[senderId].IOS;
-           sendMessage(senderId, structedRequest(allSenders[senderId].IOS, specText, 0));
+           sendMessage(senderId, structedRequest(allSenders[senderId].IOS, 
+                                                              postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText), 0));
       }else if(event.postback.payload === 'Next_postback' || event.postback.payload === 'Previous_postback'){
            previousNextButtonNavigation(event, senderId, allSenders[senderId].specialization);
         return;
