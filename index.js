@@ -124,8 +124,8 @@ app.post('/webhook/', function (req, res) {
              professionChosing(event, senderId);
         }
         else if(event.postback && allSenders[senderId].states === 7 ){
-             if(allSenders[senderId].testerSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === - 1 && 
-                                         allSenders[senderId].projectSpecialist.indexOf(allSenders[senderId].currentSpecialization[0]) === - 1){ //if undefined tan currentSpecialization is Developer (default)
+             if(allSenders[senderId].currentSpecialization === undefined || (allSenders[senderId].testerSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === - 1 && 
+                                         allSenders[senderId].projectSpecialist.indexOf(allSenders[senderId].currentSpecialization[0]) === - 1)){ //if undefined tan currentSpecialization is Developer (default)
         	       specialization(event, senderId);
              }else{
                  allSenders[senderId].states++;
