@@ -103,7 +103,10 @@ app.post('/webhook/', function (req, res) {
              allSenders[senderId] = true;
         	   greeting(senderId);
              postbacks.gettingClientsDBData(allSenders[senderId]);
-        }
+        }else if(event.message && event.message.text === '\\stop' ){
+             delete allSenders[senderId];
+             sendMessage(senderId, {text: 'You stopping chat with HR bot.'});
+        } 
         else if(event.message && event.message.text && allSenders[senderId].states === 1){
         	   introducePerson(event, senderId);
         }else if((event.postback || (event.message && event.message.text)) && allSenders[senderId].states === 2){
@@ -156,7 +159,7 @@ app.post('/webhook/', function (req, res) {
       		  attachedFile(senderId, attachedObj);
         }else if(event.postback && allSenders[senderId].states === 14){
       		saveInformation(event, senderId);	
-      } 
+        }
   }
 
   res.sendStatus(200);
