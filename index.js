@@ -244,8 +244,7 @@ function  professionChosing(event, senderId){
     }else if(event.postback && event.postback.payload === 'PM_postback'){
         allSenders[senderId].states++;
         allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
-        sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, 
-                                                        postbacks.printSkillList(allSenders[senderId].currentSpecialization,specText), 0));
+        sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, specText, 0));
     }else{
        previousNextButtonNavigation(event, senderId, allSenders[senderId].specialistType);
        return;
