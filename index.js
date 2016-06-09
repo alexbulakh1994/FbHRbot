@@ -52,7 +52,6 @@ app.get('/webhook', function (req, res) {
 
 //send message
 function sendMessage(sender, messageData) {
-
   messageData.forEach(function(item, i, arr){
         request({
           url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -69,7 +68,7 @@ function sendMessage(sender, messageData) {
             console.log('Error: ', response.body.error);
           }
         });
-    }
+    });
 }
 
 // -----------------database shema object structure
