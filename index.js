@@ -277,8 +277,8 @@ function specialization(event, senderId){
 }
 
 function continueChooseWorkSkills(senderId){
-    allSenders[senderId].states = 6;
-    sendMessage(senderId, structedRequest(allSenders[senderId].specialization, specText, 0));
+    allSenders[senderId].states = 7;
+    sendMessage(senderId, structedRequest(allSenders[senderId].specialization, specText));
 }
 
 function finishChoosingSkills(senderId){

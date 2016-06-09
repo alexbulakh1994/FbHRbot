@@ -22,11 +22,11 @@ var request = function(objArray, text){
             return messagePostBack;
         }
 
-        if((i+1) % MAX_BUTTON_NUMBERS === 0){
-            messagePostBack.push(payloadObj('Continue', buttonsConstructor(objArray.slice(i - 2, i + 1))) );  
-        }else if(i === objArray.length - 1){
+        if(i === objArray.length - 1){
             messagePostBack.push(payloadObj(text, buttonsConstructor(objArray.slice(i - (objArray.length % 3) + 1))) );
-        }
+        }else if((i+1) % MAX_BUTTON_NUMBERS === 0){
+            messagePostBack.push(payloadObj('Continue', buttonsConstructor(objArray.slice(i - 2, i + 1))) ); 
+        } 
 
     }
           
