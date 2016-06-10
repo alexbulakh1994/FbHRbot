@@ -104,7 +104,7 @@ app.post('/webhook/', function (req, res) {
              allSenders[senderId] = true;
         	   greeting(senderId);
              postbacks.gettingClientsDBData(allSenders[senderId]);
-        }else if(event.message && event.message.text === '\\stop' ){
+        }else if(event.message && event.message.text === '\\restart' ){
              delete allSenders[senderId];
              sendMessage(senderId, [{text: 'You stopping chat with HR bot.'}]);
         } 
@@ -159,8 +159,10 @@ app.post('/webhook/', function (req, res) {
             yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"PLease send CV on doc or pdf format."});
         }else if(event.message && allSenders[senderId].states === 13){
       		  attachedFile(senderId, attachedObj);
-        }else if(event.postback && allSenders[senderId].states === 14){
-      		saveInformation(event, senderId);	
+        }else if(event.message && event.message.text && allSenders[senderId].states === 14){
+      		 additionalInformation(event, senderId);	
+        }else if(event.postback && allSenders[senderId].states === 15){
+            saveInformation(event, senderId);
         }
   }
 
@@ -171,7 +173,8 @@ app.post('/webhook/', function (req, res) {
 function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
    sendMessage(senderId, [{text: 'Hellow, welcome to DataRoot team. You have started to communicate with our HR-bot.' +
-                                'He will ask you a few professional questions, gather all the necessary information. We will review it and contact with you. '+
+                                'He will ask you a few professional questions, gather all the necessary information. We will review it and contact with you. ' +
+                                'You could stop chatting with bot pressing \\restart. '+
                                 'Please type your Name and Surname.'}]);
 }
 
@@ -353,10 +356,15 @@ function attachedFile(senderId, attachedObj){
   if(attachedObj !== null && attachedObj.type === 'file'){
   		allSenders[senderId].cv_url = attachedObj.payload.url;
       allSenders[senderId].states++;
-      sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, saveText));
+      sendMessage(senderId, [{text: 'Please send some additional information about you.'}]);
   }else{
     sendMessage(senderId, [{text:"Hey) You send file in incorect type, we check it. We need CV in doc or pdf format."}]);  
   }
+}
+
+function additionalInformation(event, senderId){
+    allSenders[senderId].states++;
+    sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, saveText));    
 }
 
 function saveInformation(event, senderId){
