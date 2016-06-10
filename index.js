@@ -363,7 +363,7 @@ function attachedFile(senderId, attachedObj){
       allSenders[senderId].states++;
       sendMessage(senderId, [{text: 'Please send some additional information about you.'}]);
   }else{
-    sendMessage(senderId, [{text:"Hey) You send file in incorect type, we check it. We need CV in doc or pdf format."}]);  
+    sendMessage(senderId, [{text:"Hey \u263A . You send file in incorect type, we check it. We need CV in doc or pdf format."}]);  
   }
 }
 
@@ -378,7 +378,7 @@ function saveInformation(event, senderId){
   			insertData(allSenders[senderId]);
   			sendMessage(senderId, [{text:"All information about you was saved."}]);
   		}else{
-  			sendMessage(senderId, [{text:'Thank you for information ' + allSenders[senderId].name + ' . Within 3  days you will be contacted by our real HR manager.'}]);
+  			sendMessage(senderId, [{text:'Thank you for information ' + allSenders[senderId].name + ' \u263A . Within 3  days you will be contacted by our real HR manager.'}]);
   		}
       delete allSenders[senderId]; // delete information about client for loop working
 }
