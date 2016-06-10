@@ -322,7 +322,10 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
          sendMessage(senderId, [botQuestion]);
     }else{
          allSenders[senderId].states += stepChangeState;
-         sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
+         if(allSenders[senderId].states === 12){
+            sendMessage(senderId, [{text: 'Please send some additional information about you.'}]);
+         }else
+            sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
     }
 }
 
