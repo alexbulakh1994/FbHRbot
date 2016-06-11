@@ -251,7 +251,7 @@ function  professionChosing(event, senderId){
         allSenders[senderId].states++;
         allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
         sendMessage(senderId, [{ text: postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
-        sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, specText, 0));
+        sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, 'project manager skills', 0));
     }
        allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
 }
