@@ -306,8 +306,8 @@ function chooseSkills(event, senderId){
        return;
   }else if(skillsSpecialization.length !== 0){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
-      sendMessage(senderId, [{text: 'Press finish - for stoping choosing IT skills and going talk about you experience'}]);
-      sendMessage(senderId, structedRequest(skillsSpecialization, 'skills'));
+      //sendMessage(senderId, [{text: 'Press finish - for stoping choosing IT skills and going talk about you experience'}]);
+      //sendMessage(senderId, structedRequest(skillsSpecialization, 'skills'));
   }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialist.length === 0){
       finishChoosingSkills(senderId);      
   }else{
