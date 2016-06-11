@@ -35,6 +35,17 @@ function gettingClientsDBData(obj){
 	});									
 }
 
+function choosedDevSpecialization(obj, spec){
+	if(spec === 'BackEnd'){
+		return obj.backEndPostbacks;
+	}else if(spec === 'FrontEnd'){
+		return obj.FrontEnd;
+	}else if(spec === 'Android'){
+		return obj.Android;
+	}else if(spec === 'IOS'){
+		return obj.IOS;
+	}
+}
 
 function findSpecs(obj, skill){
 	if(obj.backEndPostbacks.indexOf(skill) !== -1){
@@ -74,6 +85,7 @@ function filter(arr, payloadDel){
     return arr;             
 }
 
+ module.exports.choosedDevSpecialization = choosedDevSpecialization;
  module.exports.printSkillList = printSkillList;
  module.exports.gettingClientsDBData = gettingClientsDBData;
  module.exports.themselvesInformationType = themselvesInformationType;

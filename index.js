@@ -257,30 +257,15 @@ function  professionChosing(event, senderId){
 }
 
 function specialization(event, senderId){
-  console.log('I was here in specialization');
-    	if(event.postback && event.postback.payload === 'FrontEnd_postback'){
-            allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'FrontEnd');
-            allSenders[senderId].currentSpecialization = allSenders[senderId].frontEndPostbacks;
-            sendMessage(senderId, [{ text : postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
-        		sendMessage(senderId, structedRequest(allSenders[senderId].frontEndPostbacks, 'skills'));
-    	}else if(event.postback && event.postback.payload === 'Android_postback'){
-            allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'Android');
-            allSenders[senderId].currentSpecialization = allSenders[senderId].androidPostbacks;
-            sendMessage(senderId, [{ text : postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
-    		    sendMessage(senderId, structedRequest(allSenders[senderId].androidPostbacks, 'skills'));
-    	}else if(event.postback && event.postback.payload === 'BackEnd_postback'){
-            allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'BackEnd');
-            allSenders[senderId].currentSpecialization = allSenders[senderId].backEndPostbacks;
-            sendMessage(senderId, [{ text : postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
-    		    sendMessage(senderId, structedRequest(allSenders[senderId].backEndPostbacks, 'skills'));
-    	}else if(event.postback && event.postback.payload === 'IOS_postback'){
-           allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, 'IOS');
-           allSenders[senderId].currentSpecialization = allSenders[senderId].IOS;
-           sendMessage(senderId, [{ text : postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
-           sendMessage(senderId, structedRequest(allSenders[senderId].IOS, 'skills'));
-      }
-           allSenders[senderId].devSpecialization.push(event.postback.payload.split('_')[0]);
-           allSenders[senderId].states++;
+    var spec =  event.postback.payload.split('_')[0];
+    
+    allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, spec);
+    allSenders[senderId].currentSpecialization = postbacks.choosedDevSpecialization(allSenders[senderId], spec);;
+    sendMessage(senderId, [{ text : postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
+    sendMessage(senderId, structedRequest(allSenders[senderId].currentSpecialization, 'skills'));
+
+    allSenders[senderId].devSpecialization.push(spec);
+    allSenders[senderId].states++;
 }
 
 function continueChooseWorkSkills(senderId){
@@ -299,7 +284,13 @@ function lastWorkExperience(senderId){
 }
 
 function chooseSkills(event, senderId){
-  var skill = event.postback.payload.toString().split('_')[0];
+  var skill = event.postback.payload.toString().split('_')[0]; 
+
+  if(allSenders[senderId].skills.indexOf(skill) !== -1){
+    sendMessage(senderId, [{text: "Hey \u263A. You already choose this skill earlier, please choose another."}]);
+    return;
+  }
+
   var skillsSpecialization = postbacks.findSpecs(allSenders[senderId], skill);
   if(skillsSpecialization === null){
        console.log('find null in chooseSkills ');
