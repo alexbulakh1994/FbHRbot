@@ -39,9 +39,9 @@ function choosedDevSpecialization(obj, spec){
 	if(spec === 'BackEnd'){
 		return obj.backEndPostbacks;
 	}else if(spec === 'FrontEnd'){
-		return obj.FrontEnd;
+		return obj.frontEndPostbacks;
 	}else if(spec === 'Android'){
-		return obj.Android;
+		return obj.androidPostbacks;
 	}else if(spec === 'IOS'){
 		return obj.IOS;
 	}
