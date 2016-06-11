@@ -156,7 +156,7 @@ app.post('/webhook/', function (req, res) {
         }else if(event.message && event.message.text && allSenders[senderId].states === 11){
             yearExperience(event, senderId);
         }else if(event.postback && allSenders[senderId].states === 12){
-            yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"PLease send CV on doc or pdf format."});
+            yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"Please send CV on doc or pdf format."});
         }else if(event.message && allSenders[senderId].states === 13){
       		  attachedFile(senderId, attachedObj);
         }else if(event.message && event.message.text && allSenders[senderId].states === 14){
@@ -297,8 +297,6 @@ function chooseSkills(event, senderId){
        return;
   }else if(skillsSpecialization.length !== 0){
       allSenders[senderId].currentSpecialization = skillsSpecialization;
-      //sendMessage(senderId, [{text: 'Press finish - for stoping choosing IT skills and going talk about you experience'}]);
-      //sendMessage(senderId, structedRequest(skillsSpecialization, 'skills'));
   }else if(allSenders[senderId].testerSpecialization.length === 0 || allSenders[senderId].projectSpecialist.length === 0){
       finishChoosingSkills(senderId);      
   }else{
@@ -333,6 +331,12 @@ function yearExperience(event, senderId){
       var finishWorking = new Date(dateTimes[1]);
   
       if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1]) ){
+        
+        if(finishWorking > new Date()){
+           sendMessage(senderId, [{text:"You finish working date is greater current date. Please check inputing date."}]);
+           return;
+        }
+
         if(startWorking < finishWorking){ 
           allSenders[senderId].states++;
           allSenders[senderId].exrerience = (finishWorking - startWorking).toString();
