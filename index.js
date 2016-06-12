@@ -381,26 +381,29 @@ function saveInformation(event, senderId){
 function insertData(obj){
      console.log(obj);
      var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'states'];
-     var dbObject = new client();
-     // for(var i = 0; i < dbProperties.length; i++){
-     //    if(obj.hasOwnProperty(dbProperties[i])){
-     //        dbObject[dbProperties[i]] = obj[dbProperties[i]]; 
-     //    }else{
-     //        dbObject[dbProperties[i]] = null;
-     //    }        
-     // }
-     // console.log(dbObject);
-    dbObject.surname = 'sfsd';
-    dbObject.name = null;
-    dbObject.ITSpeciality = 'Developer';
-    dbObject.devSpecialization = null;
-    dbObject.skills = ['sdsd', 'ssd'];
-    dbObject.email = null;
-    dbObject.phone = null;
-    dbObject.cv_url = null;
-    dbObject.city = 'fsfs';
-    dbObject.experience = 'sdfsd';
-    dbObject.states = 15;     
+     var dbObject = {};//new client();
+     for(var i = 0; i < dbProperties.length; i++){
+        if(obj.hasOwnProperty(dbProperties[i])){
+            console.log('we find property !');
+            dbObject[dbProperties[i]] = obj[dbProperties[i]]; 
+        }else{
+            dbObject[dbProperties[i]] = null;
+        }        
+     }
+     console.log(dbObject);
+
+
+    // dbObject.surname = 'sfsd';
+    // dbObject.name = null;
+    // dbObject.ITSpeciality = 'Developer';
+    // dbObject.devSpecialization = null;
+    // dbObject.skills = ['sdsd', 'ssd'];
+    // dbObject.email = null;
+    // dbObject.phone = null;
+    // dbObject.cv_url = null;
+    // dbObject.city = 'fsfs';
+    // dbObject.experience = 'sdfsd';
+    // dbObject.states = 15;     
 
     dbObject.save(function(err, doc){
       if(err) console.log(err);
