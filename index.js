@@ -392,7 +392,11 @@ function insertData(senderId){
 		 }
 		 dbObject.senderId = senderId;    
 
-		 dbObject.save(function(err, doc){
+		//  dbObject.save(function(err, doc){
+		// 	if(err) console.log(err);
+		// });
+
+		 Shmema.update({senderId: senderId}, dbObject, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
 			if(err) console.log(err);
 		});
 }
