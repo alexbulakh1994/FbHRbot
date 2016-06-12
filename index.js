@@ -384,7 +384,7 @@ function insertData(obj){
      
      for(var property in obj){
         if(obj.hasOwnProperty(property) && (dbProperties.indexOf(property.toString()) === -1)){
-            console.log('I am in insertData !');
+            console.log('I am in insertData ! deleted ' + property);
             delete obj[property];  
         }
         
