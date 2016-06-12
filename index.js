@@ -74,6 +74,7 @@ function sendMessage(sender, messageData) {
 
 // -----------------database shema object structure
 var Schema = new mongoose.Schema({
+	senderId : String,
 	surname : String,
 	name: String,
 	ITSpeciality: String,
@@ -379,38 +380,19 @@ function saveInformation(event, senderId){
 }
 
 function insertData(senderId){
-		 console.log(allSenders[senderId]);
 		 var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'states'];
 		 var dbObject = new client();
 		 
-		 for(var property in allSenders[senderId]){
-		     console.log('property is :' + property);
-		 }
-
 		 for(var i = 0; i < dbProperties.length; i++){
 				if(dbProperties[i] in allSenders[senderId]){
-						console.log('we find property !');
 						dbObject[dbProperties[i]] = allSenders[senderId][dbProperties[i]]; 
 				}else{
 						dbObject[dbProperties[i]] = null;
 				}        
 		 }
+		 dbObject.senderId = senderId;    
 
-
-
-		// dbObject.surname = 'sfsd';
-		// dbObject.name = null;
-		// dbObject.ITSpeciality = 'Developer';
-		// dbObject.devSpecialization = null;
-		// dbObject.skills = ['sdsd', 'ssd'];
-		// dbObject.email = null;
-		// dbObject.phone = null;
-		// dbObject.cv_url = null;
-		// dbObject.city = 'fsfs';
-		// dbObject.experience = 'sdfsd';
-		// dbObject.states = 15;     
-
-		dbObject.save(function(err, doc){
+		 dbObject.save(function(err, doc){
 			if(err) console.log(err);
 		});
 }
