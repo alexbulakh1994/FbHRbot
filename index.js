@@ -13,8 +13,8 @@ var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XIC
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 
 ////////////-------------informative message title------------ ///////////////////////////////////////
-var specText = 'Choose from a list of all the skills you possess. When you choose all skills type \\finish for going to next section.'+
-              ' If you have skills which does not situated in list, add this skills in Additional Section. You could restart working with HR bot typing \\restart \n';
+var specText = 'Choose from a list of all the skills you possess. When you choose all skills type \\finish for going to next section. \n'+
+              ' If you have skills which does not situated in list, add this skills in Additional Section \n. You could restart working with HR bot typing \\restart \n';
 var devBranch = 'Choose sphere of developer specialization which you know. If you choose all skills in this specialization type prev - for choosing 1 more specalization.';
 var ITSpeciality = 'Choose sphere of IT which you are interesting.'
 var saveText = "Do you want save information about you ?";
@@ -379,6 +379,14 @@ function saveInformation(event, senderId){
 }
 
 function insertData(obj){
+     console.log(obj);
+     for(var property in obj){
+        if(object.hasOwnProperty(property)){
+          if(!Schema.hasOwnProperty(property)){
+            delete obj[property];
+          }
+        }
+     }
      console.log(obj);
     // obj.save(function(err, doc){
     //   if(err) console.log(err);
