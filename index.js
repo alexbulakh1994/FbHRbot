@@ -388,7 +388,7 @@ function insertData(senderId){
 		 }
 
 		 for(var i = 0; i < dbProperties.length; i++){
-				if(allSenders[senderId].hasOwnProperty(dbProperties[i])){
+				if(dbProperties[i] in allSenders[senderId]){
 						console.log('we find property !');
 						dbObject[dbProperties[i]] = allSenders[senderId][dbProperties[i]]; 
 				}else{
