@@ -381,7 +381,7 @@ function saveInformation(event, senderId){
 function insertData(obj){
      console.log(obj);
      var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'states'];
-     var dbObject = {};
+     var dbObject = new client();
      // for(var i = 0; i < dbProperties.length; i++){
      //    if(obj.hasOwnProperty(dbProperties[i])){
      //        dbObject[dbProperties[i]] = obj[dbProperties[i]]; 
