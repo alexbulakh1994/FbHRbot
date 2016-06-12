@@ -383,9 +383,9 @@ function insertData(obj){
      var dbObject = {};
      for(var i = 0; i < dbProperties.length; i++){
         if(obj.hasOwnProperty(dbProperties[i])){
-            dbObject[property] = obj[property]; 
+            dbObject[dbProperties[i]] = obj[dbProperties[i]]; 
         }else{
-            dbObject[property] = null;
+            dbObject[dbProperties[i]] = null;
         }        
      }
      console.log(dbObject);
