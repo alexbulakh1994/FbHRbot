@@ -379,18 +379,14 @@ function saveInformation(event, senderId){
 }
 
 function insertData(obj){
-     console.log(obj);
      var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'states'];
-     
+     var dbObject = {};
      for(var property in obj){
-        if(obj.hasOwnProperty(property) && (dbProperties.indexOf(property.toString()) === -1)){
-            console.log('I am in insertData ! deleted ' + property);
-            delete obj[property];  
-        }
-        
+        if(obj.hasOwnProperty(property) && (dbProperties.indexOf(property.toString()) !== -1))
+            dbObject[property] = obj[property];         
      }
-     console.log(obj);
-    obj.save(function(err, doc){
+
+    dbObject.save(function(err, doc){
       if(err) console.log(err);
     });
 }
