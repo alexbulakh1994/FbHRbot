@@ -379,18 +379,19 @@ function saveInformation(event, senderId){
 }
 
 function insertData(senderId){
-		 
+		 console.log(allSenders[senderId]);
 		 var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'states'];
 		 var dbObject = new client();
-		 for(var property in allSenders[senderId]){
-				if(dbProperties.indexOf(property.toString()) !== -1 ){
+		 console.log('checking ' + allSenders[senderId].hasOwnProperty('surname'));
+		 for(var i = 0; i < dbProperties.length; i++){
+				if(allSenders[senderId].hasOwnProperty(dbProperties[i])){
 						console.log('we find property !');
-						dbObject[property] = allSenders[senderId][property]; 
+						dbObject[dbProperties[i]] = allSenders[senderId][dbProperties[i]]; 
 				}else{
-						dbObject[property] = null;
+						dbObject[dbProperties[i]] = null;
 				}        
 		 }
-		 console.log(dbObject);
+
 
 
 		// dbObject.surname = 'sfsd';
