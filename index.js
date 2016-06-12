@@ -382,12 +382,12 @@ function insertData(senderId){
 		 
 		 var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'states'];
 		 var dbObject = new client();
-		 for(var i = 0; i < dbProperties.length; i++){
-				if(allSenders[senderId].hasOwnProperty(dbProperties[i])){
+		 for(var property in allSenders[senderId]){
+				if(dbProperties.indexOf(property.toString()) !== -1 ){
 						console.log('we find property !');
-						dbObject[dbProperties[i]] = allSenders[senderId][dbProperties[i]]; 
+						dbObject[property] = allSenders[senderId][property]; 
 				}else{
-						dbObject[dbProperties[i]] = null;
+						dbObject[property] = null;
 				}        
 		 }
 		 console.log(dbObject);
