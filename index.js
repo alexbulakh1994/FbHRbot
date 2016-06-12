@@ -381,7 +381,7 @@ function saveInformation(event, senderId){
 function insertData(obj){
      console.log(obj);
      for(var property in obj){
-        if(object.hasOwnProperty(property)){
+        if(obj.hasOwnProperty(property)){
           if(!Schema.hasOwnProperty(property)){
             delete obj[property];
           }
