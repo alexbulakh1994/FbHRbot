@@ -396,7 +396,7 @@ function insertData(senderId){
 		// 	if(err) console.log(err);
 		// });
 
-		 client.update({senderId: senderId}, dbObject, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
+		Schema.update({senderId: senderId}, dbObject, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
 			if(err) console.log(err);
 		});
 }
