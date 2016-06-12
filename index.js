@@ -381,7 +381,7 @@ function saveInformation(event, senderId){
 
 function insertData(senderId){
 		 var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'states'];
-		 var dbObject = new client();
+		 var dbObject = {};//new client()
 		 
 		 for(var i = 0; i < dbProperties.length; i++){
 				if(dbProperties[i] in allSenders[senderId]){
@@ -396,7 +396,7 @@ function insertData(senderId){
 		// 	if(err) console.log(err);
 		// });
 
-		Schema.update({senderId: senderId}, dbObject, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
+		 client.update({senderId: senderId}, dbObject, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
 			if(err) console.log(err);
 		});
 }
