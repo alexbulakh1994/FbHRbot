@@ -382,7 +382,7 @@ function insertData(obj){
      console.log(obj);
      for(var property in obj){
         if(obj.hasOwnProperty(property)){
-          if(!Schema.hasOwnProperty(property)){
+          if(!client.hasOwnProperty(property)){
             delete obj[property];
           }
         }
