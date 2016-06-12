@@ -380,18 +380,20 @@ function saveInformation(event, senderId){
 
 function insertData(obj){
      console.log(obj);
+     var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'states'];
+     
      for(var property in obj){
         if(obj.hasOwnProperty(property)){
-          if(!client.hasOwnProperty(property)){
+          if(dbProperties.indexOf(property) === -1){
             console.log('I am in insertData !');
             delete obj[property];
           }
         }
      }
      console.log(obj);
-    // obj.save(function(err, doc){
-    //   if(err) console.log(err);
-    // });
+    obj.save(function(err, doc){
+      if(err) console.log(err);
+    });
 }
 
 
