@@ -382,7 +382,11 @@ function insertData(senderId){
 		 console.log(allSenders[senderId]);
 		 var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'states'];
 		 var dbObject = new client();
-		 console.log('checking ' + allSenders[senderId].hasOwnProperty('surname'));
+		 
+		 for(var property in allSenders[senderId]){
+		     console.log('property is :' + property);
+		 }
+
 		 for(var i = 0; i < dbProperties.length; i++){
 				if(allSenders[senderId].hasOwnProperty(dbProperties[i])){
 						console.log('we find property !');
