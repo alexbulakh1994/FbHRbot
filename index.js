@@ -383,6 +383,7 @@ function insertData(obj){
      for(var property in obj){
         if(obj.hasOwnProperty(property)){
           if(!client.hasOwnProperty(property)){
+            console.log('I am in insertData !');
             delete obj[property];
           }
         }
