@@ -13,7 +13,8 @@ var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XIC
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 
 ////////////-------------informative message title------------ ///////////////////////////////////////
-var specText = 'Choose from a list of all the skills you possess. If you have skills which does not situated in list, add this skills in Additional Section \n';
+var specText = 'Choose from a list of all the skills you possess. When you choose all skills type \\finish for going to next section.'+
+              ' If you have skills which does not situated in list, add this skills in Additional Section. You could restart working with HR bot typing \\restart \n';
 var devBranch = 'Choose sphere of developer specialization which you know. If you choose all skills in this specialization type prev - for choosing 1 more specalization.';
 var ITSpeciality = 'Choose sphere of IT which you are interesting.'
 var saveText = "Do you want save information about you ?";
@@ -141,7 +142,7 @@ app.post('/webhook/', function (req, res) {
               }else{
                  sendMessage(senderId, [{text:"You couldnot go to upper level. What is last place of your work ?"}]);
               } 
-        }else if(event.message && event.message.text === 'finish' && allSenders[senderId].states === 8){
+        }else if(event.message && event.message.text === '\\finish' && allSenders[senderId].states === 8){
       		     finishChoosingSkills(senderId);     
         }else if(event.postback && allSenders[senderId].states === 8 && (event.postback.payload === 'Yes_postback' || event.postback.payload === 'No_postback')){
               if(event.postback.payload === 'Yes_postback'){
@@ -314,8 +315,7 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
             sendMessage(senderId, [{text: 'Please send some additional information about you.'}]);
          }else{
             sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
-         }
-         
+         }   
          allSenders[senderId].states += stepChangeState;
     }
 }
@@ -371,9 +371,9 @@ function saveInformation(event, senderId){
  // console.log(allSenders[senderId]);
 	if(event.postback.payload === 'Yes_postback'){
   			insertData(allSenders[senderId]);
-  			sendMessage(senderId, [{text:"All information about you was saved."}]);
+  			sendMessage(senderId, [{text:'Thank you for information, ' + allSenders[senderId].name + ' \u263A . All information about you was saved. Within 3  days you will be contacted by our real HR manager.'}]);
   		}else{
-  			sendMessage(senderId, [{text:'Thank you for information ' + allSenders[senderId].name + ' \u263A . Within 3  days you will be contacted by our real HR manager.'}]);
+  			sendMessage(senderId, [{text:'Information about you was not saved.'}]);
   		}
       delete allSenders[senderId]; // delete information about client for loop working
 }
