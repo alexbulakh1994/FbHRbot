@@ -244,12 +244,12 @@ function  professionChosing(event, senderId){
 				allSenders[senderId].states++;
 				sendMessage(senderId, [{text: devBranch}]);
 				sendMessage(senderId, structedRequest(allSenders[senderId].specialization, 'Developer Specialization'));
-		}else if(event.postback && event.postback.payload === 'QA_postback'){
+		}else if(event.postback && event.postback.payload === 'Tester_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
 				sendMessage(senderId, [{ text: postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
 				sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, 'tester skills'));
-		}else if(event.postback && event.postback.payload === 'PM_postback'){
+		}else if(event.postback && event.postback.payload === 'Project Manager_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
 				sendMessage(senderId, [{ text: postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
