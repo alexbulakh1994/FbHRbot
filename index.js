@@ -15,7 +15,7 @@ var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[
 ////////////-------------informative message title------------ ///////////////////////////////////////
 var specText = 'Choose from a list of all the skills you possess. When you choose all skills type \\finish for going to next section. \n'+
 							' If you have skills which does not situated in list, add this skills in Additional Section \n. You could restart working with HR bot typing \\restart \n';
-var devBranch = 'Choose sphere of developer specialization which you know. If you choose all skills in this specialization type prev - for choosing 1 more specalization.';
+var devBranch = 'Choose sphere of developer specialization which you know. If you choose all skills in this specialization type \\prev - for choosing 1 more specalization.';
 var ITSpeciality = 'Choose sphere of IT which you are interesting.'
 var saveText = "Do you want save information about you ?";
 var chooseLocation = "Choose city where do you live ? If you do not find it in the list type name of your city into the message box.";
@@ -136,7 +136,7 @@ app.post('/webhook/', function (req, res) {
 						 }
 				}else if(event.postback && allSenders[senderId].states === 8){
 							 chooseSkills(event, senderId);
-				}else if(event.message && event.message.text === 'prev' && allSenders[senderId].states === 8 ){
+				}else if(event.message && event.message.text === '\\prev' && allSenders[senderId].states === 8 ){
 							if(allSenders[senderId].testerSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === -1 && 
 																				allSenders[senderId].projectSpecialist.indexOf(allSenders[senderId].currentSpecialization[0]) === -1){
 								 continueChooseWorkSkills(senderId);
@@ -351,9 +351,6 @@ function yearExperience(event, senderId){
 }
 
 function attachedFile(senderId, attachedObj){
-	console.log('hi I am in attachedFile !!!');
-	console.log(attachedObj);
-			
 	if(attachedObj !== null && attachedObj.type === 'file'){
 			allSenders[senderId].cv_url = attachedObj.payload.url;
 			allSenders[senderId].states++;
@@ -369,7 +366,6 @@ function additionalInformation(event, senderId){
 }
 
 function saveInformation(event, senderId){
- // console.log(allSenders[senderId]);
 	if(event.postback.payload === 'Yes_postback'){
 				insertData(senderId);
 				sendMessage(senderId, [{text:'Thank you for information, ' + allSenders[senderId].name + ' \u263A . All information about you was saved. Within 3  days you will be contacted by our real HR manager.'}]);
@@ -391,11 +387,6 @@ function insertData(senderId){
 				}        
 		 }
 		 dbObject.senderId = senderId;    
-
-		//  dbObject.save(function(err, doc){
-		// 	if(err) console.log(err);
-		// });
-
 		 client.update({senderId: senderId}, dbObject, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
 			if(err) console.log(err);
 		});
