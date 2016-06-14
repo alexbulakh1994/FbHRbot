@@ -14,7 +14,7 @@ var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XIC
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 
 ////////////-------------informative message title------------ ///////////////////////////////////////
-var specText = 'Select all skills which you have. Don’t worry if necessary skill isn’t in the list – mention it when bot ask you to write about yourself. \n';
+var specText = 'Select all skills which you have. Don’t worry if necessary skill isn’t in the list – mention it when bot ask you to write about yourself. If you choose all skill print \\finish. \n';
 var devBranch = 'Select specialization which you know. If you have the skills of more than one specialization then select skills for the first one, and then type the command \\prev and select the next specialization';
 var ITSpeciality = 'Who do you want to work ?';
 var saveText = "Thank you, I have no more questions. Can I send your answers to our HR-manager ?";
