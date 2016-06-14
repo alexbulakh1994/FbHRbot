@@ -264,7 +264,7 @@ function  professionChosing(event, senderId){
 		}else if(event.postback && event.postback.payload === 'Project Manager_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
-				sendMessage(senderId, [{ text: postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
+				sendMessage(senderId, [{ text: specText}]);
 				sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, 'skills'));
 		}
 			 allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
@@ -275,7 +275,7 @@ function specialization(event, senderId){
 		
 		allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, spec);
 		allSenders[senderId].currentSpecialization = postbacks.choosedDevSpecialization(allSenders[senderId], spec);
-		sendMessage(senderId, [{ text : postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
+		sendMessage(senderId, [{ text : specText}]); //postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)
 		sendMessage(senderId, structedRequest(allSenders[senderId].currentSpecialization, 'skills'));
 
 		allSenders[senderId].devSpecialization.push(spec);
