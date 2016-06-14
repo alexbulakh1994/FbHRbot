@@ -13,12 +13,11 @@ var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XIC
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 
 ////////////-------------informative message title------------ ///////////////////////////////////////
-var specText = 'Choose from a list of all the skills you possess. When you choose all skills type \\finish for going to next section. \n'+
-							' If you have skills which does not situated in list, add this skills in Additional Section \n. You could restart working with HR bot typing \\restart \n';
-var devBranch = 'Choose sphere of developer specialization which you know. If you choose all skills in this specialization type \\prev - for choosing 1 more specalization.';
-var ITSpeciality = 'Choose sphere of IT which you are interesting.'
-var saveText = "Do you want save information about you ?";
-var chooseLocation = "Choose city where do you live ? If you do not find it in the list type name of your city into the message box.";
+var specText = 'Select all skills which you have. Don’t worry if necessary skill isn’t in the list – mention it when bot ask you to write about yourself. \n';
+var devBranch = 'Select specialization which you know. If you have the skills of more than one specialization then select skills for the first one, and then type the command \\prev and select the next specialization';
+var ITSpeciality = 'Who do you want to work ?';
+var saveText = "Thank you, I have no more questions. Can I send your answers to our HR-manager ?";
+var chooseLocation = "What city do you live? If it isn’t in the list - just type, its name in the message.";
 
 ////////////////---------regex for email and phone------------///////////////////////
 var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -152,13 +151,13 @@ app.post('/webhook/', function (req, res) {
 									finishChoosingSkills(senderId);
 							}
 				}else if(event.postback  && allSenders[senderId].states === 9){
-						 yesNoChoosenState(event, senderId, 'Do you have CV ?', 3, {text:"What is last place of your work ?"});
+						 yesNoChoosenState(event, senderId, 'Do you have a CV in pdf or doc format?', 3, {text:"What position did you have on your last workplace?"});
 				}else if(event.message && event.message.text && allSenders[senderId].states === 10){
 						personExperience(event, senderId);
 				}else if(event.message && event.message.text && allSenders[senderId].states === 11){
 						yearExperience(event, senderId);
 				}else if(event.postback && allSenders[senderId].states === 12){
-						yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"Please send CV on doc or pdf format."});
+						yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"Please send CV in pdf or doc format."});
 				}else if(event.message && allSenders[senderId].states === 13){
 						attachedFile(senderId, attachedObj);
 				}else if(event.message && event.message.text && allSenders[senderId].states === 14){
@@ -174,10 +173,9 @@ app.post('/webhook/', function (req, res) {
 
 function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
-	 sendMessage(senderId, [{text: 'Hellow, welcome to DataRoot team. You have started to communicate with our HR-bot.' +
-																'He will ask you a few professional questions, gather all the necessary information. We will review it and contact with you. ' +
-																'You could stop chatting with bot pressing \\restart. '+
-																'Please type your Name and Surname.'}]);
+	 sendMessage(senderId, [{text: 'Hey. I HR-bot of the company “Dataroot”. If you want to work with us, then answer a few questions, and I will gather all the necessary information and will send it to our HR-manager.'}]);
+	 sendMessage(senderId, [{text: 'To restart the chat - type the command \\ restart.'}]);
+	 sendMessage(senderId, [{text: 'So begin. What is your full name?'}]);
 }
 
 function introducePerson(event, senderId){
@@ -196,13 +194,13 @@ function personLocation(event, senderId){
 				allSenders[senderId].city = event.message.text;
 		}
 		allSenders[senderId].states++;
-		sendMessage(senderId, structedRequest(postbacks.themselvesInformationType, 'Select the method by which you would be comfortable to contact with us.'));
+		sendMessage(senderId, structedRequest(postbacks.themselvesInformationType, 'Select the way by which we will communicate with you.'));
 }
 
 function chooseInformationTypeInputing(event, senderId){
 		if(event.postback.payload === 'phone number_postback'){
 				allSenders[senderId].states += 2;
-				 sendMessage(senderId, [{text: 'Please enter your mobile phone.'}]);
+				 sendMessage(senderId, [{text: 'Please enter your mobile phone (0XXXXXXXXX or 0XX-XXX-XXXX)'}]);
 				 allSenders[senderId].typeInformationChoosing = 'phone number';
 		}else if(event.postback.payload === 'email_postback'){
 				allSenders[senderId].states++;
@@ -225,7 +223,7 @@ function emailValidation(event, senderId){
 			}  
 			allSenders[senderId].email = event.message.text;
 		}else{
-			sendMessage(senderId, [{text: 'Check input information, your email have incorrect format.'}]);
+			sendMessage(senderId, [{text: 'Please check the correctness of email address.'}]);
 		}
 }
 
@@ -235,7 +233,7 @@ function telephoneValidation(event, senderId){
 			allSenders[senderId].phone = event.message.text;
 			sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality));
 		}else{
-			sendMessage(senderId, [{text: 'Your phone must match those patterx XXX-XXX-XXXX or XXXXXXXXXX.'}]);
+			sendMessage(senderId, [{text: 'Please enter mobile number in format XXX-XXX-XXXX or XXXXXXXXXX.'}]);
 		}
 }
 
@@ -289,7 +287,7 @@ function chooseSkills(event, senderId){
 	var skill = event.postback.payload.toString().split('_')[0]; 
 
 	if(allSenders[senderId].skills.indexOf(skill) !== -1){
-		sendMessage(senderId, [{text: "Hey \u263A. You already choose this skill earlier, please choose another."}]);
+		sendMessage(senderId, [{text: "You already chose this skill \u263A."}]);
 		return;
 	}
 
@@ -313,7 +311,7 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 				 sendMessage(senderId, [botQuestion]);
 		}else{
 				 if(allSenders[senderId].states === 12){
-						sendMessage(senderId, [{text: 'Please send some additional information about you.'}]);
+						sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
 				 }else{
 						sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
 				 }   
@@ -323,7 +321,7 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 
 function personExperience(event, senderId){
 		 allSenders[senderId].states++;
-		 sendMessage(senderId,  [{text:'PLease type period when you work in the last place? Use those pattern YEAR/MM/DAY YEAR/MM/DAY.'}]);
+		 sendMessage(senderId,  [{text:'How long did you work on last position {{ position }}? Enter the date in the following format - 2015/02/31 2016/12/22.'}]);
 }
 
 function yearExperience(event, senderId){
@@ -346,7 +344,7 @@ function yearExperience(event, senderId){
 					sendMessage(senderId, [{text:"What is your exrerience? First date must be smaller than second."}]);
 				}
 			}else{
-				sendMessage(senderId, [{text:"What is your exrerience? Input correct data in format YEAR/MM/DAY YEAR/MM/DAY."}]);
+				sendMessage(senderId, [{text:"Please check the date format - YEAR/MM/DAY YEAR/MM/DAY."}]);
 			} 
 }
 
@@ -354,9 +352,9 @@ function attachedFile(senderId, attachedObj){
 	if(attachedObj !== null && attachedObj.type === 'file'){
 			allSenders[senderId].cv_url = attachedObj.payload.url;
 			allSenders[senderId].states++;
-			sendMessage(senderId, [{text: 'Please send some additional information about you.'}]);
+			sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
 	}else{
-		sendMessage(senderId, [{text:"Hey \u263A . You send file in incorect type, we check it. We need CV in doc or pdf format."}]);  
+		sendMessage(senderId, [{text:"Ouch \ u263A. It's not like pdf or doc, we accept only CV in pdf or doc format."}]);  
 	}
 }
 
@@ -368,7 +366,7 @@ function additionalInformation(event, senderId){
 function saveInformation(event, senderId){
 	if(event.postback.payload === 'Yes_postback'){
 				insertData(senderId);
-				sendMessage(senderId, [{text:'Thank you for information, ' + allSenders[senderId].name + ' \u263A . All information about you was saved. Within 3  days you will be contacted by our real HR manager.'}]);
+				sendMessage(senderId, [{text:'Thank you, ' + allSenders[senderId].name + ' \u263A . Within 3 days our HR-manager will contact you.'}]);
 			}else{
 				sendMessage(senderId, [{text:'Information about you was not saved.'}]);
 			}
