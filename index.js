@@ -176,6 +176,7 @@ function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
 	 Sync(function(){
 	        sendMessage(senderId, [{text: 'Hey. I HR-bot of the company “Dataroot”. If you want to work with us, then answer a few questions, and I will gather all the necessary information and will send it to our HR-manager.'}]);
+	 });       
 	 Sync(function(){
 	 			sendMessage(senderId, [{text: 'To restart the chat - type the command \\ restart.'}]);
 	 });
