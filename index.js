@@ -175,14 +175,13 @@ app.post('/webhook/', function (req, res) {
 function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
 	 Sync(function(){
-	     try{
 	        sendMessage(senderId, [{text: 'Hey. I HR-bot of the company “Dataroot”. If you want to work with us, then answer a few questions, and I will gather all the necessary information and will send it to our HR-manager.'}]);
-	        sendMessage(senderId, [{text: 'To restart the chat - type the command \\ restart.'}]);
-	        sendMessage(senderId, [{text: 'So begin. What is your full name?'}]);
-	     }catch(e){
-          console.error(e); 
-	     }
-	});
+	 Sync(function(){
+	 			sendMessage(senderId, [{text: 'To restart the chat - type the command \\ restart.'}]);
+	 });
+	 Sync(function(){
+	 			sendMessage(senderId, [{text: 'So begin. What is your full name?'}]);
+	 });
 }
 
 function introducePerson(event, senderId){
