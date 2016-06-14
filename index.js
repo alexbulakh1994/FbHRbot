@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
+var Sync = require('sync');
 var mongoose = require('mongoose');
 var util = require('util');
 var structedRequest = require('./structed-messages');
@@ -173,9 +174,15 @@ app.post('/webhook/', function (req, res) {
 
 function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
-	 sendMessage(senderId, [{text: 'Hey. I HR-bot of the company “Dataroot”. If you want to work with us, then answer a few questions, and I will gather all the necessary information and will send it to our HR-manager.'}]);
-	 sendMessage(senderId, [{text: 'To restart the chat - type the command \\ restart.'}]);
-	 sendMessage(senderId, [{text: 'So begin. What is your full name?'}]);
+	 Sync(function(){
+	     try{
+	        sendMessage(senderId, [{text: 'Hey. I HR-bot of the company “Dataroot”. If you want to work with us, then answer a few questions, and I will gather all the necessary information and will send it to our HR-manager.'}]);
+	        sendMessage(senderId, [{text: 'To restart the chat - type the command \\ restart.'}]);
+	        sendMessage(senderId, [{text: 'So begin. What is your full name?'}]);
+	     }catch(e){
+          console.error(e); 
+	     }
+	});
 }
 
 function introducePerson(event, senderId){
