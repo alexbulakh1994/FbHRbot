@@ -84,7 +84,8 @@ var Schema = new mongoose.Schema({
 	phone: String,
 	cv_url: String,
 	city: String,
-	experience: String,
+	experience: Number,
+	lastWorkPosition: String,
 	states: Number
 });
 ////////////-----connecting to DB
@@ -339,7 +340,8 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 
 function personExperience(event, senderId){
 		 allSenders[senderId].states++;
-		 sendMessage(senderId,  [{text:'How long did you work on last position {{ position }}? Enter the date in the following format - 2015/02/31 2016/12/22.'}]);
+		 allSenders[senderId].lastWorkPosition = event.message.text;
+		 sendMessage(senderId,  [{text:'How long did you work on last position ' +  allSenders[senderId].lastWorkPosition +'? Enter the date in the following format - 2015/02/31 2016/12/22.'}]);
 }
 
 function yearExperience(event, senderId){
@@ -353,14 +355,9 @@ function yearExperience(event, senderId){
 					 sendMessage(senderId, [{text:"You finish working date is greater current date. Please check inputing date."}]);
 					 return;
 				}
-
-				if(startWorking < finishWorking){ 
 					allSenders[senderId].states++;
-					allSenders[senderId].exrerience = (finishWorking - startWorking).toString();
+					allSenders[senderId].experience = Math.floor((finishWorking - startWorking)/86400000);
 					sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?')); 
-				}else{
-					sendMessage(senderId, [{text:"What is your exrerience? First date must be smaller than second."}]);
-				}
 			}else{
 				sendMessage(senderId, [{text:"Please check the date format - YEAR/MM/DAY YEAR/MM/DAY."}]);
 			} 
@@ -392,7 +389,7 @@ function saveInformation(event, senderId){
 }
 
 function insertData(senderId){
-		 var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'states'];
+		 var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'lastWorkPosition','states'];
 		 var dbObject = {};//new client()
 		 
 		 for(var i = 0; i < dbProperties.length; i++){
