@@ -9,7 +9,7 @@ var find = require('./find');
 var postbacks = require('./postbacks');
 var app = express();
 
-var token = "EAAYwwZCxDjikBAH8t9FPj17mZB3cB6l2j4k5tXFM0O0XHV5FcqG0ZCLRXiNEIN6XICUrjqo99sdWjqbXL9ytycJLjDTPIOb50vXhZCoFnvbW45ZAl1opG3ny2OdhXo5RxAoaqwNcoMu7pzHY9WrEQtSjC7XMZBhuxzUpyZBmzGQuwZDZD";
+var token = "EAAYWxfiazmIBAIckV5thhoxgHvBZBOfEXJys5SdZAG9eb5vZBgsBzIZBjNZBhaHtrIgdJxiANni6yn641PZChZCjTjiZBtiavNoYE2sUJ3arZAOBN9InN6Df9sZBa735G8zThQXfy3bePgVRWMtZCWXYPwgAqty3LhhhwbX3v5tixHtfgZDZD";
 
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 
@@ -175,8 +175,7 @@ app.post('/webhook/', function (req, res) {
 function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
 	 async.series(
-	 [
-	 function(callback){
+	 [function(callback){
 	    sendMessage(senderId, [{text: 'Hey. I HR-bot of the company “Dataroot”. If you want to work with us, then answer a few questions, and I will gather all the necessary information and will send it to our HR-manager.'}]);
 	 		callback();
 	 },
@@ -184,7 +183,7 @@ function greeting(senderId){
       setTimeout(callback, 1000);
    },
 	 function(callback){
-	    sendMessage(senderId, [{text: 'To restart the chat - type the command \\ restart.'}]);
+	    sendMessage(senderId, [{text: 'To restart the chat - type the command \\restart.'}]);
 	    callback();
 	 },
 	 function(callback) {
@@ -193,8 +192,7 @@ function greeting(senderId){
 	 function(callback){
 	    sendMessage(senderId, [{text: 'So begin. What is your full name?'}]);
 	    callback();
-	 },
-	 ]);
+	 },]);
 	 
 }
 
