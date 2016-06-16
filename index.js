@@ -356,7 +356,7 @@ function yearExperience(event, senderId){
 					 return;
 				}
 					allSenders[senderId].states++;
-					allSenders[senderId].experience = Math.floor((finishWorking - startWorking)/86400000);
+					allSenders[senderId].experience = Math.floor(Math.abs(finishWorking - startWorking)/86400000);
 					sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?')); 
 			}else{
 				sendMessage(senderId, [{text:"Please check the date format - YEAR/MM/DAY YEAR/MM/DAY."}]);
