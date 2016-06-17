@@ -14,7 +14,6 @@ Number.prototype.mod = function(n) {
 }
 
 var request = function(objArray, text){
-
     var messagePostBack = [];
     for(var i = 0; i < objArray.length; i++){
         if(objArray.length <= MAX_BUTTON_NUMBERS){
@@ -28,8 +27,7 @@ var request = function(objArray, text){
             messagePostBack.push(payloadObj(text, buttonsConstructor(objArray.slice(i - (objArray.length % 3) + 1))) );
         }
 
-    }
-          
+    }         
     return messagePostBack;
 }
 

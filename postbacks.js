@@ -78,7 +78,6 @@ function filter(arr, payloadDel){
 }
 
  module.exports.choosedDevSpecialization = choosedDevSpecialization;
- module.exports.printSkillList = printSkillList;
  module.exports.gettingClientsDBData = gettingClientsDBData;
  module.exports.themselvesInformationType = themselvesInformationType;
  module.exports.loadDatabaseInfo = loadDatabaseInfo;
