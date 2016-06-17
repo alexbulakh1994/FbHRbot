@@ -259,17 +259,24 @@ function telephoneValidation(event, senderId){
 		}
 }
 
-function skillChoosingSendMessages(senderId){
+function skillChoosingSendMessages(senderId, obj, titleMessage){
 	async.series([
 	   function(callback){
 	       sendMessage(senderId, [{ text: specText}]);
 	       callback();
 	   },
 	   function(callback){
-          setTimeout(callback, 1000); 
+          setTimeout(callback, 500); 
 	   },
 	   function(callback){
 		     sendMessage(senderId, [{ text: pharaseFinishChooseSkill}]);
+		     callback();
+		 },
+		 function(callback){
+          setTimeout(callback, 500); 
+	   },
+	    function(callback){
+		     sendMessage(senderId, structedRequest(obj, titleMessage));
 		     callback();
 		 },]
 	);
@@ -283,13 +290,13 @@ function  professionChosing(event, senderId){
 		}else if(event.postback && event.postback.payload === 'Tester_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
-				skillChoosingSendMessages(senderId);
-				sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, 'skills'));
+				skillChoosingSendMessages(senderId, allSenders[senderId].testerSpecialization, 'skills');
+			//	sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, 'skills'));
 		}else if(event.postback && event.postback.payload === 'Project Manager_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
-				skillChoosingSendMessages(senderId);
-				sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, 'skills'));
+				skillChoosingSendMessages(senderId, allSenders[senderId].projectSpecialist, 'skills');
+				//sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, 'skills'));
 		}
 			 allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
 }
@@ -299,9 +306,8 @@ function specialization(event, senderId){
 		
 		allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, spec);
 		allSenders[senderId].currentSpecialization = postbacks.choosedDevSpecialization(allSenders[senderId], spec);
-		skillChoosingSendMessages(senderId); //postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)
-		sendMessage(senderId, structedRequest(allSenders[senderId].currentSpecialization, 'skills'));
-
+		skillChoosingSendMessages(senderId, allSenders[senderId].currentSpecialization, 'skills'); //postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)
+		
 		allSenders[senderId].devSpecialization.push(spec);
 		allSenders[senderId].states++;
 }
