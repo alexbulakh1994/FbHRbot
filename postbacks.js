@@ -11,7 +11,7 @@ var savePostback = [];
 var locations = [];
 var testerSpecialization = [];
 var projectSpecialist = [];
-var themselvesInformationType = ['phone number', 'email', 'phone number + email'];
+var themselvesInformationType = ['by phone', 'by email', 'by phone + email'];
 
 var loadingArray = ['specialistType', 'previousNextButton', 'specialization', 'backEndPostbacks','frontEndPostbacks',
 										'androidPostbacks','IOS','savePostback','locations', 'testerSpecialization', 'projectSpecialist'];

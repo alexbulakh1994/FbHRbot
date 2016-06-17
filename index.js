@@ -217,11 +217,11 @@ function personLocation(event, senderId){
 }
 
 function chooseInformationTypeInputing(event, senderId){
-		if(event.postback.payload === 'phone number_postback'){
+		if(event.postback.payload === 'by phone_postback'){
 				allSenders[senderId].states += 2;
 				 sendMessage(senderId, [{text: 'Please enter your mobile phone (0XXXXXXXXX or 0XX-XXX-XXXX)'}]);
 				 allSenders[senderId].typeInformationChoosing = 'phone number';
-		}else if(event.postback.payload === 'email_postback'){
+		}else if(event.postback.payload === 'by email_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].typeInformationChoosing = 'email';
 				sendMessage(senderId, [{text: 'Please enter your email.'}]);
@@ -391,7 +391,6 @@ function saveInformation(event, senderId){
 function insertData(senderId){
 		 var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'experience', 'lastWorkPosition','states'];
 		 var dbObject = {};//new client()
-		 
 		 for(var i = 0; i < dbProperties.length; i++){
 				if(dbProperties[i] in allSenders[senderId]){
 						dbObject[dbProperties[i]] = allSenders[senderId][dbProperties[i]]; 
