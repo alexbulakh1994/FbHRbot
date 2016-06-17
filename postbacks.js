@@ -31,7 +31,7 @@ function loadDatabaseInfo(){
 
 function gettingClientsDBData(obj){
 	loadingArray.forEach(function(elem, i, arr){
-		obj[elem] = eval(elem);
+		obj[elem] = eval(elem).slice();
 	});									
 }
 
