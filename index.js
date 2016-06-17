@@ -14,7 +14,8 @@ var token = "EAAYWxfiazmIBAIckV5thhoxgHvBZBOfEXJys5SdZAG9eb5vZBgsBzIZBjNZBhaHtrI
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 
 ////////////-------------informative message title------------ ///////////////////////////////////////
-var specText = 'Select all skills which you have. Don’t worry if necessary skill isn’t in the list – mention it when bot ask you to write about yourself. If you choose all skill print \\finish. \n';
+var specText = 'Select all skills which you have. Don’t worry if necessary skill isn’t in the list – mention it when bot ask you to write about yourself.\n';
+var pharaseFinishChooseSkill = 'You can always finish choosing skills by typing the \\finish command.';
 var devBranch = 'Select specialization which you know. If you have the skills of more than one specialization then select skills for the first one, and then type the command \\prev and select the next specialization';
 var ITSpeciality = 'Who do you want to work ?';
 var saveText = "Thank you, I have no more questions. Can I send your answers to our HR-manager ?";
@@ -258,6 +259,22 @@ function telephoneValidation(event, senderId){
 		}
 }
 
+function skillChoosingSendMessages(){
+	async.series([
+	   function(callback){
+	       sendMessage(senderId, [{ text: specText}]);
+	       callback();
+	   },
+	   function(callback){
+          setTimeout(callback, 1000); 
+	   },
+	   function(callback){
+		     sendMessage(senderId, [{ text: pharaseFinishChooseSkill}]);
+		     callback();
+		 },]
+	);
+}
+
 function  professionChosing(event, senderId){
 		if(event.postback && event.postback.payload === 'Developer_postback'){
 				allSenders[senderId].states++;
@@ -266,12 +283,12 @@ function  professionChosing(event, senderId){
 		}else if(event.postback && event.postback.payload === 'Tester_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
-				sendMessage(senderId, [{ text: specText}]);
+				skillChoosingSendMessages();
 				sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, 'skills'));
 		}else if(event.postback && event.postback.payload === 'Project Manager_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
-				sendMessage(senderId, [{ text: specText}]);
+				skillChoosingSendMessages();
 				sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, 'skills'));
 		}
 			 allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
@@ -282,7 +299,7 @@ function specialization(event, senderId){
 		
 		allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, spec);
 		allSenders[senderId].currentSpecialization = postbacks.choosedDevSpecialization(allSenders[senderId], spec);
-		sendMessage(senderId, [{ text : specText}]); //postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)
+		skillChoosingSendMessages(); //postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)
 		sendMessage(senderId, structedRequest(allSenders[senderId].currentSpecialization, 'skills'));
 
 		allSenders[senderId].devSpecialization.push(spec);
@@ -292,6 +309,7 @@ function specialization(event, senderId){
 function continueChooseWorkSkills(senderId){
 		allSenders[senderId].states = 7;
 		sendMessage(senderId, structedRequest(allSenders[senderId].specialization, specText));
+		sendMessage(senderId, [{ text: pharaseFinishChooseSkill}]);
 }
 
 function finishChoosingSkills(senderId){
