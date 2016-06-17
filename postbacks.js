@@ -71,14 +71,6 @@ function findSpecs(obj, skill){
 	}
 }
 
-function printSkillList(skillList, titleText){
-	var result = '';
-	skillList.forEach(function(item, a, arr){
-        result = result.concat(item).concat(' \n');
-	});
-	return titleText.concat(result);
-}
-
 function filter(arr, payloadDel){
 	var index = arr.indexOf(payloadDel);
 	arr.splice(index, 1);

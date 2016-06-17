@@ -103,10 +103,11 @@ app.post('/webhook/', function (req, res) {
 		event = req.body.entry[0].messaging[i]; 
 		var senderId = event.sender.id;
 				var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
-				if (event.message && event.message.text && !allSenders[senderId]) {
+				if (event.message && event.message.text && !allSenders[senderId]){
 						 allSenders[senderId] = true;
 						 greeting(senderId);
 						 postbacks.gettingClientsDBData(allSenders[senderId]);
+						 console.log(allSenders[senderId].specialization);
 				}else if(event.message && event.message.text === '\\restart' ){
 						 delete allSenders[senderId];
 						 sendMessage(senderId, [{text: 'You stopping chat with HR bot.'}]);
@@ -264,7 +265,7 @@ function  professionChosing(event, senderId){
 		}else if(event.postback && event.postback.payload === 'Tester_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
-				sendMessage(senderId, [{ text: postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)}]);
+				sendMessage(senderId, [{ text: specText}]);
 				sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, 'skills'));
 		}else if(event.postback && event.postback.payload === 'Project Manager_postback'){
 				allSenders[senderId].states++;
@@ -384,7 +385,7 @@ function saveInformation(event, senderId){
 				sendMessage(senderId, [{text:'Thank you, ' + allSenders[senderId].name + ' \u263A . Within 3 days our HR-manager will contact you.'}]);
 			}else{
 				sendMessage(senderId, [{text:'Information about you was not saved.'}]);
-			}
+			}64
 			delete allSenders[senderId]; // delete information about client for loop working
 }
 
