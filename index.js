@@ -108,6 +108,7 @@ app.post('/webhook/', function (req, res) {
 						 greeting(senderId);
 						 postbacks.gettingClientsDBData(allSenders[senderId]);
 						 console.log(allSenders[senderId].specialization);
+						 console.log(postbacks.specialization);
 				}else if(event.message && event.message.text === '\\restart' ){
 						 delete allSenders[senderId];
 						 sendMessage(senderId, [{text: 'You stopping chat with HR bot.'}]);
