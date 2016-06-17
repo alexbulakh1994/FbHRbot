@@ -369,7 +369,7 @@ function attachedFile(senderId, attachedObj){
 			allSenders[senderId].states++;
 			sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
 	}else{
-		sendMessage(senderId, [{text:"Ouch \ u263A. It's not like pdf or doc, we accept only CV in pdf or doc format."}]);  
+		sendMessage(senderId, [{text:"Ouch \u263A. It's not like pdf or doc, we accept only CV in pdf or doc format."}]);  
 	}
 }
 
