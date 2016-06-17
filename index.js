@@ -259,7 +259,7 @@ function telephoneValidation(event, senderId){
 		}
 }
 
-function skillChoosingSendMessages(){
+function skillChoosingSendMessages(senderId){
 	async.series([
 	   function(callback){
 	       sendMessage(senderId, [{ text: specText}]);
@@ -283,12 +283,12 @@ function  professionChosing(event, senderId){
 		}else if(event.postback && event.postback.payload === 'Tester_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
-				skillChoosingSendMessages();
+				skillChoosingSendMessages(senderId);
 				sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, 'skills'));
 		}else if(event.postback && event.postback.payload === 'Project Manager_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
-				skillChoosingSendMessages();
+				skillChoosingSendMessages(senderId);
 				sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, 'skills'));
 		}
 			 allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
@@ -299,7 +299,7 @@ function specialization(event, senderId){
 		
 		allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, spec);
 		allSenders[senderId].currentSpecialization = postbacks.choosedDevSpecialization(allSenders[senderId], spec);
-		skillChoosingSendMessages(); //postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)
+		skillChoosingSendMessages(senderId); //postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)
 		sendMessage(senderId, structedRequest(allSenders[senderId].currentSpecialization, 'skills'));
 
 		allSenders[senderId].devSpecialization.push(spec);
