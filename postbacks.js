@@ -71,6 +71,18 @@ function findSpecs(obj, skill){
 	}
 }
 
+function printUserProperties(obj, props){
+	var rawText = '';
+	 for(var i = 0; i < dbProperties.length; i++){
+				if(dbProperties[i] in allSenders[senderId]){
+						rawText = rawText.concat(dbProperties[i] + " : ").concat(allSenders[senderId][dbProperties[i]] +'\n');
+				}else{
+						rawText = rawText.concat(dbProperties[i] + " : ");
+				}        
+		 }
+	return rawText;	 
+}
+
 function filter(arr, payloadDel){
 	var index = arr.indexOf(payloadDel);
 	arr.splice(index, 1);
@@ -92,4 +104,5 @@ function filter(arr, payloadDel){
  module.exports.specialistType = specialistType;
  module.exports.previousNextButton = previousNextButton;	 
  module.exports.testerSpecialization = testerSpecialization;
- module.exports.projectSpecialization = projectSpecialist;												     	 												     	 												  
+ module.exports.projectSpecialization = projectSpecialist;
+ module.exports.printUserProperties = printUserProperties;												     	 												     	 												  

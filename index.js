@@ -7,9 +7,11 @@ var util = require('util');
 var structedRequest = require('./structed-messages');
 var find = require('./find');
 var postbacks = require('./postbacks');
+var nodemailer = require('nodemailer');
 var app = express();
 
 var token = "EAAYWxfiazmIBAIckV5thhoxgHvBZBOfEXJys5SdZAG9eb5vZBgsBzIZBjNZBhaHtrIgdJxiANni6yn641PZChZCjTjiZBtiavNoYE2sUJ3arZAOBN9InN6Df9sZBa735G8zThQXfy3bePgVRWMtZCWXYPwgAqty3LhhhwbX3v5tixHtfgZDZD";
+var transporter = nodemailer.createTransport('smtps://alexbulakh707%40gmail.com:34212328031994@smtp.gmail.com');
 
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 
@@ -291,12 +293,10 @@ function  professionChosing(event, senderId){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
 				skillChoosingSendMessages(senderId, allSenders[senderId].testerSpecialization, 'skills');
-			//	sendMessage(senderId, structedRequest(allSenders[senderId].testerSpecialization, 'skills'));
 		}else if(event.postback && event.postback.payload === 'Project Manager_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].projectSpecialist;
 				skillChoosingSendMessages(senderId, allSenders[senderId].projectSpecialist, 'skills');
-				//sendMessage(senderId, structedRequest(allSenders[senderId].projectSpecialist, 'skills'));
 		}
 			 allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
 }
@@ -428,6 +428,26 @@ function insertData(senderId){
 		 client.update({senderId: senderId}, dbObject, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
 			if(err) console.log(err);
 		});
+		 sendMail(postbacks.printUserProperties(allSenders[senderId], dbProperties));
+}
+
+function sendMail(text){
+	
+	var mailOptions = {
+    from: '"Fred Foo 👥" <foo@blurdybloop.com>', // sender address
+    to: 'alexbulakh707@gmail.com', // list of receivers
+    subject: 'HR bot', // Subject line
+    text: text, // plaintext body
+    html: '<b>' + text + '</b>' // html body
+  };
+
+// send mail with defined transport object
+	transporter.sendMail(mailOptions, function(error, info){
+	    if(error){
+	        return console.log(error);
+	    }
+	    console.log('Message sent: ' + info.response);
+	});
 }
 
 
