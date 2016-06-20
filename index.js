@@ -428,7 +428,7 @@ function insertData(senderId){
 		 client.update({senderId: senderId}, dbObject, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
 			if(err) console.log(err);
 		});
-		 sendMail('hi all');
+		 sendMail(postbacks.printUserProperties(allSenders[senderId], dbProperties));
 }
 
 function sendMail(text){
