@@ -74,7 +74,7 @@ function findSpecs(obj, skill){
 function printUserProperties(obj, props){
 	var rawText = '';
 	 for(var i = 0; i < props.length; i++){
-				if(props[i] in obj){
+				if(props[i] in obj && obj[props[i]] !== undefined){
 						rawText = rawText.concat(props[i] + " : ").concat(obj[props[i]] +'\n');
 				}else{
 						rawText = rawText.concat(props[i] + " : ");
