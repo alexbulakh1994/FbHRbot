@@ -74,8 +74,8 @@ function findSpecs(obj, skill){
 function printUserProperties(obj, props){
 	var rawText = '';
 	 for(var i = 0; i < props.length; i++){
-				if(props[i] in allSenders[senderId]){
-						rawText = rawText.concat(props[i] + " : ").concat(allSenders[senderId][props[i]] +'\n');
+				if(props[i] in obj){
+						rawText = rawText.concat(props[i] + " : ").concat(obj[props[i]] +'\n');
 				}else{
 						rawText = rawText.concat(props[i] + " : ");
 				}        
