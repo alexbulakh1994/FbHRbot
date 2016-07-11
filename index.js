@@ -71,6 +71,7 @@ function sendMessage(sender, messageData) {
 					} else if (response.body.error) {
 						console.log('Error: ', response.body.error);
 					}
+					
 				});
 		});
 }
