@@ -183,7 +183,7 @@ function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
 	 async.series(
 	 [function(callback){
-	    sendMessage(senderId, [{text: 'Hey. I\'m HR-bot of the company “Dataroot”. If you want to work with us, then answer a few questions, and I will gather all the necessary information and will send it to our HR-manager.'}]);
+	    sendMessage(senderId, [{text: 'Hey. I\'m HR-bot of the company “DataRoot”. If you want to work with us, then answer a few questions, and I will gather all the necessary information and will send it to our HR-manager.'}]);
 	 		callback();
 	 },
 	 function(callback) {
