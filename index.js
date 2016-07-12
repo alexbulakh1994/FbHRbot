@@ -10,7 +10,7 @@ var postbacks = require('./postbacks');
 var nodemailer = require('nodemailer');
 var app = express();
 
-var token = "EAAYWxfiazmIBAIckV5thhoxgHvBZBOfEXJys5SdZAG9eb5vZBgsBzIZBjNZBhaHtrIgdJxiANni6yn641PZChZCjTjiZBtiavNoYE2sUJ3arZAOBN9InN6Df9sZBa735G8zThQXfy3bePgVRWMtZCWXYPwgAqty3LhhhwbX3v5tixHtfgZDZD";
+var token = "EAAYWxfiazmIBAE6IBlUf2VneSFs3HY0Pbe28jdd8eT2csS7gBX5qngtTIKN0drWWPP4gDEEuBKRDWMV9ZAvE3yOsNcx12SCEbO9fL0oBZCKjTm3RHoegZBUm5qYMgbDB5aW3B3adbQJVCPuARHTt5aNfhDl95rS24EdkBBrpwZDZD";
 var transporter = nodemailer.createTransport('smtps://alexbulakh707%40gmail.com:34212328031994@smtp.gmail.com');
 
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
