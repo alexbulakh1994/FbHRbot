@@ -19,7 +19,7 @@ var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[
 var specText = 'Select all skills which you have. Don’t worry if necessary skill isn’t in the list – mention it when bot ask you to write about yourself.\n';
 var pharaseFinishChooseSkill = 'You can always finish choosing skills by typing the \\finish command.';
 var devBranch = 'Select specialization which you know. If you have the skills of more than one specialization then select skills for the first one, and then type the command \\prev and select the next specialization';
-var ITSpeciality = 'Who do you want to work ?';
+var ITSpeciality = 'What do you want to do ?';
 var saveText = "Thank you, I have no more questions. Can I send your answers to our HR-manager ?";
 var chooseLocation = "Where do you live? Type your city or select below.";
 
@@ -450,6 +450,9 @@ function sendMail(text){
 	    console.log('Message sent: ' + info.response);
 	});
 }
+
+
+// 7620c4cb-3260-4280-ac68-1c4718f664a6
 
 
 
