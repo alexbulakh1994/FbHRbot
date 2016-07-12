@@ -244,7 +244,7 @@ function emailValidation(event, senderId){
 					sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality));
 			}else{
 					allSenders[senderId].states++;
-					 sendMessage(senderId, [{text: 'Please enter your mobile phone.'}]);
+					 sendMessage(senderId, [{text: 'Please enter your mobile phone (0XXXXXXXXX or 0XX-XXX-XXXX)'}]);
 			}  
 			allSenders[senderId].email = event.message.text;
 		}else{
