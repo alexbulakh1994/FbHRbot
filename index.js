@@ -290,7 +290,7 @@ function  professionChosing(event, senderId){
 				allSenders[senderId].states++;
 				sendMessage(senderId, [{text: devBranch}]);
 				sendMessage(senderId, structedRequest(allSenders[senderId].specialization, 'Developer Specialization'));
-		}else if(event.postback && event.postback.payload === 'Tester_postback'){
+		}else if(event.postback && event.postback.payload === 'QA_postback'){
 				allSenders[senderId].states++;
 				allSenders[senderId].currentSpecialization = allSenders[senderId].testerSpecialization;
 				skillChoosingSendMessages(senderId, allSenders[senderId].testerSpecialization, 'skills');
