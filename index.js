@@ -103,17 +103,16 @@ var client = mongoose.model('clients', Schema, 'clients');
 ////////----main itration threw state in witch uset situated--------
 var allSenders = {};
 app.post('/webhook/', function (req, res) {
-	messaging_events = req.body.entry[0].messaging;
+	var messaging_events = req.body.entry[0].messaging;
 	for (i = 0; i < messaging_events.length; i++) {
-		event = req.body.entry[0].messaging[i]; 
+		var event = req.body.entry[0].messaging[i]; 
 		var senderId = event.sender.id;
 				var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
 				if (event.message && event.message.text && !allSenders[senderId]){
 						 allSenders[senderId] = true;
+						 allSenders[senderId] = new client({states: 1});
 						 greeting(senderId);
 						 postbacks.gettingClientsDBData(allSenders[senderId]);
-						 console.log(allSenders[senderId].specialization);
-						 console.log(postbacks.specialization);
 				}else if(event.message && event.message.text === '\\restart' ){
 						 delete allSenders[senderId];
 						 sendMessage(senderId, [{text: 'You stopping chat with HR bot.'}]);
@@ -184,7 +183,6 @@ app.post('/webhook/', function (req, res) {
 
 
 function greeting(senderId){
-	 allSenders[senderId] = new client({states: 1});
 	 async.series(
 	 [function(callback){
 	    sendMessage(senderId, [{text: 'Hey, I\’m HR-bot of “DataRoot”. If you want to work in our company, answer a few questions, I\’ll collect all information and will send it to our HR-manager.'}]);
