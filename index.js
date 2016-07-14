@@ -161,17 +161,20 @@ app.post('/webhook/', function (req, res) {
 							}
 				}else if(event.postback  && allSenders[senderId].states === 9){
 						 yesNoChoosenState(event, senderId, 'Do you have a CV in pdf or doc format?', 3, {text:"What position did you have on your last workplace?"});
-				}else if(event.message && event.message.text && allSenders[senderId].states === 10){
+				}
+				// else if(event.message && event.message.text && allSenders[senderId].states === 10){
+				// 		personExperience(event, senderId);
+				// }
+				else if(event.message && event.message.text && allSenders[senderId].states === 10){
+						//yearExperience(event, senderId);
 						personExperience(event, senderId);
-				}else if(event.message && event.message.text && allSenders[senderId].states === 11){
-						yearExperience(event, senderId);
-				}else if(event.postback && allSenders[senderId].states === 12){
+				}else if(event.postback && allSenders[senderId].states === 11){
 						yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"Please send CV in pdf or doc format. \ud83d\udcce use this button."});
-				}else if(event.message && allSenders[senderId].states === 13){
+				}else if(event.message && allSenders[senderId].states === 12){
 						attachedFile(senderId, attachedObj);
-				}else if(event.message && event.message.text && allSenders[senderId].states === 14){
+				}else if(event.message && event.message.text && allSenders[senderId].states === 13){
 					 additionalInformation(event, senderId);	
-				}else if(event.postback && allSenders[senderId].states === 15){
+				}else if(event.postback && allSenders[senderId].states === 14){
 						saveInformation(event, senderId);
 				}
 	}
@@ -369,7 +372,8 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 function personExperience(event, senderId){
 		 allSenders[senderId].states++;
 		 allSenders[senderId].lastWorkPosition = event.message.text;
-		 sendMessage(senderId,  [{text:'How long did you work as ' +  allSenders[senderId].lastWorkPosition +'? Enter the date in the following format - 2015/02/31 2016/12/22.'}]);
+		 //sendMessage(senderId,  [{text:'How long did you work as ' +  allSenders[senderId].lastWorkPosition +'? Enter the date in the following format - 2015/02/31 2016/12/22.'}]);
+		 sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?')); 
 }
 
 function yearExperience(event, senderId){
