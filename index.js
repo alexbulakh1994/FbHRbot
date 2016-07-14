@@ -17,12 +17,12 @@ var transporter = nodemailer.createTransport('smtps://alexbulakh707%40gmail.com:
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
 
 ////////////-------------informative message title------------ ///////////////////////////////////////
-var specText = 'Select all skills which you have. Don’t worry if necessary skill isn’t in the list – mention it when bot ask you to write about yourself.\n';
+var specText = 'Select the skills that are relevant for you. Don\’t worry if you can\’t find necessary skill in the list. Mention it when chat bot asks you to write about yourself.\n';
 var pharaseFinishChooseSkill = 'You can always finish choosing skills by typing the \\finish command.';
-var devBranch = 'Select specialization which you know. If you have the skills of more than one specialization then select skills for the first one, and then type the command \\prev and select the next specialization';
-var ITSpeciality = 'What do you want to do ?';
-var saveText = "Thank you, I have no more questions. Can I send your answers to our HR-manager ?";
-var chooseLocation = "Where do you live? Type your city or select below.";
+var devBranch = 'Select your specialization. If you have the skills in several specializations select the skills for the first one, type the command \\prev and select the next specialization.';
+var ITSpeciality = 'What position are you looking for?';
+var saveText = " Thank you, I have no more questions. Can I send your answers to our HR-manager?";
+var chooseLocation = "Where do you live? If you can\’t find the city in our list, please just type it in the message\’s field.";
 
 ////////////////---------regex for email and phone------------///////////////////////
 var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -160,7 +160,7 @@ app.post('/webhook/', function (req, res) {
 									finishChoosingSkills(senderId);
 							}
 				}else if(event.postback  && allSenders[senderId].states === 9){
-						 yesNoChoosenState(event, senderId, 'Do you have a CV in pdf or doc format?', 2, {text:"What position did you have on your last workplace?"});
+						 yesNoChoosenState(event, senderId, 'Do you have a CV in pdf or doc format?', 2, {text:"What was your previous position?"});
 				}
 				// else if(event.message && event.message.text && allSenders[senderId].states === 10){
 				// 		personExperience(event, senderId);
@@ -169,7 +169,7 @@ app.post('/webhook/', function (req, res) {
 						//yearExperience(event, senderId);
 						personExperience(event, senderId);
 				}else if(event.postback && allSenders[senderId].states === 11){
-						yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"Please send CV in pdf or doc format. \ud83d\udcce use this button."});
+						yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"Please send CV in pdf or doc format."}); //\ud83d\udcce use this button.
 				}else if(event.message && allSenders[senderId].states === 12){
 						attachedFile(senderId, attachedObj);
 				}else if(event.message && event.message.text && allSenders[senderId].states === 13){
@@ -187,21 +187,21 @@ function greeting(senderId){
 	 allSenders[senderId] = new client({states: 1});
 	 async.series(
 	 [function(callback){
-	    sendMessage(senderId, [{text: 'Hey. I\'m HR-bot of the company “DataRoot”. If you want to work with us, then answer a few questions, and I will gather all the necessary information and will send it to our HR-manager.'}]);
+	    sendMessage(senderId, [{text: 'Hey, I\’m HR-bot of “DataRoot”. If you want to work in our company, answer a few questions, I\’ll collect all information and will send it to our HR-manager.'}]);
 	 		callback();
 	 },
 	 function(callback) {
       setTimeout(callback, 1000);
    },
 	 function(callback){
-	    sendMessage(senderId, [{text: 'You can always restart the chat by typing the \\restart command.'}]);
+	    sendMessage(senderId, [{text: 'To restart the chat - type the command \\restart.'}]);
 	    callback();
 	 },
 	 function(callback) {
       setTimeout(callback, 1000);
    },
 	 function(callback){
-	    sendMessage(senderId, [{text: 'So begin. What\'s your full name?'}]);
+	    sendMessage(senderId, [{text: 'Let\’s begin. What is your full name?'}]);
 	    callback();
 	 },]);
 	 
@@ -223,13 +223,13 @@ function personLocation(event, senderId){
 				allSenders[senderId].city = event.message.text;
 		}
 		allSenders[senderId].states++;
-		sendMessage(senderId, structedRequest(postbacks.themselvesInformationType, 'How can we communicate with you?'));
+		sendMessage(senderId, structedRequest(postbacks.themselvesInformationType, 'Select the preferable way to contact you.'));
 }
 
 function chooseInformationTypeInputing(event, senderId){
 		if(event.postback.payload === 'by phone_postback'){
 				allSenders[senderId].states += 2;
-				 sendMessage(senderId, [{text: 'Please enter your mobile phone (0XXXXXXXXX or 0XX-XXX-XXXX)'}]);
+				 sendMessage(senderId, [{text: 'Please enter your mobile phone (0XXXXXXXXX or 0XX XXX XX XX).'}]);
 				 allSenders[senderId].typeInformationChoosing = 'phone number';
 		}else if(event.postback.payload === 'by email_postback'){
 				allSenders[senderId].states++;
@@ -248,11 +248,11 @@ function emailValidation(event, senderId){
 					sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality));
 			}else{
 					allSenders[senderId].states++;
-					 sendMessage(senderId, [{text: 'Please enter your mobile phone (0XXXXXXXXX or 0XX-XXX-XXXX)'}]);
+					 sendMessage(senderId, [{text: 'Please enter your mobile phone (0XXXXXXXXX or 0XX XXX XX XX).'}]);
 			}  
 			allSenders[senderId].email = event.message.text;
 		}else{
-			sendMessage(senderId, [{text: 'Please check the correctness of email address.'}]);
+			sendMessage(senderId, [{text: 'Please confirm the email address.'}]);
 		}
 }
 
@@ -262,7 +262,7 @@ function telephoneValidation(event, senderId){
 			allSenders[senderId].phone = event.message.text;
 			sendMessage(senderId, structedRequest(allSenders[senderId].specialistType, ITSpeciality));
 		}else{
-			sendMessage(senderId, [{text: 'Ensure that your phone number was typed in correct format XXX-XXX-XXXX or XXXXXXXXXX.'}]);
+			sendMessage(senderId, [{text: 'Please enter mobile number in format XXX-XXX-XXXX or XXXXXXXXXX.'}]);
 		}
 }
 
@@ -326,7 +326,7 @@ function continueChooseWorkSkills(senderId){
 function finishChoosingSkills(senderId){
 		 console.log('finishChoosingSkills calling ' + allSenders[senderId].states);
 		 allSenders[senderId].states++;
-		 sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have work experience ?'));
+		 sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have experience?'));
 }
 
 function lastWorkExperience(senderId){
@@ -337,7 +337,7 @@ function chooseSkills(event, senderId){
 	var skill = event.postback.payload.toString().split('_')[0]; 
 
 	if(allSenders[senderId].skills.indexOf(skill) !== -1){
-		sendMessage(senderId, [{text: "You already chose this skill \u263A."}]);
+		sendMessage(senderId, [{text: "You’ve already chosen this skill \u263A"}]);
 		return;
 	}
 
@@ -361,7 +361,7 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 				 sendMessage(senderId, [botQuestion]);
 		}else{
 				 if(allSenders[senderId].states === 11){
-						sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
+						sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can add a review about the chatbot \u263A'}]);
 				 }else{
 						sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
 				 }   
@@ -372,8 +372,9 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 function personExperience(event, senderId){
 		 allSenders[senderId].states++;
 		 allSenders[senderId].lastWorkPosition = event.message.text;
+		 //How long did you work on last position {{ position }}? Enter the date in the following format - 2015/02/31 2016/12/22.
 		 //sendMessage(senderId,  [{text:'How long did you work as ' +  allSenders[senderId].lastWorkPosition +'? Enter the date in the following format - 2015/02/31 2016/12/22.'}]);
-		 sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?')); 
+		 sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have a CV in pdf or doc?')); 
 }
 
 function yearExperience(event, senderId){
@@ -389,9 +390,9 @@ function yearExperience(event, senderId){
 				}
 					allSenders[senderId].states++;
 					allSenders[senderId].experience = Math.floor(Math.abs(finishWorking - startWorking)/86400000);
-					sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have CV ?')); 
+					sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have a CV in pdf or doc?')); 
 			}else{
-				sendMessage(senderId, [{text:"Please check the date format - YYYY/MM/DD YYYY/MM/DD or YYYY/MM/DD-YYYY/MM/DD."}]);
+				sendMessage(senderId, [{text:"Please check the date format - YEAR/MM/DAY YEAR/MM/DAY."}]);
 			} 
 }
 
@@ -401,7 +402,7 @@ function attachedFile(senderId, attachedObj){
 			allSenders[senderId].states++;
 			sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
 	}else{
-		sendMessage(senderId, [{text:"Ouch \u263A. It's not like pdf or doc, we accept only CV in pdf or doc format."}]);  
+		sendMessage(senderId, [{text:"Ouch \u263A It doesn’t look like pdf or doc, we accept only CV in pdf or doc."}]);  
 	}
 }
 
@@ -413,7 +414,7 @@ function additionalInformation(event, senderId){
 function saveInformation(event, senderId){
 	if(event.postback.payload === 'Yes_postback'){
 				insertData(senderId);
-				sendMessage(senderId, [{text:'Thank you, ' + allSenders[senderId].name + ' \u263A . Within 3 days our HR-manager will contact you.'}]);
+				sendMessage(senderId, [{text:'Thank you, ' + allSenders[senderId].name + ' \u263A Our HR-manager will contact you within 3 days.'}]);
 			}else{
 				sendMessage(senderId, [{text:'Information about you was not saved.'}]);
 			}64
