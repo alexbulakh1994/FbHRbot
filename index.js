@@ -360,7 +360,7 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 				 allSenders[senderId].states++; 
 				 sendMessage(senderId, [botQuestion]);
 		}else{
-				 if(allSenders[senderId].states === 12){
+				 if(allSenders[senderId].states === 11){
 						sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
 				 }else{
 						sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
