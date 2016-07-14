@@ -160,21 +160,18 @@ app.post('/webhook/', function (req, res) {
 									finishChoosingSkills(senderId);
 							}
 				}else if(event.postback  && allSenders[senderId].states === 9){
-						 yesNoChoosenState(event, senderId, 'Do you have a CV in pdf or doc format?', 2, {text:"What position did you have on your last workplace?"});
-				}
-				// else if(event.message && event.message.text && allSenders[senderId].states === 10){
-				// 		personExperience(event, senderId);
-				// }
-				else if(event.message && event.message.text && allSenders[senderId].states === 10){
-						//yearExperience(event, senderId);
+						 yesNoChoosenState(event, senderId, 'Do you have a CV in pdf or doc format?', 3, {text:"What position did you have on your last workplace?"});
+				}else if(event.message && event.message.text && allSenders[senderId].states === 10){
 						personExperience(event, senderId);
-				}else if(event.postback && allSenders[senderId].states === 11){
+				}else if(event.message && event.message.text && allSenders[senderId].states === 11){
+						yearExperience(event, senderId);
+				}else if(event.postback && allSenders[senderId].states === 12){
 						yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"Please send CV in pdf or doc format. \ud83d\udcce use this button."});
-				}else if(event.message && allSenders[senderId].states === 12){
+				}else if(event.message && allSenders[senderId].states === 13){
 						attachedFile(senderId, attachedObj);
-				}else if(event.message && event.message.text && allSenders[senderId].states === 13){
+				}else if(event.message && event.message.text && allSenders[senderId].states === 14){
 					 additionalInformation(event, senderId);	
-				}else if(event.postback && allSenders[senderId].states === 14){
+				}else if(event.postback && allSenders[senderId].states === 15){
 						saveInformation(event, senderId);
 				}
 	}
@@ -356,12 +353,11 @@ function chooseSkills(event, senderId){
 }
 
 function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState, botQuestion){
-		console.log('state is : ' + allSenders[senderId].states);
 		if(event.postback.payload === 'Yes_postback'){
 				 allSenders[senderId].states++; 
 				 sendMessage(senderId, [botQuestion]);
 		}else{
-				 if(allSenders[senderId].states === 11){
+				 if(allSenders[senderId].states === 12){
 						sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
 				 }else{
 						sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
@@ -371,15 +367,12 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 }
 
 function personExperience(event, senderId){
-		 console.log('state is : ' + allSenders[senderId].states);
 		 allSenders[senderId].states++;
 		 allSenders[senderId].lastWorkPosition = event.message.text;
 		 sendMessage(senderId,  [{text:'How long did you work as ' +  allSenders[senderId].lastWorkPosition +'? Enter the date in the following format - 2015/02/31 2016/12/22.'}]);
-		 sendMessage(senderId, [{text: 'Do you have CV ?'}]);
 }
 
 function yearExperience(event, senderId){
-			console.log('state is : ' + allSenders[senderId].states);
 			var dateTimes = event.message.text.split(/-| /);
 			var startWorking = new Date(dateTimes[0]);
 			var finishWorking = new Date(dateTimes[1]);
