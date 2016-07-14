@@ -355,11 +355,12 @@ function chooseSkills(event, senderId){
 }
 
 function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState, botQuestion){
+		console.log('state is : ' + allSenders[senderId].states);
 		if(event.postback.payload === 'Yes_postback'){
 				 allSenders[senderId].states++; 
 				 sendMessage(senderId, [botQuestion]);
 		}else{
-				 if(allSenders[senderId].states === 11){
+				 if(allSenders[senderId].states === 10){
 						sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
 				 }else{
 						sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
@@ -369,12 +370,14 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 }
 
 function personExperience(event, senderId){
+		 console.log('state is : ' + allSenders[senderId].states);
 		 allSenders[senderId].states++;
 		 allSenders[senderId].lastWorkPosition = event.message.text;
 		 sendMessage(senderId,  [{text:'How long did you work as ' +  allSenders[senderId].lastWorkPosition +'? Enter the date in the following format - 2015/02/31 2016/12/22.'}]);
 }
 
 function yearExperience(event, senderId){
+			console.log('state is : ' + allSenders[senderId].states);
 			var dateTimes = event.message.text.split(/-| /);
 			var startWorking = new Date(dateTimes[0]);
 			var finishWorking = new Date(dateTimes[1]);
