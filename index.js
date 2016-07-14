@@ -105,19 +105,15 @@ var allSenders = {};
 app.post('/webhook/', function (req, res) {
 	messaging_events = req.body.entry[0].messaging;
 	for (i = 0; i < messaging_events.length; i++) {
-		
 		event = req.body.entry[0].messaging[i]; 
-		console.log(event);
 		var senderId = event.sender.id;
-		console.log(senderId);
-			//	var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
-				if (event.message && event.message.text){
-					     console.log('I am here 1!');
+				var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
+				if (event.message && event.message.text && !allSenders[senderId]){
 						 allSenders[senderId] = true;
-						 allSenders[senderId].states = 1;
 						 greeting(senderId);
 						 postbacks.gettingClientsDBData(allSenders[senderId]);
-						 console.log('I am here 2!');
+						 console.log(allSenders[senderId].specialization);
+						 console.log(postbacks.specialization);
 				}else if(event.message && event.message.text === '\\restart' ){
 						 delete allSenders[senderId];
 						 sendMessage(senderId, [{text: 'You stopping chat with HR bot.'}]);
