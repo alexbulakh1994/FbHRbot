@@ -112,11 +112,12 @@ app.post('/webhook/', function (req, res) {
 		console.log(senderId);
 			//	var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
 				if (event.message && event.message.text){
+					     console.log('I am here 1!');
 						 allSenders[senderId] = true;
 						 allSenders[senderId].states = 1;
 						 greeting(senderId);
 						 postbacks.gettingClientsDBData(allSenders[senderId]);
-						 console.log('I am here !');
+						 console.log('I am here 2!');
 				}else if(event.message && event.message.text === '\\restart' ){
 						 delete allSenders[senderId];
 						 sendMessage(senderId, [{text: 'You stopping chat with HR bot.'}]);
