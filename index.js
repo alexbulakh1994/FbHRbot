@@ -109,7 +109,7 @@ app.post('/webhook/', function (req, res) {
 		event = req.body.entry[0].messaging[i]; 
 		var senderId = event.sender.id;
 				var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
-				if (event.message && event.message.text && !allSenders[senderId]){
+				if (event.message && event.message.text && allSenders[senderId] === undefined){
 						 allSenders[senderId] = true;
 						 allSenders[senderId].states = 1;
 						 greeting(senderId);
