@@ -414,7 +414,7 @@ function additionalInformation(event, senderId){
 function saveInformation(event, senderId){
 	if(event.postback.payload === 'Yes_postback'){
 				insertData(senderId);
-				sendMessage(senderId, [{text:'Thank you, ' + allSenders[senderId].name + ' \u263A Our HR-manager will contact you within 3 days.'}]);
+				sendMessage(senderId, [{text:'Thank you, ' + allSenders[senderId].name + ' \u263A \n Our HR-manager will contact you within 3 days.'}]);
 			}else{
 				sendMessage(senderId, [{text:'Information about you was not saved.'}]);
 			}64
