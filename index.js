@@ -160,7 +160,7 @@ app.post('/webhook/', function (req, res) {
 									finishChoosingSkills(senderId);
 							}
 				}else if(event.postback  && allSenders[senderId].states === 9){
-						 yesNoChoosenState(event, senderId, 'Do you have a CV in pdf or doc format?', 3, {text:"What position did you have on your last workplace?"});
+						 yesNoChoosenState(event, senderId, 'Do you have a CV in pdf or doc format?', 2, {text:"What position did you have on your last workplace?"});
 				}
 				// else if(event.message && event.message.text && allSenders[senderId].states === 10){
 				// 		personExperience(event, senderId);
