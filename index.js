@@ -10,6 +10,7 @@ var postbacks = require('./postbacks');
 var nodemailer = require('nodemailer');
 var app = express();
 
+
 var token = "EAAYWxfiazmIBAGUEU5ZATRvI17Q2EjcOkjQ4Hb6kXd2XJvVGiCsYM7opWMYjjVbMaDSltGZBZCXWlscjuQ3PExb2DJFjGEVXvTpUojFpuKA9whniVZANH7zuLoi8hAbZC4klt1yHheha2zTmMMvszzHmvHel6CG956ZAwVZBRO6VQZDZD";
 var transporter = nodemailer.createTransport('smtps://alexbulakh707%40gmail.com:34212328031994@smtp.gmail.com');
 
@@ -104,6 +105,7 @@ var allSenders = {};
 app.post('/webhook/', function (req, res) {
 	messaging_events = req.body.entry[0].messaging;
 	for (i = 0; i < messaging_events.length; i++) {
+		console.log('hi!');
 		event = req.body.entry[0].messaging[i]; 
 		var senderId = event.sender.id;
 				var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
