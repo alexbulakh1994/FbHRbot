@@ -166,6 +166,7 @@ app.post('/webhook/', function (req, res) {
 				// 		personExperience(event, senderId);
 				// }
 				else if(event.message && event.message.text && allSenders[senderId].states === 10){
+						sendMessage(senderId, [{text: 'please type your year experience.'}]);
 						yearExperience(event, senderId);
 				}else if(event.postback && allSenders[senderId].states === 11){
 						yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"Please send CV in pdf or doc format. \ud83d\udcce use this button."});
@@ -360,7 +361,7 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 				 allSenders[senderId].states++; 
 				 sendMessage(senderId, [botQuestion]);
 		}else{
-				 if(allSenders[senderId].states === 10){
+				 if(allSenders[senderId].states === 11){
 						sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
 				 }else{
 						sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
