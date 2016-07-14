@@ -160,18 +160,20 @@ app.post('/webhook/', function (req, res) {
 									finishChoosingSkills(senderId);
 							}
 				}else if(event.postback  && allSenders[senderId].states === 9){
-						 yesNoChoosenState(event, senderId, 'Do you have a CV in pdf or doc format?', 3, {text:"What position did you have on your last workplace?"});
-				}else if(event.message && event.message.text && allSenders[senderId].states === 10){
-						personExperience(event, senderId);
-				}else if(event.message && event.message.text && allSenders[senderId].states === 11){
+						 yesNoChoosenState(event, senderId, 'Do you have a CV in pdf or doc format?', 2, {text:"What position did you have on your last workplace?"});
+				}
+				// else if(event.message && event.message.text && allSenders[senderId].states === 10){
+				// 		personExperience(event, senderId);
+				// }
+				else if(event.message && event.message.text && allSenders[senderId].states === 10){
 						yearExperience(event, senderId);
-				}else if(event.postback && allSenders[senderId].states === 12){
+				}else if(event.postback && allSenders[senderId].states === 11){
 						yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, {text:"Please send CV in pdf or doc format. \ud83d\udcce use this button."});
-				}else if(event.message && allSenders[senderId].states === 13){
+				}else if(event.message && allSenders[senderId].states === 12){
 						attachedFile(senderId, attachedObj);
-				}else if(event.message && event.message.text && allSenders[senderId].states === 14){
+				}else if(event.message && event.message.text && allSenders[senderId].states === 13){
 					 additionalInformation(event, senderId);	
-				}else if(event.postback && allSenders[senderId].states === 15){
+				}else if(event.postback && allSenders[senderId].states === 14){
 						saveInformation(event, senderId);
 				}
 	}
@@ -357,7 +359,7 @@ function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState,
 				 allSenders[senderId].states++; 
 				 sendMessage(senderId, [botQuestion]);
 		}else{
-				 if(allSenders[senderId].states === 12){
+				 if(allSenders[senderId].states === 11){
 						sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
 				 }else{
 						sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, informativeMessage)); //informativeMessage  
