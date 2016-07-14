@@ -105,10 +105,12 @@ var allSenders = {};
 app.post('/webhook/', function (req, res) {
 	messaging_events = req.body.entry[0].messaging;
 	for (i = 0; i < messaging_events.length; i++) {
-		console.log('hi!');
+		
 		event = req.body.entry[0].messaging[i]; 
+		console.log(event);
 		var senderId = event.sender.id;
-				var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
+		console.log(senderId);
+			//	var attachedObj = find.findAttachObject(req.body.entry[0].messaging);
 				if (event.message && event.message.text){
 						 allSenders[senderId] = true;
 						 allSenders[senderId].states = 1;
