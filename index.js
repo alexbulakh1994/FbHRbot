@@ -375,6 +375,7 @@ function personExperience(event, senderId){
 		 allSenders[senderId].states++;
 		 allSenders[senderId].lastWorkPosition = event.message.text;
 		 sendMessage(senderId,  [{text:'How long did you work as ' +  allSenders[senderId].lastWorkPosition +'? Enter the date in the following format - 2015/02/31 2016/12/22.'}]);
+		 sendMessage(senderId, [{text: 'Do you have CV ?'}]);
 }
 
 function yearExperience(event, senderId){
