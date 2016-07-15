@@ -95,8 +95,8 @@ var Schema = new mongoose.Schema ({
 	states: Number
 });
 ////////////-----connecting to DB
-mongoose.connect('mongodb://alexbulakh707:28031994Alex@ds021172.mlab.com:21172/chatdb');
-var client = mongoose.model('clients', Schema, 'clients');
+mongoose.connect('mongodb://hrbot:1qaz2wsx0@ds011715.mlab.com:11715/hr-bot');
+var client = mongoose.model('hr-bot', Schema, 'hr-bot');
 // load DB dates to node JS arrays
  postbacks.loadDatabaseInfo();
 //----------------------------------------
