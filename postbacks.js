@@ -1,17 +1,16 @@
-var mongoose = require('mongoose');
-
-var specialistType = []; 
-var previousNextButton = [];
-var specialization = [];
-var backEndPostbacks = [];
-var frontEndPostbacks = [];
-var androidPostbacks = [];
-var IOS = [];
-var savePostback = [];
-var locations = [];
-var testerSpecialization = [];
-var projectSpecialist = [];
-var themselvesInformationType = ['by phone', 'by email', 'by phone + email'];
+var mongoose = require('mongoose'),
+	specialistType = [],
+	previousNextButton = [],
+	specialization = [],
+	backEndPostbacks = [],
+	frontEndPostbacks = [],
+	androidPostbacks = [],
+	IOS = [],
+	savePostback = [],
+	locations = [],
+	testerSpecialization = [],
+	projectSpecialist = [],
+	themselvesInformationType = ['by phone', 'by email', 'by phone + email'];
 
 var loadingArray = ['specialistType', 'previousNextButton', 'specialization', 'backEndPostbacks','frontEndPostbacks',
 										'androidPostbacks','IOS','savePostback','locations', 'testerSpecialization', 'projectSpecialist'];
@@ -19,71 +18,71 @@ var Schema = new mongoose.Schema({
 	name : String
 });
 
-function loadDatabaseInfo(){
-	loadingArray.forEach(function(elem, i, arr){
-		mongoose.model(elem, Schema, elem).find(function(err, result){
-			    result.forEach(function(item, i, arr){
-					eval(elem).push(item.toObject().name);
-				});		
-			});
+function loadDatabaseInfo() {
+	loadingArray.forEach(function(elem, i, arr) {
+		mongoose.model(elem, Schema, elem).find(function(err, result) {
+			result.forEach(function(item, i, arr) {
+				eval(elem).push(item.toObject().name);
+			});		
+		});
     });
 }
 
-function gettingClientsDBData(obj){
+function gettingClientsDBData(obj) {
 	loadingArray.forEach(function(elem, i, arr){
 		obj[elem] = eval(elem).slice();
 	});									
 }
 
-function choosedDevSpecialization(obj, spec){
-	if(spec === 'BackEnd'){
+function choosedDevSpecialization(obj, spec) {
+	if(spec === 'BackEnd') {
 		return obj.backEndPostbacks;
-	}else if(spec === 'FrontEnd'){
+	} else if (spec === 'FrontEnd') {
 		return obj.frontEndPostbacks;
-	}else if(spec === 'Android'){
+	} else if (spec === 'Android') {
 		return obj.androidPostbacks;
-	}else if(spec === 'IOS'){
+	} else if (spec === 'IOS') {
 		return obj.IOS;
 	}
 }
 
-function findSpecs(obj, skill){
-	if(obj.backEndPostbacks.indexOf(skill) !== -1){
+function findSpecs(obj, skill) {
+	if(obj.backEndPostbacks.indexOf(skill) !== -1) {
 		obj.backEndPostbacks = filter(obj.backEndPostbacks, skill);
 		return obj.backEndPostbacks
-	}else if (obj.frontEndPostbacks.indexOf(skill) !== -1){
+	} else if (obj.frontEndPostbacks.indexOf(skill) !== -1) {
 		obj.frontEndPostbacks = filter(obj.frontEndPostbacks,skill);
 		return obj.frontEndPostbacks;
-	}else if (obj.androidPostbacks.indexOf(skill) !== -1){
+	} else if (obj.androidPostbacks.indexOf(skill) !== -1) {
 		obj.androidPostbacks = filter(obj.androidPostbacks,skill);
 		return obj.androidPostbacks;
-	}else if(IOS.indexOf(skill) !== -1){
+	}else if (IOS.indexOf(skill) !== -1) {
 		obj.IOS = filter(obj.IOS,skill);
 		return obj.IOS;
-	}else if(obj.testerSpecialization.indexOf(skill) !== -1){
+	}else if (obj.testerSpecialization.indexOf(skill) !== -1) {
 		obj.testerSpecialization = filter(obj.testerSpecialization,skill);
 		return obj.testerSpecialization;	
-	}else if(obj.projectSpecialist.indexOf(skill) !== -1){
+	}else if (obj.projectSpecialist.indexOf(skill) !== -1) {
 		obj.projectSpecialist = filter(obj.projectSpecialist,skill);
 		return obj.projectSpecialist;
-	}else{
+	}else {
 		return null;
 	}
 }
 
-function printUserProperties(obj, props){
+function printUserProperties(obj, props) {
 	var rawText = '';
-	 for(var i = 0; i < props.length; i++){
-				if(props[i] in obj && obj[props[i]] !== undefined){
-						rawText = rawText.concat(props[i] + " : ").concat(obj[props[i]] +'\n');
-				}else{
-						rawText = rawText.concat(props[i] + " : ");
-				}        
-		 }
+	for(var i = 0; i < props.length; i++) {
+		if(props[i] in obj && obj[props[i]] !== undefined){
+			rawText = rawText.concat(props[i] + " : ").concat(obj[props[i]] +'\n');
+		} else {
+			rawText = rawText.concat(props[i] + " : ");
+		}        
+	}
 	return rawText;	 
 }
 
-function filter(arr, payloadDel){
+function filter(arr, payloadDel) {
 	var index = arr.indexOf(payloadDel);
 	arr.splice(index, 1);
     return arr;             

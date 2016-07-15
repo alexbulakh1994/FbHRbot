@@ -106,7 +106,6 @@ var allSenders = {};
 app.post('/webhook/', function (req, res) {
 	//test bagsng
 	// bugsnag.notify(new Error("Non-fatal"));
-
 	var messaging_events = req.body.entry[0].messaging;
 	for (i = 0; i < messaging_events.length; i++) {
 		var event = req.body.entry[0].messaging[i],
@@ -365,31 +364,30 @@ function personExperience(event, senderId) {
 	sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have a CV in pdf or doc?')); 
 }
 
-function yearExperience(event, senderId){
-			var dateTimes = event.message.text.split(/-| /);
-			var startWorking = new Date(dateTimes[0]);
-			var finishWorking = new Date(dateTimes[1]);
+function yearExperience(event, senderId) {
+	var dateTimes = event.message.text.split(/-| /),
+		startWorking = new Date(dateTimes[0]),
+		finishWorking = new Date(dateTimes[1]);
 	
-			if(regExp.test(dateTimes[0]) && regExp.test(dateTimes[1]) ){
-				
-				if(finishWorking > new Date()){
-					 sendMessage(senderId, [{text:"You finish working date is greater current date. Please check inputing date."}]);
-					 return;
-				}
-					allSenders[senderId].states++;
-					allSenders[senderId].experience = Math.floor(Math.abs(finishWorking - startWorking)/86400000);
-					sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have a CV in pdf or doc?')); 
-			}else{
-				sendMessage(senderId, [{text:"Please check the date format - YEAR/MM/DAY YEAR/MM/DAY."}]);
-			} 
+	if (regExp.test(dateTimes[0]) && regExp.test(dateTimes[1])) {
+		if (finishWorking > new Date()) {
+			sendMessage(senderId, [{text:"You finish working date is greater current date. Please check inputing date."}]);
+			return;
+		}
+		allSenders[senderId].states++;
+		allSenders[senderId].experience = Math.floor(Math.abs(finishWorking - startWorking)/86400000);
+		sendMessage(senderId, structedRequest(allSenders[senderId].savePostback, 'Do you have a CV in pdf or doc?')); 
+	} else {
+		sendMessage(senderId, [{text:"Please check the date format - YEAR/MM/DAY YEAR/MM/DAY."}]);
+	} 
 }
 
-function attachedFile(senderId, attachedObj){
-	if(attachedObj !== null && attachedObj.type === 'file'){
-			allSenders[senderId].cv_url = attachedObj.payload.url;
-			allSenders[senderId].states++;
-			sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
-	}else{
+function attachedFile(senderId, attachedObj) {
+	if(attachedObj !== null && attachedObj.type === 'file') {
+		allSenders[senderId].cv_url = attachedObj.payload.url;
+		allSenders[senderId].states++;
+		sendMessage(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
+	} else {
 		sendMessage(senderId, [{text:"Ouch \u263A It doesn’t look like pdf or doc, we accept only CV in pdf or doc."}]);  
 	}
 }
@@ -435,7 +433,7 @@ function sendMail(text) {
     	html: '<b>' + text + '</b>' // html body
   	};
 
-// send mail with defined transport object
+	// send mail with defined transport object
 	transporter.sendMail(mailOptions, function(error, info){
 	    if(error){
 	        return console.log(error);
@@ -444,7 +442,7 @@ function sendMail(text) {
 	});
 }
 
-// 7620c4cb-3260-4280-ac68-1c4718f664a6
+	// 7620c4cb-3260-4280-ac68-1c4718f664a6
 
 
 

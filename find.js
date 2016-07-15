@@ -1,16 +1,15 @@
-function filter(arr, payloadDel){
+function filter(arr, payloadDel) {
 	var index = arr.indexOf(payloadDel);
 	arr.splice(index, 1);
     return arr;             
 }
 
 function findAttachObject(messageArray){
-	for(var i = 0; i < messageArray.length; i++){
-		if(messageArray[i].hasOwnProperty('message')){
+	for(var i = 0; i < messageArray.length; i++) {
+		if(messageArray[i].hasOwnProperty('message')) {
 			if(messageArray[i].message.hasOwnProperty('attachments'))
 				return messageArray[i].message.attachments[0];
 		}
-			
 	}
 	return null;
 }
@@ -18,7 +17,7 @@ function findAttachObject(messageArray){
 function findMessageState(messageArray){
 	for(var i = 0; i < messageArray.length; i++){
 		if(messageArray[i].hasOwnProperty('message')){
-				return messageArray[i].message;
+			return messageArray[i].message;
 		}			
 	}
 }
