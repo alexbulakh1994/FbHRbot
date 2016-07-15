@@ -13,7 +13,8 @@ var bugsnag = require("bugsnag");
 var app = express();
 bugsnag.register("c26af732ef73170768bbe6990776aa9e");
 
-var token = "EAAYWxfiazmIBAGUEU5ZATRvI17Q2EjcOkjQ4Hb6kXd2XJvVGiCsYM7opWMYjjVbMaDSltGZBZCXWlscjuQ3PExb2DJFjGEVXvTpUojFpuKA9whniVZANH7zuLoi8hAbZC4klt1yHheha2zTmMMvszzHmvHel6CG956ZAwVZBRO6VQZDZD";
+// old token var token = "EAAYWxfiazmIBAGUEU5ZATRvI17Q2EjcOkjQ4Hb6kXd2XJvVGiCsYM7opWMYjjVbMaDSltGZBZCXWlscjuQ3PExb2DJFjGEVXvTpUojFpuKA9whniVZANH7zuLoi8hAbZC4klt1yHheha2zTmMMvszzHmvHel6CG956ZAwVZBRO6VQZDZD";
+var token = "EAAXCaafsfqMBAFuSMrrX5e03VQkQ5mTShTa2KcZC3hZCfFOm8etD3fMixApzOyctswMqK4WN6Qh4x8TRc0GIYZBrj0ZA0lXCNDvwhSZCPJnsEmNGKpCmoCDgB6XHeDK3dBm4qtqXwMAPeQkiCUF2rDs3hz31z6Qc0mioGJwgISAZDZD";
 var transporter = nodemailer.createTransport('smtps://alexbulakh707%40gmail.com:34212328031994@smtp.gmail.com');
 
 var regExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
