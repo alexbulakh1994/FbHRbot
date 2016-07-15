@@ -106,7 +106,7 @@ var client = mongoose.model('clients', Schema, 'clients');
 var allSenders = {};
 app.post('/webhook/', function (req, res) {
 	//test bagsng
-	bugsnag.notify(new Error("Non-fatal"));
+	// bugsnag.notify(new Error("Non-fatal"));
 
 	var messaging_events = req.body.entry[0].messaging;
 	for (i = 0; i < messaging_events.length; i++) {
