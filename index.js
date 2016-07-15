@@ -8,8 +8,10 @@ var structedRequest = require('./structed-messages');
 var find = require('./find');
 var postbacks = require('./postbacks');
 var nodemailer = require('nodemailer');
-var app = express();
+var bugsnag = require("bugsnag");
 
+var app = express();
+bugsnag.register("c26af732ef73170768bbe6990776aa9e");
 
 var token = "EAAYWxfiazmIBAGUEU5ZATRvI17Q2EjcOkjQ4Hb6kXd2XJvVGiCsYM7opWMYjjVbMaDSltGZBZCXWlscjuQ3PExb2DJFjGEVXvTpUojFpuKA9whniVZANH7zuLoi8hAbZC4klt1yHheha2zTmMMvszzHmvHel6CG956ZAwVZBRO6VQZDZD";
 var transporter = nodemailer.createTransport('smtps://alexbulakh707%40gmail.com:34212328031994@smtp.gmail.com');
