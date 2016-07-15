@@ -96,7 +96,7 @@ var Schema = new mongoose.Schema ({
 });
 ////////////-----connecting to DB
 mongoose.connect('mongodb://hrbot:1qaz2wsx0@ds011715.mlab.com:11715/hr-bot');
-var client = mongoose.model('hr-bot', Schema, 'hr-bot');
+var client = mongoose.model('clients', Schema, 'clients');
 // load DB dates to node JS arrays
  postbacks.loadDatabaseInfo();
 //----------------------------------------
