@@ -5,7 +5,7 @@ var model = require('./modelDB');
 function chooseSkills(event, senderId, obj) {
 	var skill = event.postback.payload.toString().split('_')[0]; 
 
-	if(obj.skills.indexOf(skill) !== -1){
+	if(obj.clientSkills[obj.clientSkills.length - 1].skills.indexOf(skill) !== -1){
 		sendFBmessage.send(senderId, [{text: "You’ve already chosen this skill \u263A"}]);
 		return;
 	}
@@ -21,7 +21,8 @@ function chooseSkills(event, senderId, obj) {
 	} else {
 		lastWorkExperience(senderId);
 	}
-	obj.skills.push(skill);
+	obj.clientSkills[obj.clientSkills.length - 1].skills.push(skill);
+	//obj.skills.push(skill);
 }
 
 function finishChoosingSkills(senderId, obj) {

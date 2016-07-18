@@ -4,10 +4,8 @@ var async = require('async'),
 	find = require('./find');
 
 var specText = 'Select the skills that are relevant for you. Don\’t worry if you can\’t find necessary skill in the list. Mention it when chat bot asks you to write about yourself.\n',
-	pharaseFinishChooseSkill = 'You can always finish choosing skills by typing the \\finish command.',
-	devBranch = 'Select your specialization. If you have the skills in several specializations select the skills for the first one, type the command \\prev and select the next specialization.';
-
-
+	pharaseFinishChooseSkill = 'You can always finish choosing skills by typing the \/finish command.',
+	devBranch = 'Select your specialization. If you have the skills in several specializations select the skills for the first one, type the command \/prev and select the next specialization.';
 
 function skillChoosingSendMessages(senderId, obj, titleMessage) {
 	async.series([
@@ -51,8 +49,8 @@ function specialization(event, senderId, obj) {
 	obj.specialization = find.filter(obj.specialization, spec);
 	obj.currentSpecialization = choosedDevSpecialization(spec);
 	skillChoosingSendMessages(senderId, obj.currentSpecialization, 'skills'); //postbacks.printSkillList(obj.currentSpecialization, specText)
-		
-	obj.devSpecialization.push(spec);
+	obj.clientSkills.push({devSpeciality: spec, skills: []});	
+	//obj.devSpecialization.push(spec);
 	obj.states++;
 }
 

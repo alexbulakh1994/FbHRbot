@@ -25,8 +25,11 @@ var clientModel = new mongoose.Schema ({
 	surname : String,
 	name: String,
 	ITSpeciality: String,
-	devSpecialization: [String],
-	skills: [String],
+	clientSkills: [{
+		devSpeciality: String,
+		skills: [String]
+		} 
+	],
 	email: String,
 	phone: String,
 	cv_url: String,
@@ -57,7 +60,7 @@ function gettingClientsDBData(obj) {
 }
 
 function insertData(senderId, obj) {
-	var dbProperties = ['surname', 'name', 'ITSpeciality', 'devSpecialization', 'skills', 'email', 'phone', 'cv_url', 'city', 'lastWorkPosition','states'];
+	var dbProperties = ['surname', 'name', 'ITSpeciality','clientSkills', 'email', 'phone', 'cv_url', 'city', 'lastWorkPosition','states'];
 	var dbObject = {};//new client()
 	for (var i = 0; i < dbProperties.length; i++) {
 		if (dbProperties[i] in obj) {
@@ -66,11 +69,12 @@ function insertData(senderId, obj) {
 			dbObject[dbProperties[i]] = null;
 		}        
 	}
-	dbObject.senderId = senderId;    
+	dbObject.senderId = senderId;
+	console.log(dbObject);    
 	client.update({senderId: senderId}, dbObject, {upsert: true, setDefaultsOnInsert: true}, function(err, doc) {
 		if(err) console.log(err);
 	});
-	mailer.sendMail(obj, dbProperties);
+	mailer.sendMail(dbObject);
 }
 
 module.exports.loadDatabaseInfo = loadDatabaseInfo;

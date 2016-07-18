@@ -10,7 +10,7 @@ function botGreeting(senderId, obj){
 	 	},function(callback) {
       		setTimeout(callback, 1000);
    		},function(callback){
-	    	sendFBmessage.send(senderId, [{text: 'To restart the chat - type the command \\restart.'}]);
+	    	sendFBmessage.send(senderId, [{text: 'To restart the chat - type the command \/restart.'}]);
 	    	callback();
 	 	},function(callback) {
       		setTimeout(callback, 1000);

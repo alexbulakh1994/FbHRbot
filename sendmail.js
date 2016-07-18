@@ -1,24 +1,19 @@
-var nodemailer = require('nodemailer');
-var transporter = nodemailer.createTransport('smtps://alexbulakh707%40gmail.com:34212328031994@smtp.gmail.com');
+var mandrill = require('node-mandrill')('OxRmhvORVFXpL8Iru5zcmQ');
 
-
-function sendMail(obj, properties) {
-	var text = printUserProperties(obj, properties);
-	var mailOptions = {
-		from: '"Fred Foo 👥" <foo@blurdybloop.com>', // sender address
-    	to: 'alexbulakh707@gmail.com', // list of receivers
-    	subject: 'HR bot', // Subject line
-    	text: text, // plaintext body
-    	html: '<b>' + text + '</b>' // html body
-  	};
-
-	// send mail with defined transport object
-	transporter.sendMail(mailOptions, function(error, info){
-	    if(error){
-	        return console.log(error);
-	    }
-	    console.log('Message sent: ' + info.response);
-	});
+function sendMail(obj) {
+	var text = JSON.stringify(obj).toString();   
+    mandrill('/messages/send', {
+        message: {
+            to: [{"email":'alexbulakh707@gmail.com'}, {"email": 'igor.sizon@dataroot.co'}],
+            subject: 'HR bot notification',
+            from_email: 'api@dataroot.co',
+            text: text
+        }
+    }, function(err) {
+        if (err){
+            console.log(err);
+        }
+    });
 }
 
 function printUserProperties(obj, props) {

@@ -12,8 +12,8 @@ var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)
 function introducePerson(event, senderId, obj){
 	obj.states++;
 	var FIO = event.message.text.split(' ');
-	obj.name = FIO[0] !== undefined ? FIO[0] : 'anonymous';
-	obj.surname = FIO[1] !== undefined ? FIO[1] : 'anonymous';
+	obj.name = FIO[0] !== undefined ? FIO[0] : '';
+	obj.surname = FIO[1] !== undefined ? FIO[1] : '';
 	sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.locations, chooseLocation));
 	console.log('I am in introducePerson method ');
 }
