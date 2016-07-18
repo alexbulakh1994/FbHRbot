@@ -45,7 +45,7 @@ app.post('/webhook/', function (req, res) {
 
 	var messaging_events = req.body.entry[0].messaging;
 	for (i = 0; i < messaging_events.length; i++) {
-		bugsnag.notify(new Error("Non-fatal"));
+		//bugsnag.notify(new Error("Non-fatal"));
 		var event = req.body.entry[0].messaging[i],
 			senderId = event.sender.id,
 			attachedObj = find.findAttachObject(req.body.entry[0].messaging);
@@ -114,6 +114,7 @@ app.post('/webhook/', function (req, res) {
 			additionalQuestion.additionalInformation(event, senderId, allSenders[senderId]);	
 		} else if (event.postback && allSenders[senderId].states === 14) {
 			additionalQuestion.saveInformation(event, senderId, allSenders[senderId]);
+			delete allSenders[senderId]; // delete information about client for loop working
 		}
 	}
 	res.sendStatus(200);

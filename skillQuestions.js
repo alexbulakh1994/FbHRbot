@@ -4,10 +4,11 @@ var model = require('./modelDB');
 
 function chooseSkills(event, senderId, obj) {
 	var skill = event.postback.payload.toString().split('_')[0]; 
-
-	if(obj.clientSkills[obj.clientSkills.length - 1].skills.indexOf(skill) !== -1){
-		sendFBmessage.send(senderId, [{text: "You’ve already chosen this skill \u263A"}]);
-		return;
+	if (obj.clientSkills.length > 0) {
+		if (obj.clientSkills[obj.clientSkills.length - 1].skills.indexOf(skill) !== -1) {
+			sendFBmessage.send(senderId, [{text: "You’ve already chosen this skill \u263A"}]);
+			return;
+		}
 	}
 
 	var skillsSpecialization = findSpecs(skill);
@@ -37,23 +38,17 @@ function lastWorkExperience(senderId) {
 
 function findSpecs(skill) {
 	if(answerVariants.backEndPostbacks.indexOf(skill) !== -1) {
-		answerVariants.backEndPostbacks = filter(answerVariants.backEndPostbacks, skill);
-		return answerVariants.backEndPostbacks
+		return filter(answerVariants.backEndPostbacks, skill);
 	} else if (answerVariants.frontEndPostbacks.indexOf(skill) !== -1) {
-		answerVariants.frontEndPostbacks = filter(answerVariants.frontEndPostbacks,skill);
-		return answerVariants.frontEndPostbacks;
+		return filter(answerVariants.frontEndPostbacks,skill);;
 	} else if (answerVariants.androidPostbacks.indexOf(skill) !== -1) {
-		answerVariants.androidPostbacks = filter(answerVariants.androidPostbacks,skill);
-		return answerVariants.androidPostbacks;
+		return filter(answerVariants.androidPostbacks,skill);;
 	}else if (answerVariants.IOS.indexOf(skill) !== -1) {
-		answerVariants.IOS = filter(answerVariants.IOS,skill);
-		return answerVariants.IOS;
+		return filter(answerVariants.IOS,skill);
 	}else if (answerVariants.testerSpecialization.indexOf(skill) !== -1) {
-		answerVariants.testerSpecialization = filter(answerVariants.testerSpecialization,skill);
-		return answerVariants.testerSpecialization;	
+		return filter(answerVariants.testerSpecialization,skill);
 	}else if (answerVariants.projectSpecialist.indexOf(skill) !== -1) {
-		answerVariants.projectSpecialist = filter(answerVariants.projectSpecialist,skill);
-		return answerVariants.projectSpecialist;
+		return filter(answerVariants.projectSpecialist,skill);;
 	}else {
 		return null;
 	}
@@ -61,7 +56,7 @@ function findSpecs(skill) {
 
 function filter(arr, payloadDel) {
 	var index = arr.indexOf(payloadDel);
-	arr.splice(index, 1);
+	arr.slice(index, 1);
     return arr;             
 }
 

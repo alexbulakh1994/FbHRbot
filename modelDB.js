@@ -69,8 +69,7 @@ function insertData(senderId, obj) {
 			dbObject[dbProperties[i]] = null;
 		}        
 	}
-	dbObject.senderId = senderId;
-	console.log(dbObject);    
+	dbObject.senderId = senderId;  
 	client.update({senderId: senderId}, dbObject, {upsert: true, setDefaultsOnInsert: true}, function(err, doc) {
 		if(err) console.log(err);
 	});

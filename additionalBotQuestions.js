@@ -65,7 +65,6 @@ function saveInformation(event, senderId, obj) {
 	} else {
 		sendFBmessage.send(senderId, [{text:'Information about you was not saved.'}]);
 	}
-	delete obj; // delete information about client for loop working
 }
 
 module.exports.saveInformation = saveInformation;
