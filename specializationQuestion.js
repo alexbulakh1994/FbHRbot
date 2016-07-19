@@ -41,6 +41,7 @@ function professionChosing(event, senderId, obj) {
 		skillChoosingSendMessages(senderId, model.answerVariants.projectSpecialist, 'skills');
 	}
 	obj.ITSpeciality = event.postback.payload.split('_')[0];
+	obj.clientSkills.push({devSpeciality: '', skills: []});
 }
 
 function specialization(event, senderId, obj) {
@@ -49,8 +50,7 @@ function specialization(event, senderId, obj) {
 	obj.specialization = find.filter(obj.specialization, spec);
 	obj.currentSpecialization = choosedDevSpecialization(spec);
 	skillChoosingSendMessages(senderId, obj.currentSpecialization, 'skills'); //postbacks.printSkillList(obj.currentSpecialization, specText)
-	obj.clientSkills.push({devSpeciality: spec, skills: []});	
-	//obj.devSpecialization.push(spec);
+	obj.clientSkills[obj.clientSkills.length - 1].devSpeciality = spec;	
 	obj.states++;
 }
 

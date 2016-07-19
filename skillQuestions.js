@@ -12,7 +12,7 @@ function chooseSkills(event, senderId, obj) {
 	}
 
 	var skillsSpecialization = findSpecs(skill);
-	if(skillsSpecialization === null){
+	if (skillsSpecialization === null) {
 		console.log('find null in chooseSkills ');
 		return;
 	} else if (skillsSpecialization.length !== 0) {
@@ -23,7 +23,6 @@ function chooseSkills(event, senderId, obj) {
 		lastWorkExperience(senderId);
 	}
 	obj.clientSkills[obj.clientSkills.length - 1].skills.push(skill);
-	//obj.skills.push(skill);
 }
 
 function finishChoosingSkills(senderId, obj) {
@@ -48,7 +47,7 @@ function findSpecs(skill) {
 	}else if (answerVariants.testerSpecialization.indexOf(skill) !== -1) {
 		return filter(answerVariants.testerSpecialization,skill);
 	}else if (answerVariants.projectSpecialist.indexOf(skill) !== -1) {
-		return filter(answerVariants.projectSpecialist,skill);;
+		return filter(answerVariants.projectSpecialist,skill);
 	}else {
 		return null;
 	}
