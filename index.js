@@ -146,18 +146,22 @@ for (i = 0; i < messaging_events.length; i++) {
 function checkUserActivityStatus(senderId, states) {
     setTimeout(
         function(){
-            if (states === allSenders[senderId].states) {
-                console.log('senderId of cancel user is : ' + senderId);
-                sendFBmessage.send(senderId, [{text: 'Bot cancel ask you question after 30 min you send answer for him !'}]);
-                delete allSenders[senderId];
-            } else{
-                console.log('cancel deleting user : ' + senderId);
-            }
+	        if(allSenders[senderId]){	
+	            if (states === allSenders[senderId].states) {
+	                console.log('senderId of cancel user is : ' + senderId);
+	                sendFBmessage.send(senderId, [{text: 'Bot cancel ask you question after 30 min you send answer for him !'}]);
+	                delete allSenders[senderId];
+	            } else{
+	                console.log('cancel deleting user : ' + senderId);
+	            }
+	        } else {
+	        	console.log('User finish work with bot id: ' + senderId);
+	        }    
         }, 1800000
     );
 }
 
-function startBot(senderId){
+function startBot(senderId) {
 	allSenders[senderId] = true;
 	greeting.botGreeting(senderId);
 	allSenders[senderId] = new model.client({states: 1});
