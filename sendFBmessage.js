@@ -6,7 +6,6 @@ var MAX_BUTTON_NUMBERS = 3;
 var token = "EAAYWxfiazmIBANdwF2GmprgxpZBAg2z3yXB1z5au4a9pEg9Wd61fXg41CCdshTfpboxcAZCurJ5K894KODZCvJYJyoJzkodCrxxhZA21Mvn49ZC7u7bZCZAHSYNNkLmlVVHY81PfW1phZAVoxJ8a0Gi9UU4pDlTaZC8ny2in9m4OXagZDZD";
 // now is DataRoot token
 
-
 var buttonsConstructor = function(elements) {
     var buttons = [];
     elements.forEach(function(obj) {

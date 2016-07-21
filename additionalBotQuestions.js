@@ -22,7 +22,7 @@ function personExperience(event, senderId, obj) {
 	obj.states++;
 	obj.lastWorkPosition = event.message.text;
 	//sendMessage(senderId,  [{text:'How long did you work as ' +  obj.lastWorkPosition +'? Enter the date in the following format - 2015/02/31 2016/12/22.'}]);
-	sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.savePostback, 'Do you have a CV in pdf or doc?')); 
+	sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.savePostback, 'Do you have a CV in pdf or doc? \ud83d\udcce use this button.')); 
 }
 
 function yearExperience(event, senderId, obj) {
@@ -37,7 +37,7 @@ function yearExperience(event, senderId, obj) {
 		}
 		obj.states++;
 		obj.experience = Math.floor(Math.abs(finishWorking - startWorking)/86400000);
-		sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.savePostback, 'Do you have a CV in pdf or doc?')); 
+		sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.savePostback, 'Do you have a CV in pdf or doc? \ud83d\udcce use this button.')); 
 	} else {
 		sendFBmessage.send(senderId, [{text:"Please check the date format - YEAR/MM/DAY YEAR/MM/DAY."}]);
 	} 

@@ -123,7 +123,7 @@ for (i = 0; i < messaging_events.length; i++) {
 			checkUserActivityStatus(senderId, allSenders[senderId].states); 
 		} else if (event.postback && allSenders[senderId].states === 11) {
 			additionalQuestion.yesNoChoosenState(event, senderId, 'Do you want save information about you ?', 2, 
-																{text:"Please send CV in pdf or doc format."}, allSenders[senderId]); //\ud83d\udcce use this button.
+																{text:"Please send CV in pdf or doc format. \ud83d\udcce use this button."}, allSenders[senderId]); //
 			checkUserActivityStatus(senderId, allSenders[senderId].states); 
 		} else if (event.message && allSenders[senderId].states === 12) {
 			additionalQuestion.attachedFile(senderId, attachedObj, allSenders[senderId]);
@@ -149,7 +149,7 @@ function checkUserActivityStatus(senderId, states) {
 	        if(allSenders[senderId]){	
 	            if (states === allSenders[senderId].states) {
 	                console.log('senderId of cancel user is : ' + senderId);
-	                sendFBmessage.send(senderId, [{text: 'Bot cancel ask you question after 30 min you send answer for him !'}]);
+	                sendFBmessage.send(senderId, [{text: 'Are you still here? If you will be ready to continue our conversation just send me a message.'}]);
 	                delete allSenders[senderId];
 	            } else{
 	                console.log('cancel deleting user : ' + senderId);
