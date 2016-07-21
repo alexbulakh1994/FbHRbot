@@ -35,7 +35,8 @@ var clientModel = new mongoose.Schema ({
 	cv_url: String,
 	city: String,
 	lastWorkPosition: String,
-	states: Number
+	states: Number,
+	aboutMe: String
 });
 
 ////////////-----connecting to DB
@@ -60,7 +61,7 @@ function gettingClientsDBData(obj) {
 }
 
 function insertData(senderId, obj) {
-	var dbProperties = ['surname', 'name', 'ITSpeciality','clientSkills', 'email', 'phone', 'cv_url', 'city', 'lastWorkPosition','states'];
+	var dbProperties = ['surname', 'name', 'ITSpeciality','clientSkills', 'email', 'phone', 'cv_url', 'city', 'lastWorkPosition','states', 'aboutMe'];
 	var dbObject = {};//new client()
 	for (var i = 0; i < dbProperties.length; i++) {
 		if (dbProperties[i] in obj) {

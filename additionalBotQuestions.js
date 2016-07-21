@@ -55,6 +55,7 @@ function attachedFile(senderId, attachedObj, obj) {
 
 function additionalInformation(event, senderId, obj) {
 	obj.states++;
+	obj.aboutMe = event.message.text;
 	sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.savePostback, saveText));    
 }
 
