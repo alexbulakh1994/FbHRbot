@@ -1,9 +1,7 @@
 var request = require('request');
 var MAX_BUTTON_NUMBERS = 3;
 
-// old token var token = "EAAYWxfiazmIBAGUEU5ZATRvI17Q2EjcOkjQ4Hb6kXd2XJvVGiCsYM7opWMYjjVbMaDSltGZBZCXWlscjuQ3PExb2DJFjGEVXvTpUojFpuKA9whniVZANH7zuLoi8hAbZC4klt1yHheha2zTmMMvszzHmvHel6CG956ZAwVZBRO6VQZDZD";
-// tocken for HeadHunter var token = "EAAXCaafsfqMBAFuSMrrX5e03VQkQ5mTShTa2KcZC3hZCfFOm8etD3fMixApzOyctswMqK4WN6Qh4x8TRc0GIYZBrj0ZA0lXCNDvwhSZCPJnsEmNGKpCmoCDgB6XHeDK3dBm4qtqXwMAPeQkiCUF2rDs3hz31z6Qc0mioGJwgISAZDZD";
-var token = "EAAYWxfiazmIBANdwF2GmprgxpZBAg2z3yXB1z5au4a9pEg9Wd61fXg41CCdshTfpboxcAZCurJ5K894KODZCvJYJyoJzkodCrxxhZA21Mvn49ZC7u7bZCZAHSYNNkLmlVVHY81PfW1phZAVoxJ8a0Gi9UU4pDlTaZC8ny2in9m4OXagZDZD";
+var token = "EAAYWxfiazmIBAFv6xNQGeLjBgrLAhDXxfozdrJl2TidZABAiAbm9sRJv1YyTAKMFZCVrjfgiyFSUHxL3H2PEVrp9LHOiDW8RJb3Ji1oJDZCZANDoh22MpKEbAgU8iy4fW203bat3i9FIxslFtKBY3GgsIJztlcTWRaM8ksWnnQZDZD";
 // now is DataRoot token
 
 var buttonsConstructor = function(elements) {

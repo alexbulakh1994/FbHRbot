@@ -39,15 +39,13 @@ app.get('/webhook', function (req, res) {
 //init DB records into program collections
 model.loadDatabaseInfo();
 
+
 ////////----main itration threw state in witch uset situated--------
 var allSenders = {};
-app.post('/webhook/', function (req, res) {
-
+app.post('/webhook', function (req, res) {
 var messaging_events = req.body.entry[0].messaging;
 for (i = 0; i < messaging_events.length; i++) {
 	try{	
-		//bugsnag.notify(new Error("Non-fatal"));
-		//console.log(req.body.entry[0].messaging);
 		var event = req.body.entry[0].messaging[i],
 			senderId = event.sender.id,
 			attachedObj = find.findAttachObject(req.body.entry[0].messaging);
