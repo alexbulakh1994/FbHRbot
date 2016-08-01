@@ -5,7 +5,7 @@ var async = require('async');
 function startActivityTimer(senderId, states) {
   allSenders[senderId].timer = setTimeout(
     function() {
-      if(allSenders[senderId]){ 
+      if (allSenders[senderId]) { 
         if (states === allSenders[senderId].states) {
           async.series([
             function(callback) {

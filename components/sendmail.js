@@ -10,7 +10,7 @@ function sendMail(obj) {
         text: text
       }
     }, function(err) {
-      if (err){
+      if (err) {
         console.log(err);
       }
   });

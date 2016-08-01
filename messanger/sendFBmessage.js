@@ -38,7 +38,7 @@ var buttonTemplate = function(objArray, text) {
     }
     if ((i+1) % MAX_BUTTON_NUMBERS === 0) {
       messagePostBack.push(btnPayloadObject(text, buttonsConstructor(objArray.slice(i - 2, i + 1))));  
-    } else if(i === objArray.length - 1) {
+    } else if (i === objArray.length - 1) {
       messagePostBack.push(btnPayloadObject(text, buttonsConstructor(objArray.slice(i - (objArray.length % MAX_BUTTON_NUMBERS) + 1))));
     }
   }         
