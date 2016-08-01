@@ -1,7 +1,7 @@
 var async = require('async'),
-	sendFBmessage = require('./sendFBmessage'), 
-	answerVariants = require('./modelDB').answerVariants,
-	find = require('./find');
+	sendFBmessage = require('./../messanger/sendFBmessage'), 
+	answerVariants = require('./../db/modelDB').answerVariants,
+	find = require('./../messanger/find');
 
 var specText = 'Select the skills that are relevant for you. Don\’t worry if you can\’t find necessary skill in the list. Mention it when chat bot asks you to write about yourself.\n',
 	pharaseFinishChooseSkill = 'You can always finish choosing skills by typing the \/finish command.',
