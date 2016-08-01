@@ -1,6 +1,6 @@
 var async = require('async'),
 	sendFBmessage = require('./sendFBmessage'), 
-	model = require('./modelDB'),
+	answerVariants = require('./modelDB').answerVariants,
 	find = require('./find');
 
 var specText = 'Select the skills that are relevant for you. Don\’t worry if you can\’t find necessary skill in the list. Mention it when chat bot asks you to write about yourself.\n',
@@ -26,50 +26,58 @@ function skillChoosingSendMessages(senderId, obj, titleMessage) {
 	]);
 }
 
-function professionChosing(event, senderId, obj) {
+function professionChosing(event, senderId) {
 	if (event.postback && event.postback.payload === 'Developer_postback') {
-		obj.states++;
+		allSenders[senderId].states++;
 		sendFBmessage.send(senderId, [{text: devBranch}]);
-		sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(obj.specialization, 'Developer Specialization'));
+		sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(allSenders[senderId].specialization, 'Developer Specialization'));
 	} else if (event.postback && event.postback.payload === 'QA_postback') {
-		obj.states++;
-		obj.currentSpecialization = model.answerVariants.testerSpecialization;
-		skillChoosingSendMessages(senderId, model.answerVariants.testerSpecialization, 'skills');
+		allSenders[senderId].states++;
+		allSenders[senderId].currentSpecialization = answerVariants.testerSpecialization;
+		skillChoosingSendMessages(senderId, answerVariants.testerSpecialization, 'skills');
+		allSenders[senderId].clientSkills.push({devSpeciality: '', skills: []}); // when user choose QA only once add skill object
 	} else if (event.postback && event.postback.payload === 'Project Manager_postback') {
-		obj.states++;
-		obj.currentSpecialization = model.answerVariants.projectSpecialist;
-		skillChoosingSendMessages(senderId, model.answerVariants.projectSpecialist, 'skills');
+		allSenders[senderId].states++;
+		allSenders[senderId].currentSpecialization = answerVariants.projectSpecialist;
+		skillChoosingSendMessages(senderId, answerVariants.projectSpecialist, 'skills');
+		allSenders[senderId].clientSkills.push({devSpeciality: '', skills: []}); // when user choose PM only once add skill object
 	}
-	obj.ITSpeciality = event.postback.payload.split('_')[0];
-	obj.clientSkills.push({devSpeciality: '', skills: []});
+	allSenders[senderId].ITSpeciality = event.postback.payload.split('_')[0];
 }
 
-function specialization(event, senderId, obj) {
-	var spec =  event.postback.payload.split('_')[0];
-		
-	obj.specialization = find.filter(obj.specialization, spec);
-	obj.currentSpecialization = choosedDevSpecialization(spec);
-	skillChoosingSendMessages(senderId, obj.currentSpecialization, 'skills'); //postbacks.printSkillList(obj.currentSpecialization, specText)
-	obj.clientSkills[obj.clientSkills.length - 1].devSpeciality = spec;	
-	obj.states++;
+// only for developers
+function specialization(event, senderId) {
+	var spec =  event.postback.payload.split('_')[0];	
+	allSenders[senderId].clientSkills.push({devSpeciality: '', skills: []});	//  important!!!
+
+	allSenders[senderId].specialization = find.filter(allSenders[senderId].specialization, spec);
+	allSenders[senderId].currentSpecialization = choosedDevSpecialization(spec);
+	skillChoosingSendMessages(senderId, allSenders[senderId].currentSpecialization, 'skills'); //postbacks.printSkillList(allSenders[senderId].currentSpecialization, specText)
+	allSenders[senderId].clientSkills[allSenders[senderId].clientSkills.length - 1].devSpeciality = spec;	
+	allSenders[senderId].states++;
 }
 
 function choosedDevSpecialization(spec) {
 	if(spec === 'BackEnd') {
-		return model.answerVariants.backEndPostbacks;
+		return answerVariants.backEndPostbacks;
 	} else if (spec === 'FrontEnd') {
-		return model.answerVariants.frontEndPostbacks;
+		return answerVariants.frontEndPostbacks;
 	} else if (spec === 'Android') {
-		return model.answerVariants.androidPostbacks;
+		return answerVariants.androidPostbacks;
 	} else if (spec === 'IOS') {
-		return model.answerVariants.IOS;
+		return answerVariants.IOS;
 	}
 }
 
-function continueChooseWorkSkills(senderId, obj) {
-	obj.states = 7;
-	sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(obj.specialization, specText));
-	sendFBmessage.send(senderId, [{ text: pharaseFinishChooseSkill}]);
+function continueChooseWorkSkills(senderId) {
+	if(allSenders[senderId].specialization.length !== 0){
+		allSenders[senderId].states = 6;
+		sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(allSenders[senderId].specialization, specText));
+		sendFBmessage.send(senderId, [{ text: pharaseFinishChooseSkill}]);
+	} else { // state when user in dev speciality choose all specialization: front, back, ios, android
+		allSenders[senderId].states = 8; // go to state #8 -- choose person experience
+		sendFBmessage.sendQuickReplies(senderId, 'Do you have experience?', -1, answerVariants.savePostback);
+	}
 }
 
 module.exports.specialization = specialization;

@@ -2,30 +2,41 @@ var sendFBmessage = require('./sendFBmessage');
 var model = require('./modelDB');
 
 var dataTimeExp = new RegExp(/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/);
-var saveText = " Thank you, I have no more questions. Can I send your answers to our HR-manager?";
+var saveText = "Thank you, I have no more questions. Can I send your answers to our HR-manager?";
+var CV_text = 'Do you have a CV in pdf or doc? To upload use \ud83d\udcce button.';
 
-function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState, botQuestion, obj) {
-	if(event.postback.payload === 'Yes_postback') {
-		obj.states++; 
+
+// state for working with Yes/No variants 
+// Do you have experience - (Yes/No) - state === #8 -> if NO -- go to state #10 else -> state #9
+// Do you have CV - (Yes/No) - state === #10 -> if NO -- state #11 else -> choosing file -- state#11, write some message bot -- bot ask question
+function yesNoChoosenState(event, senderId, informativeMessage, stepChangeState, botQuestion, attachedObj) {
+	if (('quick_reply' in event.message) && event.message.quick_reply.payload === 'Yes_postback') {
+		allSenders[senderId].states++; 
 		sendFBmessage.send(senderId, [botQuestion]);
 	} else {
-		if (obj.states === 11) {
+		if (allSenders[senderId].states === 10 && ('quick_reply' in event.message) && event.message.quick_reply.payload === 'No_postback') {
 			sendFBmessage.send(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can add a review about the chatbot \u263A'}]);
+			allSenders[senderId].states++;
+			return;
+		} else if (allSenders[senderId].states === 10 && event.message) {
+			attachedFile(senderId, attachedObj, allSenders[senderId]);
+			return;
 		} else {
-			sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.savePostback, informativeMessage)); //informativeMessage  
+			sendFBmessage.sendQuickReplies(senderId, informativeMessage, -1, ['No']);
 		}   
-		obj.states += stepChangeState;
+		allSenders[senderId].states += stepChangeState;
 	}
 }
 
-function personExperience(event, senderId, obj) {
-	obj.states++;
-	obj.lastWorkPosition = event.message.text;
-	//sendMessage(senderId,  [{text:'How long did you work as ' +  obj.lastWorkPosition +'? Enter the date in the following format - 2015/02/31 2016/12/22.'}]);
-	sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.savePostback, 'Do you have a CV in pdf or doc? \ud83d\udcce use this button.')); 
+// get client work experience on state #9 -> go to state #10 -> choose or no CV 
+function personExperience(event, senderId) {
+	allSenders[senderId].states++;
+	allSenders[senderId].lastWorkPosition = event.message.text;
+	sendFBmessage.sendQuickReplies(senderId, CV_text, -1, ['No']);
 }
 
-function yearExperience(event, senderId, obj) {
+// now dont using this function now---------------------------------------------------------------------
+function yearExperience(event, senderId) {
 	var dateTimes = event.message.text.split(/-| /),
 		startWorking = new Date(dateTimes[0]),
 		finishWorking = new Date(dateTimes[1]);
@@ -35,36 +46,44 @@ function yearExperience(event, senderId, obj) {
 			sendFBmessage.send(senderId, [{text:"You finish working date is greater current date. Please check inputing date."}]);
 			return;
 		}
-		obj.states++;
-		obj.experience = Math.floor(Math.abs(finishWorking - startWorking)/86400000);
-		sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.savePostback, 'Do you have a CV in pdf or doc? \ud83d\udcce use this button.')); 
+		allSenders[senderId].states++;
+		allSenders[senderId].experience = Math.floor(Math.abs(finishWorking - startWorking)/86400000);
+		sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.savePostback, CV_text)); 
 	} else {
 		sendFBmessage.send(senderId, [{text:"Please check the date format - YEAR/MM/DAY YEAR/MM/DAY."}]);
 	} 
 }
+//------------------------------------------------------------------------------------------------------------
 
-function attachedFile(senderId, attachedObj, obj) {
+// get CV document check if this a file on state #10
+function attachedFile(senderId, attachedObj) {
 	if(attachedObj !== null && attachedObj.type === 'file') {
-		obj.cv_url = attachedObj.payload.url;
-		obj.states++;
+		allSenders[senderId].cv_url = attachedObj.payload.url;
+		allSenders[senderId].states++;
 		sendFBmessage.send(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
 	} else {
 		sendFBmessage.send(senderId, [{text:"Ouch \u263A It doesn’t look like pdf or doc, we accept only CV in pdf or doc."}]);  
 	}
 }
 
-function additionalInformation(event, senderId, obj) {
-	obj.states++;
-	obj.aboutMe = event.message.text;
-	sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.savePostback, saveText));    
+// get additional information about user on state #11
+function additionalInformation(event, senderId) {
+	allSenders[senderId].states++;
+	allSenders[senderId].aboutMe = event.message.text;   
+	sendFBmessage.sendQuickReplies(senderId, saveText, -1, model.answerVariants.savePostback);
 }
 
-function saveInformation(event, senderId, obj) {
-	if(event.postback.payload === 'Yes_postback') {
-		model.insertData(senderId, obj);
-		sendFBmessage.send(senderId, [{text:'Thank you, ' + obj.name + ' \u263A \nOur HR-manager will contact you within 3 days.'}]);
+// save or update data about user by their sender id
+function saveInformation(event, senderId) {
+	allSenders[senderId].states++;
+	if(event.message.quick_reply.payload === 'Yes_postback') {
+		model.insertData(senderId);
+		sendFBmessage.send(senderId, [{text:'Thank you, ' + allSenders[senderId].name + ' \u263A \nOur HR-manager will contact you within 3 days.'}]);
+		// send giffy when user save information about yourself in our database
+		sendFBmessage.sendImage(senderId, 'http://media3.giphy.com//media//Mp4hQy51LjY6A//200.gif');
 	} else {
 		sendFBmessage.send(senderId, [{text:'Information about you was not saved.'}]);
+		sendFBmessage.sendImage(senderId, 'http://media0.giphy.com//media//7ILa7CZLxE0Ew//200.gif');
 	}
 }
 

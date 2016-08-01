@@ -1,67 +1,66 @@
 var sendFBmessage = require('./sendFBmessage');
 var model = require('./modelDB');
 
-var ITSpeciality = 'What position are you looking for?',
-    chooseLocation = "Where do you live? If you can\’t find the city in our list, please just type it in the message\’s field.";
-
+var ITSpeciality = 'What position are you looking for?';
 ////////////////---------regex for email and phone------------///////////////////////
 var emailExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/),
 	phoneExp = new RegExp(/^(\+38|38|8){0,1}[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
 
-
-function introducePerson(event, senderId, obj){
-	obj.states++;
+//-----------------------------------now not using----------------------------------------------------
+function introducePerson(event, senderId){
+	allSenders[senderId].states++;
 	var FIO = event.message.text.split(' ');
-	obj.name = FIO[0] !== undefined ? FIO[0] : '';
-	obj.surname = FIO[1] !== undefined ? FIO[1] : '';
+	allSenders[senderId].name = FIO[0] !== undefined ? FIO[0] : '';
+	allSenders[senderId].surname = FIO[1] !== undefined ? FIO[1] : '';
 	sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.locations, chooseLocation));
-	console.log('I am in introducePerson method ');
 }
+//---------------------------------------not using---------------------------------------------------
 
-function personLocation(event, senderId, obj){
-	if(event.postback !== undefined ){
-		obj.city = event.postback.payload.split('_')[0];
+
+function personLocation(event, senderId){
+	if(('quick_reply' in event.message)){
+		allSenders[senderId].city = event.message.quick_reply.payload.split('_')[0];
 	}else{
-		obj.city = event.message.text;
+		allSenders[senderId].city = event.message.text;
 	}
-	obj.states++;
-	sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.themselvesInformationType, 'Select the preferable way to contact you.'));
+	allSenders[senderId].states++;
+	sendFBmessage.sendQuickReplies(senderId, 'Select the preferable way to contact you.', -1, model.answerVariants.themselvesInformationType);
 }
 
-function chooseInformationTypeInputing(event, senderId, obj) {
-	if (event.postback.payload === 'by phone_postback') {
-		obj.states += 2;
+function chooseInformationTypeInputing(event, senderId) {
+	if (event.message.quick_reply.payload === 'by phone_postback') {
+		allSenders[senderId].states += 2;
 		sendFBmessage.send(senderId, [{text: 'Please enter your mobile phone (0XXXXXXXXX or 0XX XXX XX XX).'}]);
-		obj.typeInformationChoosing = 'phone number';
-	} else if(event.postback.payload === 'by email_postback') {
-		obj.states++;
-		obj.typeInformationChoosing = 'email';
+		allSenders[senderId].typeInformationChoosing = 'phone number';
+	} else if(event.message.quick_reply.payload === 'by email_postback') {
+		allSenders[senderId].states++;
+		allSenders[senderId].typeInformationChoosing = 'email';
 		sendFBmessage.send(senderId, [{text: 'Please enter your email.'}]);
 	} else {
-		obj.states++;
+		allSenders[senderId].states++;
 		sendFBmessage.send(senderId, [{text: 'Please enter your email.'}]);
 	}
 }
 
-function emailValidation(event, senderId, obj) {
+function emailValidation(event, senderId) {
 	if (emailExp.test(event.message.text)) {
-		if (obj.typeInformationChoosing === 'email') {
-			obj.states += 2;
+		if (allSenders[senderId].typeInformationChoosing === 'email') {
+			allSenders[senderId].states += 2;
 			sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.specialistType, ITSpeciality));
 		} else {
-			obj.states++;
+			allSenders[senderId].states++;
 			sendFBmessage.send(senderId, [{text: 'Please enter your mobile phone (0XXXXXXXXX or 0XX XXX XX XX).'}]);
 		}  
-			obj.email = event.message.text;
+			allSenders[senderId].email = event.message.text;
 	} else {
 		sendFBmessage.send(senderId, [{text: 'Please confirm the email address.'}]);
 	}
 }
 
-function telephoneValidation(event, senderId, obj) {
+function telephoneValidation(event, senderId) {
 	if(phoneExp.test(event.message.text)) {  
-		obj.states++;
-		obj.phone = event.message.text;
+		allSenders[senderId].states++;
+		allSenders[senderId].phone = event.message.text;
 		sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.specialistType, ITSpeciality));
 	} else {
 		sendFBmessage.send(senderId, [{text: 'Please enter mobile number in format XXX-XXX-XXXX or XXXXXXXXXX.'}]);
