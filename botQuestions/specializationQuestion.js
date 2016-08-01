@@ -12,14 +12,18 @@ function skillChoosingSendMessages(senderId, obj, titleMessage) {
 		function(callback){
 	    	sendFBmessage.send(senderId, [{ text: specText}]);
 	    	callback();
-		},function(callback){
-        	setTimeout(callback, 500); 
-		},function(callback){
-		    sendFBmessage.send(senderId, [{ text: pharaseFinishChooseSkill}]);
-		    callback();
-		},function(callback){
-        	setTimeout(callback, 500); 
-		},function(callback){
+		},
+		function(callback){
+    	setTimeout(callback, 500); 
+		},
+		function(callback){
+		  sendFBmessage.send(senderId, [{ text: pharaseFinishChooseSkill}]);
+		  callback();
+		},
+		function(callback){
+    	setTimeout(callback, 500); 
+		},
+		function(callback){
 			sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(obj, titleMessage));
 			callback();
 		},
@@ -58,7 +62,7 @@ function specialization(event, senderId) {
 }
 
 function choosedDevSpecialization(spec) {
-	if(spec === 'BackEnd') {
+	if (spec === 'BackEnd') {
 		return answerVariants.backEndPostbacks;
 	} else if (spec === 'FrontEnd') {
 		return answerVariants.frontEndPostbacks;
@@ -70,7 +74,7 @@ function choosedDevSpecialization(spec) {
 }
 
 function continueChooseWorkSkills(senderId) {
-	if(allSenders[senderId].specialization.length !== 0){
+	if (allSenders[senderId].specialization.length !== 0){
 		allSenders[senderId].states = 6;
 		sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(allSenders[senderId].specialization, specText));
 		sendFBmessage.send(senderId, [{ text: pharaseFinishChooseSkill}]);

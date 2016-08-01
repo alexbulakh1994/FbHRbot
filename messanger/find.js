@@ -1,22 +1,22 @@
 function filter(arr, payloadDel) {
   var index = arr.indexOf(payloadDel);
   arr.splice(index, 1);
-    return arr;             
+  return arr;             
 }
 
-function findAttachObject(messageArray){
-  for(var i = 0; i < messageArray.length; i++) {
-    if(messageArray[i].hasOwnProperty('message')) {
-      if(messageArray[i].message.hasOwnProperty('attachments'))
+function findAttachObject(messageArray) {
+  for (var i = 0; i < messageArray.length; i++) {
+    if (messageArray[i].hasOwnProperty('message')) {
+      if (messageArray[i].message.hasOwnProperty('attachments'))
         return messageArray[i].message.attachments[0];
     }
   }
   return null;
 }
 
-function findMessageState(messageArray){
-  for(var i = 0; i < messageArray.length; i++){
-    if(messageArray[i].hasOwnProperty('message')){
+function findMessageState(messageArray) {
+  for (var i = 0; i < messageArray.length; i++) {
+    if (messageArray[i].hasOwnProperty('message')) {
       return messageArray[i].message;
     }     
   }

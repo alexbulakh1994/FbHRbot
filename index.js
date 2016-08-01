@@ -35,9 +35,8 @@ allSenders = {};
 app.post('/webhook', function (req, res) {
 
 var messaging_events = req.body.entry[0].messaging;
-console.log(messaging_events);
 for (i = 0; i < messaging_events.length; i++) {
-  try{  
+  try {  
     var event = req.body.entry[0].messaging[i],
       senderId = event.sender.id;
       
@@ -47,7 +46,7 @@ for (i = 0; i < messaging_events.length; i++) {
       botStates.restartBot(senderId, allSenders[senderId]);
     } else if (event.message && event.message.text === '\/help') {
       botStates.helpCommand(senderId);
-    } else if(event.message && event.message.text === '\/continue' && (allSenders[senderId].states < 5 || allSenders[senderId].states > 7)){
+    } else if(event.message && event.message.text === '\/continue' && (allSenders[senderId].states < 5 || allSenders[senderId].states > 7)) {
       botStates.continueButtonEventHandler(senderId);
     } else if (event.message && ('quick_reply' in event.message) && event.message.quick_reply.payload.substring(event.message.quick_reply.payload.indexOf('_')) === '_help_postback') {
       botStates.checkingHelpState(event, senderId, allSenders[senderId].states);
@@ -82,7 +81,7 @@ for (i = 0; i < messaging_events.length; i++) {
     } else if (event.message && !(event.message.text)) { // прислал что от непонятное боту -> не прошло ни один state тогда снова шлем сообщение (повтор state)
       botStates.continueButtonEventHandler(senderId);
     }
-  }catch(ex){
+  } catch(ex) {
     console.log(ex);
     startBot(senderId); 
   }

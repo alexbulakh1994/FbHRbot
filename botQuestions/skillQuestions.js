@@ -26,7 +26,7 @@ function chooseSkills(event, senderId) {
   if (checkAllSkillsChoosed(answerVariants.testerSpecialization, allSenders[senderId].clientSkills[allSenders[senderId].clientSkills.length - 1].skills) || 
       checkAllSkillsChoosed(answerVariants.projectSpecialist, allSenders[senderId].clientSkills[allSenders[senderId].clientSkills.length - 1].skills)) {
     finishChoosingSkills(senderId, allSenders[senderId]);      
-  } else if(checkAllSkillsChoosed(answerVariants.backEndPostbacks, allSenders[senderId].clientSkills[allSenders[senderId].clientSkills.length - 1].skills) ||
+  } else if (checkAllSkillsChoosed(answerVariants.backEndPostbacks, allSenders[senderId].clientSkills[allSenders[senderId].clientSkills.length - 1].skills) ||
       checkAllSkillsChoosed(answerVariants.frontEndPostbacks, allSenders[senderId].clientSkills[allSenders[senderId].clientSkills.length - 1].skills) ||
       checkAllSkillsChoosed(answerVariants.androidPostbacks, allSenders[senderId].clientSkills[allSenders[senderId].clientSkills.length - 1].skills) ||
       checkAllSkillsChoosed(answerVariants.IOS, allSenders[senderId].clientSkills[allSenders[senderId].clientSkills.length - 1].skills)) {
@@ -34,7 +34,6 @@ function chooseSkills(event, senderId) {
     console.log('now all skills choosed in dev');
     botStates.helpCommand(senderId);
   } 
-
 }
 
 // function which work when user press /finish command or type /finish
@@ -49,35 +48,35 @@ function finishChoosingSkills(senderId) {
 
 // find speciality by skill whitch user choosed
 function findSpecs(skill) {
-  if(answerVariants.backEndPostbacks.indexOf(skill) !== -1) {
+  if (answerVariants.backEndPostbacks.indexOf(skill) !== -1) {
     return answerVariants.backEndPostbacks;
   } else if (answerVariants.frontEndPostbacks.indexOf(skill) !== -1) {
     return answerVariants.frontEndPostbacks;
   } else if (answerVariants.androidPostbacks.indexOf(skill) !== -1) {
     return answerVariants.androidPostbacks;
-  }else if (answerVariants.IOS.indexOf(skill) !== -1) {
+  } else if (answerVariants.IOS.indexOf(skill) !== -1) {
     return answerVariants.IOS;
-  }else if (answerVariants.testerSpecialization.indexOf(skill) !== -1) {
+  } else if (answerVariants.testerSpecialization.indexOf(skill) !== -1) {
     return answerVariants.testerSpecialization;
-  }else if (answerVariants.projectSpecialist.indexOf(skill) !== -1) {
+  } else if (answerVariants.projectSpecialist.indexOf(skill) !== -1) {
     return answerVariants.projectSpecialist;
-  }else {
+  } else {
     return null;
   }
 }
 
 // check when user choose all skills
 function checkAllSkillsChoosed(arr, arr1) {
-  if(arr.length !== arr1.length)
+  if (arr.length !== arr1.length)
     return false;
-  if(arr.sort().join(',') === arr1.sort().join(',')){
+  if (arr.sort().join(',') === arr1.sort().join(',')){
     return true;
-  }else {
+  } else {
     return false;
   }           
 }
 
- module.exports.chooseSkills = chooseSkills;
- module.exports.finishChoosingSkills = finishChoosingSkills;
+module.exports.chooseSkills = chooseSkills;
+module.exports.finishChoosingSkills = finishChoosingSkills;
  
                                                                                   

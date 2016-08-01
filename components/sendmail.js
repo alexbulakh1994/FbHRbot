@@ -5,9 +5,9 @@ function sendMail(obj) {
     mandrill('/messages/send', {
       message: {
         to: [{"email":'alexbulakh707@gmail.com'}, {"email": 'igor.sizon@dataroot.co'}, {"email":'ivan.didur@dataroot.co'}, {"email":'max.frolov@dataroot.co'}],
-          subject: 'HR bot notification',
-          from_email: 'api@dataroot.co',
-          text: text
+        subject: 'HR bot notification',
+        from_email: 'api@dataroot.co',
+        text: text
       }
     }, function(err) {
       if (err){

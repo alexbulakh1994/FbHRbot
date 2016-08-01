@@ -10,17 +10,21 @@ var chooseLocation = "Where do you live? If you can\’t find the city in our li
 
 function botGreeting(senderId, body) {        
   async.series([
-    function(callback){
+    function(callback) {
       sendFBmessage.send(senderId, [{text: 'Hey, ' +body.first_name+ ' I\’m HR-bot of “DataRoot”. If you want to work in our company, answer a few questions, I\’ll collect all information and will send it to our HR-manager.'}]);
       callback();
-    },function(callback) {
-        setTimeout(callback, 1000);
-    },function(callback){
+    },
+    function(callback) {
+      setTimeout(callback, 1000);
+    },
+    function(callback){
       sendFBmessage.send(senderId, [{text: 'Command \/restart - restart the chat.\nCommand \/help - remind all commands.'}]);
       callback();
-    },function(callback) {
-        setTimeout(callback, 1000);
-    },function(callback){
+    },
+    function(callback) {
+      setTimeout(callback, 1000);
+    },
+    function(callback){
       sendFBmessage.sendQuickReplies(senderId, chooseLocation, -1, model.answerVariants.locations);
       callback();
     }
@@ -35,13 +39,14 @@ function botGreeting(senderId, body) {
 function requestBot(senderId) {
   var url = 'https://graph.facebook.com/v2.7/' + senderId + '?access_token='+token;
   request({
-      url: url,
-      json: true
-    }, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        botGreeting(senderId, body);    
-      }
-    });
+    url: url,
+    json: true
+  }, 
+  function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      botGreeting(senderId, body);    
+    }
+  });
 }
 
 module.exports.botGreeting = botGreeting;

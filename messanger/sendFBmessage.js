@@ -1,5 +1,5 @@
 var request = require('request'),
-    answerVariants = require('./../db/modelDB').answerVariants;
+  answerVariants = require('./../db/modelDB').answerVariants;
 
 var MAX_BUTTON_NUMBERS = 3,
   //token = "EAAXCaafsfqMBAFuSMrrX5e03VQkQ5mTShTa2KcZC3hZCfFOm8etD3fMixApzOyctswMqK4WN6Qh4x8TRc0GIYZBrj0ZA0lXCNDvwhSZCPJnsEmNGKpCmoCDgB6XHeDK3dBm4qtqXwMAPeQkiCUF2rDs3hz31z6Qc0mioGJwgISAZDZD";
@@ -31,8 +31,8 @@ var btnPayloadObject = function(text, buttons) {
 // construct array of buttons set (in set only 3 button, more Send APi forbidden)
 var buttonTemplate = function(objArray, text) {
   var messagePostBack = [];
-  for(var i = 0; i < objArray.length; i++) {
-    if(objArray.length <= MAX_BUTTON_NUMBERS) {
+  for (var i = 0; i < objArray.length; i++) {
+    if (objArray.length <= MAX_BUTTON_NUMBERS) {
       messagePostBack.push(btnPayloadObject(text, buttonsConstructor(objArray)));
       return messagePostBack;
     }
@@ -93,12 +93,11 @@ function quick_repliesObj(senderId, text, state, textVariants) {
       reply_indicator = "_help_postback"; 
   } 
   allUserCommand.forEach(function(elem, index, arr) {
-    reply_array.push(
-      {
-        content_type: "text",
-        title: comandIndicator + elem,
-        payload: elem+reply_indicator
-      });
+    reply_array.push({
+      content_type: "text",
+      title: comandIndicator + elem,
+      payload: elem+reply_indicator
+    });
   });
   return reply_array;  
 }
@@ -124,7 +123,7 @@ function sendQuickReplies(sender, text, state, textVariants) {
   });
 }
 
-function sendImage(sender, URL){
+function sendImage(sender, URL) {
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {access_token:token},

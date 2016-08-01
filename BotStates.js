@@ -46,7 +46,7 @@ function helpCommand(senderId) {
         if (answerVariants.testerSpecialization.indexOf(allSenders[senderId].currentSpecialization[0]) === -1 && 
                       answerVariants.projectSpecialist.indexOf(allSenders[senderId].currentSpecialization[0]) === -1) {
                 sendFBmessage.send(senderId, [{text: 'Command \/prev - return to the previous step for choose one more dev speciality.'}]);           
-              }
+        }
       }
       callback();
     },function(callback) {
@@ -61,7 +61,7 @@ function helpCommand(senderId) {
 // one from /help command
 function checkingHelpState(event, senderId, states) {
   timer.stopActivityTimer(senderId);
-    if (event.message.quick_reply.payload === 'restart_help_postback'){
+    if (event.message.quick_reply.payload === 'restart_help_postback') {
         restartBot(senderId);
     } else if (event.message.quick_reply.payload === 'finish_help_postback') {
       if (states === 7) {
@@ -84,7 +84,7 @@ function checkingHelpState(event, senderId, states) {
 //continue command
 function continueButtonEventHandler(senderId) {
   console.log('state in continue function is : ' + allSenders[senderId].states);
-  switch(allSenders[senderId].states){
+  switch (allSenders[senderId].states) {
     case 1:
       sendFBmessage.sendQuickReplies(senderId, 'Where are do you live ?', -1, answerVariants.locations);
       break;
@@ -137,7 +137,7 @@ function askTypeInfoClientConnecting(event, senderId) {
 }
 
 //state #3 - enail validation state
-function askEmailInformation(event, senderId){
+function askEmailInformation(event, senderId) {
   timer.stopActivityTimer(senderId);
   generalQuestion.emailValidation(event, senderId, allSenders[senderId]);
   timer.startActivityTimer(senderId, allSenders[senderId].states);
@@ -151,7 +151,7 @@ function askPhoneInformation(event, senderId) {
 }
 
 //state #5 - choose type of profession
-function askChooseProffesion(event, senderId){
+function askChooseProffesion(event, senderId) {
   timer.stopActivityTimer(senderId);
   specQuestion.professionChosing(event, senderId);
   timer.startActivityTimer(senderId, allSenders[senderId].states);

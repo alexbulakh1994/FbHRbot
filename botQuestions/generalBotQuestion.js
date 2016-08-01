@@ -17,10 +17,10 @@ function introducePerson(event, senderId){
 //---------------------------------------not using---------------------------------------------------
 
 
-function personLocation(event, senderId){
-  if(('quick_reply' in event.message)){
+function personLocation(event, senderId) {
+  if (('quick_reply' in event.message)) {
     allSenders[senderId].city = event.message.quick_reply.payload.split('_')[0];
-  }else{
+  } else {
     allSenders[senderId].city = event.message.text;
   }
   allSenders[senderId].states++;
@@ -32,7 +32,7 @@ function chooseInformationTypeInputing(event, senderId) {
     allSenders[senderId].states += 2;
     sendFBmessage.send(senderId, [{text: 'Please enter your mobile phone (0XXXXXXXXX or 0XX XXX XX XX).'}]);
     allSenders[senderId].typeInformationChoosing = 'phone number';
-  } else if(event.message.quick_reply.payload === 'by email_postback') {
+  } else if (event.message.quick_reply.payload === 'by email_postback') {
     allSenders[senderId].states++;
     allSenders[senderId].typeInformationChoosing = 'email';
     sendFBmessage.send(senderId, [{text: 'Please enter your email.'}]);
@@ -58,7 +58,7 @@ function emailValidation(event, senderId) {
 }
 
 function telephoneValidation(event, senderId) {
-  if(phoneExp.test(event.message.text)) {  
+  if (phoneExp.test(event.message.text)) {  
     allSenders[senderId].states++;
     allSenders[senderId].phone = event.message.text;
     sendFBmessage.send(senderId, sendFBmessage.buttonTemplate(model.answerVariants.specialistType, ITSpeciality));

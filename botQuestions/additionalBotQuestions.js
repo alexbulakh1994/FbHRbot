@@ -57,7 +57,7 @@ function yearExperience(event, senderId) {
 
 // get CV document check if this a file on state #10
 function attachedFile(senderId, attachedObj) {
-  if(attachedObj !== null && attachedObj.type === 'file') {
+  if (attachedObj !== null && attachedObj.type === 'file') {
     allSenders[senderId].cv_url = attachedObj.payload.url;
     allSenders[senderId].states++;
     sendFBmessage.send(senderId, [{text: 'Write about yourself (personal qualities, professional skills, experience, interests, and passions). You can write a review about the bot \u263A.'}]);
@@ -76,7 +76,7 @@ function additionalInformation(event, senderId) {
 // save or update data about user by their sender id
 function saveInformation(event, senderId) {
   allSenders[senderId].states++;
-  if(event.message.quick_reply.payload === 'Yes_postback') {
+  if (event.message.quick_reply.payload === 'Yes_postback') {
     model.insertData(senderId);
     sendFBmessage.send(senderId, [{text:'Thank you, ' + allSenders[senderId].name + ' \u263A \nOur HR-manager will contact you within 3 days.'}]);
     // send giffy when user save information about yourself in our database

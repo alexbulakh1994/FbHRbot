@@ -18,7 +18,7 @@ var answerVariants = {
 
 // mongo database schema for collections of using phrasec
 var Schema = new mongoose.Schema({
-    name : String
+  name : String
 });
 
 // client model Schema of object
@@ -52,7 +52,7 @@ var client = mongoose.model('clients', clientModel, 'clients');
 // load all needed phrases to object answerVariants
 function loadDatabaseInfo() {
   Object.keys(answerVariants).forEach(function(elem, i, arr) {
-    if(elem.toString() !== 'themselvesInformationType'){    
+    if (elem.toString() !== 'themselvesInformationType') {    
       answerVariants[elem] = new Array();
       mongoose.model(elem, Schema, elem).find(function(err, result) {
         result.forEach(function(item, i, arr) {
@@ -86,7 +86,7 @@ function insertData(senderId) {
   }
   dbObject.senderId = senderId;  
   client.update({senderId: senderId}, dbObject, {upsert: true, setDefaultsOnInsert: true}, function(err, doc) {
-    if(err) console.log(err);
+    if (err) console.log(err);
   });
     // when user want save information about yourself to bot, 
     // then mail send on three mails
