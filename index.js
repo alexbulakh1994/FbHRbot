@@ -42,6 +42,7 @@ allSenders = {};
 app.post('/webhook', function (req, res) {
 
 var messaging_events = req.body.entry[0].messaging;
+console.log(messaging_events);
 for (i = 0; i < messaging_events.length; i++) {
 	try{	
 		var event = req.body.entry[0].messaging[i],
